@@ -20,6 +20,7 @@ sbit DIRECTION_REGISTER at UPDN_bit;  //register for direction
 //Defines
 #define ON 1
 #define OFF 0
+
 //Poaitions (quarter of turns)
 #define POSITION_0 0
 #define POSITION_1 2
@@ -54,6 +55,7 @@ unsigned int ebb_target_pos;
 unsigned int ebb_current_pos;
 unsigned int calibration_on_off = OFF;
 unsigned int error_flag = OFF;
+unsigned int motor_reached_position_flag = ON;
 int EBB_call_control_routine = OFF;
 
 int buzzer_state = OFF;
@@ -95,12 +97,13 @@ void counter_quarter_turn_match() iv IVT_ADDR_QEIINTERRUPT ics ICS_AUTO {
 		case 0:  //negative direction
 		motor_current_position--;
 		break;
-		case 1:
+		case 1:  //positive direction
 		motor_current_position++;
 		break;
 	}
 	if (motor_current_position == motor_target_position)
 	{
+		motor_reached_position_flag = ON;
 		motor_brake;
 	}       
 
