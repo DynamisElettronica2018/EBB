@@ -1,0 +1,37 @@
+0	1	mikroCdsPIC.exe -MSF -DBG -pP30F4011 -DL -SSA -O11111114 -fo80 -N"D:\Google Drive\REPARTO ELETTRONICA 2018\EBB\FIRMWARE DPX\EBB_DPX.mcpds" -SP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for dsPIC\defs\" -SP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for dsPIC\uses\" -SP"D:\Google Drive\REPARTO ELETTRONICA 2018\EBB\FIRMWARE DPX\" "EBB_DPX.c" "__Lib_Math.mcl" "__Lib_MathDouble.mcl" "__Lib_System.mcl" "__Lib_Delays.mcl" "__Lib_CType.mcl" "__Lib_CString.mcl" "__Lib_CStdlib.mcl" "__Lib_CMath.mcl" "__Lib_Setjmp.mcl" "__Lib_MemManager.mcl" "__Lib_Conversions.mcl" "__Lib_Sprintf.mcl" "__Lib_PrintOut.mcl" "__Lib_Sprinti.mcl" "__Lib_Sprintl.mcl" "__Lib_Time.mcl" "__Lib_Trigonometry.mcl" "__Lib_Button.mcl" "__Lib_Keypad4x4.mcl" "__Lib_Manchester.mcl" "__Lib_OneWire.mcl" "__Lib_PS2.mcl" "__Lib_Sound.mcl" "__Lib_SoftI2C.mcl" "__Lib_SoftSPI.mcl" "__Lib_SoftUART.mcl" "__Lib_ADC_1_p24FJ_p30.mcl" "__Lib_EEPROM_p30.mcl" "__Lib_FLASH_p30.mcl" "__Lib_I2C_1_p30.mcl" "__Lib_PWM_1.mcl" "__Lib_PWM_MC_1_p30_p33.mcl" "__Lib_SPI_1.mcl" "__Lib_UART_12_p30.mcl" "__Lib_CAN_1.mcl" "__Lib_PortExpander.mcl" "__Lib_CANSPI.mcl" "__Lib_CF.mcl" "__Lib_CFFat16.mcl" "__Lib_GlcdFonts.mcl" "__Lib_Glcd.mcl" "__Lib_LcdConsts.mcl" "__Lib_Lcd.mcl" "__Lib_Mmc.mcl" "__Lib_MmcFat16.mcl" "__Lib_MmcFat16Constants.mcl" "__Lib_RS485.mcl" "__Lib_S1D13700.mcl" "__Lib_T6963C.mcl" "__Lib_SPIGlcd.mcl" "__Lib_SPILcd.mcl" "__Lib_SPILcd8.mcl" "__Lib_SPIT6963C.mcl" "__Lib_EthEnc28j60.mcl" "__Lib_EthEnc24j600.mcl" "__Lib_TouchPanel.mcl" "__Lib_BitReverseComplex.mcl" "__Lib_FFT.mcl" "__Lib_FirRadix.mcl" "__Lib_IirRadix.mcl" "__Lib_Matrices.mcl" "__Lib_TwiddleFactors.mcl" "__Lib_Q15.mcl" "__Lib_Vectors.mcl"	 
+diagnostics: 0	121	Loading...	 
+diagnostics: 0	122	Compilation Started	can.h
+warning: 52	1505	Suspicious pointer conversion	can.c
+warning: 56	1505	Suspicious pointer conversion	can.c
+hint: 8	1163	Variable 'currentValue' has been declared, but not used	eeprom.c
+error: 24	324	Undeclared identifier 'LAST_POSCNT' in expression	initialization.c
+error: 70	324	Undeclared identifier 'SET_CENTRAL_CALIBRATION_MODE' in expression	motor.c
+error: 75	324	Undeclared identifier 'SET_ZERO_POSITION_MODE' in expression	motor.c
+error: 104	324	Undeclared identifier 'ADDR_MOTOR_STATE' in expression	motor.c
+error: 106	324	Undeclared identifier 'EBB_STATE_ROTATING' in expression	motor.c
+error: 117	324	Undeclared identifier 'encoder_target_position' in expression	motor.c
+error: 119	324	Undeclared identifier 'ebb_overcurrent_flag' in expression	motor.c
+error: 121	324	Undeclared identifier 'current_counter' in expression	motor.c
+error: 121	324	Undeclared identifier 'OVERCURRENT_CUTOFF_TIME' in expression	motor.c
+error: 123	324	Undeclared identifier 'current_counter' in expression	motor.c
+error: 124	324	Undeclared identifier 'ebb_overcurrent_flag' in expression	motor.c
+error: 126	324	Undeclared identifier 'pid_counter' in expression	motor.c
+error: 126	324	Undeclared identifier 'TIMING_PID' in expression	motor.c
+error: 129	324	Undeclared identifier 'K_PROPORTIONAL' in expression	motor.c
+error: 130	324	Undeclared identifier 'INTEGRAL_TRIGGER' in expression	motor.c
+error: 132	324	Undeclared identifier 'K_INTEGRAL' in expression	motor.c
+error: 136	324	Undeclared identifier 'K_PROPORTIONAL' in expression	motor.c
+error: 137	324	Undeclared identifier 'INTEGRAL_TRIGGER' in expression	motor.c
+error: 139	324	Undeclared identifier 'K_INTEGRAL' in expression	motor.c
+error: 145	324	Undeclared identifier 'MIN_PWM' in expression	motor.c
+error: 145	324	Undeclared identifier 'MIN_PWM' in expression	motor.c
+error: 146	324	Undeclared identifier 'MAX_PWM' in expression	motor.c
+error: 146	324	Undeclared identifier 'MAX_PWM' in expression	motor.c
+error: 148	324	Undeclared identifier 'pid_counter' in expression	motor.c
+error: 151	324	Undeclared identifier 'POSITION_TOLERANCE' in expression	motor.c
+error: 155	324	Undeclared identifier 'POSITION_TOLERANCE' in expression	motor.c
+error: 171	324	Undeclared identifier 'ADDR_MAPPED_POS' in expression	motor.c
+error: 173	324	Undeclared identifier 'ADDR_REAL_POS' in expression	motor.c
+error: 176	324	Undeclared identifier 'ADDR_MOTOR_STATE' in expression	motor.c
+error: 184	312	Internal error ''	motor.c
+error: 0	102	Finished (with errors): 10 giu 2018, 22:52:26	EBB_DPX.mcpds
