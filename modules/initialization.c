@@ -1,6 +1,4 @@
 
-
-
 #include "initialization.h"
 
 
@@ -21,7 +19,7 @@ void EBB_Init()  //Initialize all hardware peripherals and software variables
         LED_G = 0;
         // Quadrature Encoder initialization
         QEICON = 0b0000010100000010;                    //Set Quadrature Encoder
-        POSCNT = EEPROM_Read(LAST_POSCNT);              //Position Counter starter value (offset half register)
+        POSCNT = EEPROM_Read(ADDR_LAST_POSCNT);              //Position Counter starter value (offset half register)
         MAXCNT = QUARTER_TURN;                          //Set maxcounter to a quarter turn for interrupts
         IPC10bits.QEIIP = 4;                            //Set interrupt priority on 4 for MAXCNT match
         IFS2bits.QEIIF = 0;                             //Reset Interrupt Flag

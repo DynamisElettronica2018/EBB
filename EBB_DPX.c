@@ -1,7 +1,4 @@
 
-
-
-
 #include "libs/macro.c"
 #include "libs/d_can.h"
 #include "libs/dsPIC.c"
@@ -52,26 +49,29 @@ sbit DIRECTION_REGISTER at UPDN_bit;  //register for direction
 #define PWM_SATURATION 4000
 
 
-extern ebb_states ebb_current_state = EBB_OFF;
+
 //Global variables declaration
 unsigned int ebb_target_pos;
 unsigned int ebb_current_pos;
 
 int buzzer_state = OFF;
-int sound = OFF;;
+int sound = OFF;
 int motor_target_position;  //quarter turns
 int motor_current_position;  //quarter turns
 
 char is_requested_calibration = 0;
-char is _requested_movement = 0;
+char is_requested_movement = 0;
+unsigned int calibration_on_off = OFF;
+unsigned int error_flag = OFF;
 
 int timer1_counter = 0;
 
 
 //External program blocks
 #include "modules/EBB_can_functions.h"
-#include "modules/initialization.c"
 #include "modules/motor.c"
+#include "modules/initialization.c"
+
 
 
 
@@ -89,7 +89,6 @@ onTimer1Interrupt {
 
 onTimer2Interrupt {
     CAN_routine();  //Call the can update routine
-    EBB_call_control_routine = ON;
     clearTimer2();
 }
 

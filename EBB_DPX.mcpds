@@ -24,12 +24,13 @@ Count=0
 Count=0
 ActiveImageIndex=-1
 [OPENED_FILES]
-Count=5
+Count=6
 File0=EBB_DPX.c
 File1=modules\EBB_can_functions.h
 File2=modules\EBB_can_functions.c
 File3=modules\initialization.c
 File4=modules\motor.c
+File5=modules\motor.h
 [EEPROM]
 Count=0
 [ACTIVE_COMMENTS_FILES]
@@ -37,10 +38,11 @@ Count=0
 [OTHER_FILES]
 Count=0
 [SEARCH_PATH]
-Count=3
+Count=4
 Path0=C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for dsPIC\defs\
 Path1=C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for dsPIC\uses\
-Path2=D:\Google Drive\REPARTO ELETTRONICA 2018\EBB\FIRMWARE DPX\
+Path2=C:\Users\nicol\Documents\git_codes\EBB\
+Path3=D:\Google Drive\REPARTO ELETTRONICA 2018\EBB\FIRMWARE DPX\
 [HEADER_PATH]
 Count=0
 [HEADERS]

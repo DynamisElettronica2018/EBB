@@ -1,9 +1,9 @@
-#line 1 "D:/Google Drive/REPARTO ELETTRONICA 2018/EBB/FIRMWARE DPX/EBB_DPX.c"
-#line 1 "d:/google drive/reparto elettronica 2018/ebb/firmware dpx/libs/macro.c"
-#line 1 "d:/google drive/reparto elettronica 2018/ebb/firmware dpx/libs/d_can.h"
-#line 1 "d:/google drive/reparto elettronica 2018/ebb/firmware dpx/libs/can.c"
-#line 1 "d:/google drive/reparto elettronica 2018/ebb/firmware dpx/libs/can.h"
-#line 48 "d:/google drive/reparto elettronica 2018/ebb/firmware dpx/libs/can.h"
+#line 1 "C:/Users/nicol/Documents/git_codes/EBB/EBB_DPX.c"
+#line 1 "c:/users/nicol/documents/git_codes/ebb/libs/macro.c"
+#line 1 "c:/users/nicol/documents/git_codes/ebb/libs/d_can.h"
+#line 1 "c:/users/nicol/documents/git_codes/ebb/libs/can.c"
+#line 1 "c:/users/nicol/documents/git_codes/ebb/libs/can.h"
+#line 48 "c:/users/nicol/documents/git_codes/ebb/libs/can.h"
 void Can_init(void);
 
 void Can_read(unsigned long int *id, char dataBuffer[], unsigned int *dataLength, unsigned int *inFlags);
@@ -35,7 +35,7 @@ void Can_clearB1Flag(void);
 void Can_clearInterrupt(void);
 
 void Can_initInterrupt(void);
-#line 14 "d:/google drive/reparto elettronica 2018/ebb/firmware dpx/libs/can.c"
+#line 14 "c:/users/nicol/documents/git_codes/ebb/libs/can.c"
 unsigned long int can_readId = 0;
  char can_dataInBuffer[ 8 ];
 unsigned char can_dataOutBuffer[ 8 ];
@@ -157,10 +157,10 @@ void Can_initInterrupt(void) {
   { int save_sr; { save_sr = SRbits.IPL; { int DISI_save; DISI_save = DISICNT; asm DISI #0X3FF ;SRbits.IPL = 7; asm {nop}; asm {nop}; DISICNT = DISI_save; } (void) 0; ; } (void) 0; ;C1INTEBITS.RXB1IE = 1; { int DISI_save; DISI_save = DISICNT; asm DISI #0X3FF ;SRbits.IPL = save_sr; asm {nop}; asm {nop}; DISICNT = DISI_save; } (void) 0; ; } (void) 0; ;
 
  }
-#line 1 "d:/google drive/reparto elettronica 2018/ebb/firmware dpx/libs/dspic.c"
-#line 1 "d:/google drive/reparto elettronica 2018/ebb/firmware dpx/libs/dspic.h"
-#line 1 "d:/google drive/reparto elettronica 2018/ebb/firmware dpx/libs/basic.h"
-#line 16 "d:/google drive/reparto elettronica 2018/ebb/firmware dpx/libs/basic.h"
+#line 1 "c:/users/nicol/documents/git_codes/ebb/libs/dspic.c"
+#line 1 "c:/users/nicol/documents/git_codes/ebb/libs/dspic.h"
+#line 1 "c:/users/nicol/documents/git_codes/ebb/libs/basic.h"
+#line 16 "c:/users/nicol/documents/git_codes/ebb/libs/basic.h"
 void unsignedIntToString(unsigned int number, char *text);
 
 void signedIntToString(int number, char *text);
@@ -168,7 +168,7 @@ void signedIntToString(int number, char *text);
 unsigned char getNumberDigitCount(unsigned char number);
 
 void emptyString(char* myString);
-#line 171 "d:/google drive/reparto elettronica 2018/ebb/firmware dpx/libs/dspic.h"
+#line 171 "c:/users/nicol/documents/git_codes/ebb/libs/dspic.h"
 void setAllPinAsDigital(void);
 
 void setInterruptPriority(unsigned char device, unsigned char priority);
@@ -226,7 +226,7 @@ void setAnalogVoltageReference(unsigned char mode);
 void setAnalogDataOutputFormat(unsigned char adof);
 
 int getMinimumAnalogClockConversion(void);
-#line 7 "d:/google drive/reparto elettronica 2018/ebb/firmware dpx/libs/dspic.c"
+#line 7 "c:/users/nicol/documents/git_codes/ebb/libs/dspic.c"
 const double INSTRUCTION_PERIOD = 4.0 /  32 ;
 const unsigned int PRESCALER_VALUES[] = {1, 8, 64, 256};
 
@@ -246,7 +246,7 @@ void setInterruptPriority(unsigned char device, unsigned char priority) {
  case  6 :
   IPC5bits.INT2IP  = priority;
  break;
-#line 29 "d:/google drive/reparto elettronica 2018/ebb/firmware dpx/libs/dspic.c"
+#line 29 "c:/users/nicol/documents/git_codes/ebb/libs/dspic.c"
  case  1 :
   IPC0bits.T1IP  = priority;
  break;
@@ -279,7 +279,7 @@ void setExternalInterrupt(unsigned char device, char edge) {
   IFS1.INT2IF  =  0 ;
   IEC1.INT2IE  =  1 ;
  break;
-#line 65 "d:/google drive/reparto elettronica 2018/ebb/firmware dpx/libs/dspic.c"
+#line 65 "c:/users/nicol/documents/git_codes/ebb/libs/dspic.c"
  default:
  break;
  }
@@ -308,7 +308,7 @@ void switchExternalInterruptEdge(unsigned char device) {
   INTCON2.INT2EP  =  1 ;
  }
  break;
-#line 99 "d:/google drive/reparto elettronica 2018/ebb/firmware dpx/libs/dspic.c"
+#line 99 "c:/users/nicol/documents/git_codes/ebb/libs/dspic.c"
  default:
  break;
  }
@@ -322,7 +322,7 @@ char getExternalInterruptEdge(unsigned char device) {
  return  INTCON2.INT1EP ;
  case  6 :
  return  INTCON2.INT2EP ;
-#line 114 "d:/google drive/reparto elettronica 2018/ebb/firmware dpx/libs/dspic.c"
+#line 114 "c:/users/nicol/documents/git_codes/ebb/libs/dspic.c"
  default:
  return 0;
  }
@@ -339,7 +339,7 @@ void clearExternalInterrupt(unsigned char device) {
  case  6 :
   IFS1.INT2IF  =  0 ;
  break;
-#line 132 "d:/google drive/reparto elettronica 2018/ebb/firmware dpx/libs/dspic.c"
+#line 132 "c:/users/nicol/documents/git_codes/ebb/libs/dspic.c"
  default:
  break;
  }
@@ -521,8 +521,8 @@ void setAnalogDataOutputFormat(unsigned char adof) {
 int getMinimumAnalogClockConversion(void) {
  return (int) (( 154  *  32 ) / 500.0);
 }
-#line 1 "d:/google drive/reparto elettronica 2018/ebb/firmware dpx/libs/eeprom.c"
-#line 1 "d:/google drive/reparto elettronica 2018/ebb/firmware dpx/libs/eeprom.h"
+#line 1 "c:/users/nicol/documents/git_codes/ebb/libs/eeprom.c"
+#line 1 "c:/users/nicol/documents/git_codes/ebb/libs/eeprom.h"
 
 
 
@@ -539,7 +539,7 @@ unsigned int EEPROM_readInt(unsigned int address);
 void EEPROM_writeArray(unsigned int address, unsigned int *values);
 
 void EEPROM_readArray(unsigned int address, unsigned int *values);
-#line 7 "d:/google drive/reparto elettronica 2018/ebb/firmware dpx/libs/eeprom.c"
+#line 7 "c:/users/nicol/documents/git_codes/ebb/libs/eeprom.c"
 void EEPROM_writeInt(unsigned int address, unsigned int value) {
  unsigned int currentValue;
 
@@ -566,7 +566,7 @@ void EEPROM_readArray(unsigned int address, unsigned int *values) {
  values[i] = EEPROM_read(address + i);
  }
 }
-#line 11 "D:/Google Drive/REPARTO ELETTRONICA 2018/EBB/FIRMWARE DPX/EBB_DPX.c"
+#line 11 "C:/Users/nicol/Documents/git_codes/EBB/EBB_DPX.c"
 sbit REVERSE at LATE2_bit;
 sbit FORWARD at LATE4_bit;
 sbit ENABLE at LATE1_bit;
@@ -575,26 +575,29 @@ sbit LED_G at LATD1_bit;
 sbit LED_B at LATD3_bit;
 sbit BUZZER at LATD2_bit;
 sbit DIRECTION_REGISTER at UPDN_bit;
-#line 53 "D:/Google Drive/REPARTO ELETTRONICA 2018/EBB/FIRMWARE DPX/EBB_DPX.c"
+#line 57 "C:/Users/nicol/Documents/git_codes/EBB/EBB_DPX.c"
 unsigned int ebb_target_pos;
 unsigned int ebb_current_pos;
-unsigned int calibration_on_off =  0 ;
-unsigned int error_flag =  0 ;
-int EBB_call_control_routine =  0 ;
 
 int buzzer_state =  0 ;
 int sound =  0 ;
-int motor_state =  0 ;
 int motor_target_position;
 int motor_current_position;
-#line 1 "d:/google drive/reparto elettronica 2018/ebb/firmware dpx/modules/ebb_can_functions.h"
+
+char is_requested_calibration = 0;
+char is_requested_movement = 0;
+unsigned int calibration_on_off =  0 ;
+unsigned int error_flag =  0 ;
+
+int timer1_counter = 0;
+#line 1 "c:/users/nicol/documents/git_codes/ebb/modules/ebb_can_functions.h"
 
 
 
 
 
 void CAN_routine();
-#line 1 "d:/google drive/reparto elettronica 2018/ebb/firmware dpx/modules/ebb_can_functions.c"
+#line 1 "c:/users/nicol/documents/git_codes/ebb/modules/ebb_can_functions.c"
 
 
 
@@ -608,74 +611,25 @@ void CAN_routine()
  Can_addIntToWritePacket(error_flag);
  Can_write( 0b11001100110 );
 }
-#line 1 "d:/google drive/reparto elettronica 2018/ebb/firmware dpx/modules/initialization.c"
-#line 1 "d:/google drive/reparto elettronica 2018/ebb/firmware dpx/modules/initialization.h"
+#line 1 "c:/users/nicol/documents/git_codes/ebb/modules/motor.c"
+#line 1 "c:/users/nicol/documents/git_codes/ebb/modules/motor.h"
 
 
+typedef enum{
+ EBB_OFF,
+ EBB_START,
+ EBB_MOVING,
+ EBB_BRAKING,
+ EBB_CENTRAL_CALIBRATION,
+ EBB_ERROR,
+ EBB_DRIVER_BRAKING
+}ebb_states;
 
 
+char blink_counter = 0;
+char brake_counter = 0;
 
-void EBB_Init();
-#line 7 "d:/google drive/reparto elettronica 2018/ebb/firmware dpx/modules/initialization.c"
-void EBB_Init()
-{
-
- ADPCFG = 0b1111111111111110;
- TRISDbits.TRISD1 = 0;
- TRISDbits.TRISD3 = 0;
- TRISDbits.TRISD2 = 0;
- TRISEbits.TRISE0 = 0;
- TRISEbits.TRISE4 = 0;
- TRISEbits.TRISE2 = 0;
- TRISEbits.TRISE1 = 0;
- TRISBbits.TRISB0 = 1;
- BUZZER = 0;
- LED_B = 0;
- LED_G = 0;
-
- QEICON = 0b0000010100000010;
- POSCNT = EEPROM_Read(LAST_POSCNT);
- MAXCNT =  5024 ;
- IPC10bits.QEIIP = 4;
- IFS2bits.QEIIF = 0;
- IEC2bits.QEIIE = 1;
-
- PWMCON1 = 0b0000000100000001;
- PTPER = 1999;
- PDC1 = 0;
- PTMR = 0;
- PTCON = 0b1000000000000000;
- FORWARD = 0;
- REVERSE = 0;
- ENABLE = 0;
-
-
- ebb_current_pos = EEPROM_Read( 0x7FFDC0 );
- ebb_target_pos = ebb_current_pos;
-
- CAN_Init();
-
- CAN_routine();
-
-
- setTimer( 1 ,0.001);
- setTimer( 2 ,0.1);
- setTimer( 3 ,0.003);
-
-
- buzzer_state =  1 ;
- LED_B =  1 ;
- LED_G =  1 ;
- delay_ms(800);
- buzzer_state =  0 ;
- LED_B =  0 ;
- LED_G =  0 ;
-
-
-}
-#line 1 "d:/google drive/reparto elettronica 2018/ebb/firmware dpx/modules/motor.c"
-#line 1 "d:/google drive/reparto elettronica 2018/ebb/firmware dpx/modules/motor.h"
-
+ebb_states ebb_current_state = EBB_OFF;
 
 
 
@@ -684,15 +638,41 @@ void EBB_control(void);
 void normal_motor_control(void);
 void central_calibration_control(void);
 void zero_position_control(void);
-#line 6 "d:/google drive/reparto elettronica 2018/ebb/firmware dpx/modules/motor.c"
+void motor_brake(void);
+#line 6 "c:/users/nicol/documents/git_codes/ebb/modules/motor.c"
+void counter_quarter_turn_match() iv IVT_ADDR_QEIINTERRUPT ics ICS_AUTO {
+ switch(DIRECTION_REGISTER){
+ case 0:
+ motor_current_position--;
+ break;
+ case 1:
+ motor_current_position++;
+ break;
+ }
+ if (motor_current_position == motor_target_position)
+ {
+ brake_counter = 0;
+ ebb_current_state = EBB_BRAKING;
+ }
+
+ IFS2bits.QEIIF = 0;
+}
+
+
+
+
+
+
+
 void EBB_control()
 {
-
-
- if (ebb_target_pos != ebb_current_pos && motor_state ==  0  && ebb_target_pos >= 0 && ebb_target_pos <= 16)
+ switch(ebb_current_state)
  {
-
- switch(ebb_target_pos){
+ case EBB_OFF:
+ if(is_requested_movement)
+ {
+ switch(ebb_target_pos)
+ {
  case 0:
  motor_target_position =  0 ;
  break;
@@ -745,222 +725,141 @@ void EBB_control()
  motor_target_position =  32 ;
  break;
  }
-
- normal_motor_control();
-
- }
- else if (ebb_target_pos == SET_CENTRAL_CALIBRATION_MODE && motor_state ==  0 )
+ ebb_current_state = EBB_START;
+ }else if(is_requested_calibration)
  {
-
- central_calibration_control();
+ ebb_current_state = EBB_CENTRAL_CALIBRATION;
  }
- else if (ebb_target_pos == SET_ZERO_POSITION_MODE && motor_state ==  0 )
+ break;
+ case EBB_START:
+ if(motor_target_position > motor_current_position)
  {
-
- zero_position_control();
- }
- else if (motor_state ==  0 )
+ FORWARD =  1 ;
+ REVERSE =  0 ;
+ }else if (motor_target_position < motor_current_position)
  {
- ebb_target_pos = ebb_current_pos;
+ REVERSE =  1 ;
+ FORWARD =  0 ;
  }
-}
-
-
-
-
-
-
-
-
-
-
-void normal_motor_control()
-{
- int target_reached_flag;
- int position_difference;
- int proportional_error;
- int integral_error;
- int pi_pwm;
- LED_B =  1 ;
- motor_state =  1 ;
- EEPROM_WRITE(ADDR_MOTOR_STATE,  1 );
- while(WR_bit){};
- ebb_current_pos = EBB_STATE_ROTATING;
-
- PDC1 = 0;
  ENABLE =  1 ;
- target_reached_flag =  0 ;
- position_difference = 0;
- proportional_error = 0;
- integral_error = 0;
- pi_pwm = 0;
- while (target_reached_flag ==  0 )
- {
- position_difference = encoder_target_position - POSCNT;
+ PDC1 =  4000 ;
+ is_requested_movement =  0 ;
 
- if(ebb_overcurrent_flag ==  1  )
+ ebb_current_state = EBB_MOVING;
+ break;
+ case EBB_MOVING:
+ blink_counter++;
+ if(blink_counter >= 20)
  {
- while(current_counter < OVERCURRENT_CUTOFF_TIME)
- PDC1 = 0;
- current_counter = 0;
- ebb_overcurrent_flag =  0 ;
+ LED_G = ~LED_G;
+ blink_counter = 0;
  }
- if(pid_counter > TIMING_PID){
- if(position_difference > 0)
+ break;
+ case EBB_BRAKING:
+ if(brake_counter = 1)
  {
- proportional_error = K_PROPORTIONAL * position_difference;
- if(proportional_error <= INTEGRAL_TRIGGER)
- {
- integral_error = integral_error + (position_difference/K_INTEGRAL);
- }else
- integral_error = 0;
- }else{
- proportional_error = K_PROPORTIONAL * (-1*position_difference);
- if(proportional_error <= INTEGRAL_TRIGGER)
- {
- integral_error = integral_error + ((-1*position_difference)/K_INTEGRAL);
- }else
- integral_error = 0;
+ LED_G =  0 ;
+ LED_B =  1 ;
+ ENABLE =  1 ;
+ REVERSE =  0 ;
+ FORWARD =  0 ;
  }
-
- pi_pwm = proportional_error + integral_error;
- if(pi_pwm < MIN_PWM) pi_pwm = MIN_PWM;
- if(pi_pwm > MAX_PWM) pi_pwm = MAX_PWM;
- PDC1 = pi_pwm;
- pid_counter = 0;
- }
-
- if(position_difference > POSITION_TOLERANCE)
+ brake_counter++;
+ if(brake_counter >=  50 )
  {
- FORWARD = 1;
- REVERSE = 0;
- }else if(position_difference < -1*(POSITION_TOLERANCE))
- {
- FORWARD = 0;
- REVERSE = 1;
- }else
- {
- target_reached_flag =  1 ;
- }
-
- }
-
- if(target_reached_flag =  1 )
- {
- PDC1 = 0;
- ENABLE =  0 ;
- ebb_current_pos = ebb_target_pos;
- EEPROM_WRITE(ADDR_MAPPED_POS, ebb_current_pos);
- while(WR_bit);
- EEPROM_WRITE(ADDR_REAL_POS, POSCNT);
- while(WR_bit);
- motor_state =  0 ;
- EEPROM_WRITE(ADDR_MOTOR_STATE,  0 );
- while(WR_bit);
- }else
- {
-
- }
  LED_B =  0 ;
-
-}
-
-
-
-
-
-
-
-
-
-
-void central_calibration_control()
-{
- int i;
- LED_G =  1 ;
- for(i=0; i <= 4; i++)
- {
- BUZZER =  1 ;
- delay_ms(200);
- BUZZER =  0 ;
- delay_ms(200);
- }
- motor_state = M_STATE_CALIBRATING;
- EEPROM_WRITE(ADDR_MOTOR_STATE, M_STATE_CALIBRATING);
- while(WR_bit);
- ebb_current_pos = EBB_STATE_CALIBRATION;
-
- while(ebb_target_pos >= CALIBRATION_DOWN && ebb_target_pos <= CALIBRATION_UP)
- {
- switch(ebb_target_pos)
- {
- case CALIBRATION_DOWN:
- ENABLE = 1;
- FORWARD = 0;
- REVERSE = 1;
- PDC1 = 3000;
- break;
- case CALIBRATION_UP:
- ENABLE = 1;
- FORWARD = 1;
- REVERSE = 0;
- PDC1 = 3000;
- break;
- default:
- ENABLE = 0;
- FORWARD = 0;
- REVERSE = 0;
- PDC1 = 0;
- }
- }
  ENABLE =  0 ;
- ebb_current_pos = EEPROM_Read(ADDR_MAPPED_POS);
- POSCNT = EEPROM_Read(ADDR_REAL_POS);
- EEPROM_WRITE(ADDR_MOTOR_STATE,  0 );
- while(WR_bit);
- motor_state =  0 ;
- LED_G =  0 ;
-}
-
-
-
-
-
-
-
-
-
-
-void zero_position_control()
-{
- int i;
- LED_G =  1 ;
- for(i=0; i <= 8; i++)
- {
- BUZZER =  1 ;
- delay_ms(200);
- BUZZER =  0 ;
- delay_ms(200);
+ REVERSE =  0 ;
+ FORWARD =  0 ;
+ brake_counter = 0;
+ ebb_current_state =  0 ;
  }
- motor_state = M_STATE_CALIBRATING;
- EEPROM_WRITE(ADDR_MOTOR_STATE, M_STATE_CALIBRATING);
- while(WR_bit);
- POSCNT = CENTRAL;
- ebb_current_pos = 4;
- EEPROM_WRITE(ADDR_MAPPED_POS, 4);
- while(WR_bit);
- EEPROM_WRITE(ADDR_REAL_POS, CENTRAL);
- while(WR_bit);
+ break;
 
- EEPROM_WRITE(ADDR_MOTOR_STATE,  0 );
- while(WR_bit);
- motor_state =  0 ;
- LED_G =  0 ;
+
+
+ }
 }
-#line 74 "D:/Google Drive/REPARTO ELETTRONICA 2018/EBB/FIRMWARE DPX/EBB_DPX.c"
+#line 1 "c:/users/nicol/documents/git_codes/ebb/modules/initialization.c"
+#line 1 "c:/users/nicol/documents/git_codes/ebb/modules/initialization.h"
+
+
+
+
+
+void EBB_Init();
+#line 7 "c:/users/nicol/documents/git_codes/ebb/modules/initialization.c"
+void EBB_Init()
+{
+
+ ADPCFG = 0b1111111111111110;
+ TRISDbits.TRISD1 = 0;
+ TRISDbits.TRISD3 = 0;
+ TRISDbits.TRISD2 = 0;
+ TRISEbits.TRISE0 = 0;
+ TRISEbits.TRISE4 = 0;
+ TRISEbits.TRISE2 = 0;
+ TRISEbits.TRISE1 = 0;
+ TRISBbits.TRISB0 = 1;
+ BUZZER = 0;
+ LED_B = 0;
+ LED_G = 0;
+
+ QEICON = 0b0000010100000010;
+ POSCNT = EEPROM_Read( 0x7FFDA0 );
+ MAXCNT =  5024 ;
+ IPC10bits.QEIIP = 4;
+ IFS2bits.QEIIF = 0;
+ IEC2bits.QEIIE = 1;
+
+ PWMCON1 = 0b0000000100000001;
+ PTPER = 1999;
+ PDC1 = 0;
+ PTMR = 0;
+ PTCON = 0b1000000000000000;
+ FORWARD = 0;
+ REVERSE = 0;
+ ENABLE = 0;
+
+
+ ebb_current_pos = EEPROM_Read( 0x7FFDC0 );
+ ebb_target_pos = ebb_current_pos;
+
+ CAN_Init();
+
+ CAN_routine();
+
+ ebb_current_state = EBB_OFF;
+
+
+ setTimer( 1 ,0.001);
+ setTimer( 2 ,0.1);
+ setTimer( 3 ,0.003);
+
+
+ buzzer_state =  1 ;
+ LED_B =  1 ;
+ LED_G =  1 ;
+ delay_ms(800);
+ buzzer_state =  0 ;
+ LED_B =  0 ;
+ LED_G =  0 ;
+
+
+}
+#line 83 "C:/Users/nicol/Documents/git_codes/EBB/EBB_DPX.c"
+ void timer1_interrupt() iv IVT_ADDR_T1INTERRUPT ics ICS_AUTO  {
+ timer1_counter++;
+
+ if (timer1_counter >=  10 )
+ {
+ EBB_control();
+ timer1_counter = 0;
+ }
+}
+
  void timer2_interrupt() iv IVT_ADDR_T2INTERRUPT ics ICS_AUTO  {
  CAN_routine();
- EBB_call_control_routine =  1 ;
   IFS0bits.T2IF  = 0 ;
 }
 
@@ -972,27 +871,10 @@ void zero_position_control()
 }
 
 
-
-
-
-
-
-void counter_quarter_turn_match() iv IVT_ADDR_QEIINTERRUPT ics ICS_AUTO {
-
-
- IFS2bits.QEIIF = 0;
-}
-
-
 void main() {
  EBB_Init();
  while(1)
  {
- if (EBB_call_control_routine)
- {
- EBB_control();
- EBB_call_control_routine =  0 ;
- }
  }
 
 }

@@ -1,6 +1,4 @@
 
-
-
 //functions
 
 void CAN_routine()  //CAN update routine

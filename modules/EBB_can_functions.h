@@ -1,6 +1,4 @@
 
-
-
 //function declaration
 
 void CAN_routine();
