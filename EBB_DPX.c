@@ -21,7 +21,7 @@ sbit DIRECTION_REGISTER at UPDN_bit;  //register for direction
 #define ON 1
 #define OFF 0
 
-//Poaitions (quarter of turns)
+//Positions (quarter of turns)
 #define POSITION_0 0
 #define POSITION_1 2
 #define POSITION_2 4
@@ -47,22 +47,25 @@ sbit DIRECTION_REGISTER at UPDN_bit;  //register for direction
 #define ADDR_LAST_NUMBER_QUARTER_TURNS 0x7FFDB0 //Last record of quarter turns (from completely screw-on balance bar)
 #define ADDR_LAST_MAPPED_POSITION 0x7FFDC0 //Last record of mapped position
 
+#define CONTROL_ROUTINE_REFRESH 10 //Refresh in ms
+#define BRAKE_TIME_LENGHT 50
+#define PWM_SATURATION 4000
 
 
-
+extern ebb_states ebb_current_state = EBB_OFF;
 //Global variables declaration
 unsigned int ebb_target_pos;
 unsigned int ebb_current_pos;
-unsigned int calibration_on_off = OFF;
-unsigned int error_flag = OFF;
-unsigned int motor_reached_position_flag = ON;
-int EBB_call_control_routine = OFF;
 
 int buzzer_state = OFF;
-int sound = OFF;
-int motor_state = OFF;
+int sound = OFF;;
 int motor_target_position;  //quarter turns
 int motor_current_position;  //quarter turns
+
+char is_requested_calibration = 0;
+char is _requested_movement = 0;
+
+int timer1_counter = 0;
 
 
 //External program blocks
@@ -73,6 +76,17 @@ int motor_current_position;  //quarter turns
 
 
 //Timers routines
+
+onTimer1Interrupt {
+    timer1_counter++;
+    //Check for overcurrent
+    if (timer1_counter >= CONTROL_ROUTINE_REFRESH)
+    {
+        EBB_control();
+        timer1_counter = 0;
+    }
+}
+
 onTimer2Interrupt {
     CAN_routine();  //Call the can update routine
     EBB_call_control_routine = ON;
@@ -87,39 +101,10 @@ onTimer4Interrupt {
 }
 
 
-
-
-
-
-
-void counter_quarter_turn_match() iv IVT_ADDR_QEIINTERRUPT ics ICS_AUTO {
-	switch(DIRECTION_REGISTER){
-		case 0:  //negative direction
-		motor_current_position--;
-		break;
-		case 1:  //positive direction
-		motor_current_position++;
-		break;
-	}
-	if (motor_current_position == motor_target_position)
-	{
-		motor_reached_position_flag = ON;
-		motor_brake;
-	}       
-
-    IFS2bits.QEIIF = 0;                             //Reset Interrupt Flag
-}
-
-
 void main() {
         EBB_Init();
     while(1)
     {
-            if (EBB_call_control_routine)
-            {
-                    EBB_control();
-                    EBB_call_control_routine = OFF;
-            }
     }
 
 }

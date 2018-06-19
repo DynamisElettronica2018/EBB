@@ -44,6 +44,8 @@ void EBB_Init()  //Initialize all hardware peripherals and software variables
 
         CAN_routine();
 
+        ebb_current_state = EBB_OFF;
+
         //TImers initialization
         setTimer(TIMER1_DEVICE,0.001);                                        //Interrupt every 1mS
         setTimer(TIMER2_DEVICE,0.1);                    //Interrupt every 100mS
