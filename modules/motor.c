@@ -34,7 +34,7 @@ void EBB_control()
         case EBB_OFF:
             if(is_requested_movement)
             {
-                switch(ebb_target_pos)
+                switch(ebb_target_pos)  //Obtain the requested position in quarter of turns
                 {
                     case 0:
                     motor_target_position = POSITION_0;
@@ -88,10 +88,12 @@ void EBB_control()
                     motor_target_position = POSITION_16;
                     break;
                 }
-                ebb_current_state = EBB_START;
+                ebb_current_state = EBB_START;  
+                is_requested_movement = OFF;
             }else if(is_requested_calibration)
             {
                 ebb_current_state = EBB_CENTRAL_CALIBRATION;
+                is_requested_calibration = OFF;
             }
         break;
         case EBB_START:
@@ -130,17 +132,25 @@ void EBB_control()
             brake_counter++;
             if(brake_counter >= BRAKE_TIME_LENGHT)
             {
-                LED_B = OFF;
-                ENABLE = OFF;
-                REVERSE = OFF;
-                FORWARD = OFF;
-                brake_counter = 0;
-                ebb_current_state = OFF;
+                ebb_current_state = EBB_POSITION_REACHED;
             }
         break;
-
-
-
+        case EBB_POSITION_REACHED:
+            LED_B = OFF;
+            ENABLE = OFF;
+            REVERSE = OFF;
+            FORWARD = OFF;
+            brake_counter = 0;
+            ebb_current_pos = ebb_target_pos;
+            motor_current_position = motor_target_position;
+            EEPROM_WRITE(ADDR_LAST_POSCNT, POSCNT);
+            while(WR_bit);
+            EEPROM_WRITE(ADDR_LAST_NUMBER_QUARTER_TURNS, motor_current_position);
+            while(WR_bit);
+            EEPROM_WRITE(ADDR_LAST_MAPPED_POSITION, ebb_current_pos);
+            while(WR_bit);
+            ebb_current_state = OFF;
+        break;
     }
 }
 

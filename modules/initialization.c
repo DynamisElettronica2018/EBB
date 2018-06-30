@@ -4,6 +4,18 @@
 
 void EBB_Init()  //Initialize all hardware peripherals and software variables
 {
+        //First boot
+        if(EEPROM_Read(ADDR_FIRST_BOOT) == 0)
+        {
+                EEPROM_WRITE(ADDR_LAST_POSCNT, QUARTER_TURN/2);
+                while(WR_bit);
+                EEPROM_WRITE(ADDR_LAST_MAPPED_POSITION, 8);
+                while(WR_bit);
+                EEPROM_WRITE(ADDR_LAST_NUMBER_QUARTER_TURNS, 16);
+                while(WR_bit);
+                EEPROM_WRITE(ADDR_FIRST_BOOT, 1);
+                while(WR_bit);
+        }
         //Ports initialization
         ADPCFG = 0b1111111111111110;                    //analog input on AN0 (Current Sense)
         TRISDbits.TRISD1 = 0;                           //green led;
@@ -37,6 +49,10 @@ void EBB_Init()  //Initialize all hardware peripherals and software variables
         //Variables initialization
         ebb_current_pos = EEPROM_Read(ADDR_LAST_MAPPED_POSITION);
         ebb_target_pos = ebb_current_pos;
+        motor_current_position = EEPROM_Read(ADDR_LAST_NUMBER_QUARTER_TURNS);
+        motor_target_position = motor_current_position;
+        ebb_settings = 0;
+        brake_pressure_front = 0;
 
         CAN_Init();
 
@@ -46,7 +62,7 @@ void EBB_Init()  //Initialize all hardware peripherals and software variables
 
         //TImers initialization
         setTimer(TIMER1_DEVICE,0.001);                                        //Interrupt every 1mS
-        setTimer(TIMER2_DEVICE,0.1);                    //Interrupt every 100mS
+        setTimer(TIMER2_DEVICE,0.001 * CONTROL_ROUTINE_REFRESH);              //Interrupt every CONTROL_ROUTINE_REFRESH mS
         setTimer(TIMER4_DEVICE,0.003);                                        //Interrupt every 200uS
 
         //Signal correct initialization

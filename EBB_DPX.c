@@ -1,6 +1,6 @@
 
-#include "libs/macro.c"
 #include "libs/d_can.h"
+#include "libs/macro.c"
 #include "libs/dsPIC.c"
 #include "libs/eeprom.c"
 
@@ -36,23 +36,29 @@ sbit DIRECTION_REGISTER at UPDN_bit;  //register for direction
 #define POSITION_14 28
 #define POSITION_15 30
 #define POSITION_16 32
+#define CALIBRATION_POSITION = 100
 //Constants
 #define QUARTER_TURN 5024
 #define TURN 20096
 
+#define ADDR_FIRST_BOOT 0x7FFDD0
 #define ADDR_LAST_POSCNT 0x7FFDA0 //Last POSCNT record
 #define ADDR_LAST_NUMBER_QUARTER_TURNS 0x7FFDB0 //Last record of quarter turns (from completely screw-on balance bar)
 #define ADDR_LAST_MAPPED_POSITION 0x7FFDC0 //Last record of mapped position
 
-#define CONTROL_ROUTINE_REFRESH 10 //Refresh in ms
-#define BRAKE_TIME_LENGHT 50
+#define CONTROL_ROUTINE_REFRESH 20 //Refresh in ms
+#define BRAKE_TIME_LENGHT 100
 #define PWM_SATURATION 4000
+
+#define BRAKE_PRESSURE_TRIGGER 1000
 
 
 
 //Global variables declaration
 unsigned int ebb_target_pos;
 unsigned int ebb_current_pos;
+unsigned int ebb_settings;
+unsigned int brake_pressure_front;
 
 int buzzer_state = OFF;
 int sound = OFF;
@@ -64,7 +70,7 @@ char is_requested_movement = 0;
 unsigned int calibration_on_off = OFF;
 unsigned int error_flag = OFF;
 
-int timer1_counter = 0;
+int timer2_counter = 0;
 
 
 //External program blocks
@@ -78,17 +84,17 @@ int timer1_counter = 0;
 //Timers routines
 
 onTimer1Interrupt {
-    timer1_counter++;
-    //Check for overcurrent
-    if (timer1_counter >= CONTROL_ROUTINE_REFRESH)
+    if(ebb_current_state != OFF && brake_pressure_front >= BRAKE_PRESSURE_TRIGGER)
     {
-        EBB_control();
-        timer1_counter = 0;
+        ebb_current_state = EBB_DRIVER_BRAKING;
     }
+    //Check for overcurrent
+    timer1_counter = 0;
 }
 
 onTimer2Interrupt {
-    CAN_routine();  //Call the can update routine
+    EBB_control();
+    //CAN_routine();  //Call the can update routine
     clearTimer2();
 }
 
@@ -106,4 +112,29 @@ void main() {
     {
     }
 
+}
+
+onCanInterrupt {
+    unsigned long int CAN_id;
+    char CAN_datain[8];
+    unsigned int CAN_dataLen, CAN_flags;
+    Can_read(&CAN_id, CAN_datain, &CAN_dataLen, &CAN_flags);
+    Can_clearInterrupt();
+    switch(CAN_id){
+        case SW_BRAKE_BIAS_EBB_ID: 
+            ebb_target_pos = (unsigned int) ((CAN_datain[0] << 8) | (CAN_datain[1] & 0xFF));
+            ebb_settings = (unsigned int) ((CAN_datain[2] << 8) | (CAN_datain[3] & 0xFF));
+            if ((ebb_target_pos != ebb_current_pos) && ebb_target_pos >= 0 && ebb_target_pos <= 16)
+            {
+                is_requested_movement = ON;
+            }else if (ebb_target_pos = CALIBRATION_POSITION)
+            {
+                is_requested_calibration = ON;
+            }
+        break;
+        case DAU_FR_ID:       
+            brake_pressure_front = (unsigned int) ((CAN_datain[4] << 8) | (CAN_datain[5] & 0xFF));
+        break;
+
+     }
 }

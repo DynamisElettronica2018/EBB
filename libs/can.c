@@ -33,12 +33,12 @@ void Can_init() {
      CAN1Initialize(2,4,3,4,2,Can_Init_flags);          // SJW,BRP,PHSEG1,PHSEG2,PROPSEG
      CAN1SetOperationMode(_CAN_MODE_CONFIG,0xFF);
 
-     CAN1SetMask(_CAN_MASK_B1, 0b01010111111, _CAN_CONFIG_MATCH_MSG_TYPE & _CAN_CONFIG_STD_MSG);
-     CAN1SetFilter(_CAN_FILTER_B1_F1, EFI_OIL_BATT_ID, _CAN_CONFIG_STD_MSG);        //batteria
-     CAN1SetFilter(_CAN_FILTER_B1_F2, SW_EBB_ID, _CAN_CONFIG_STD_MSG);              //ebb target
+     CAN1SetMask(_CAN_MASK_B1, EBB_MASK_SW_DAUFR, _CAN_CONFIG_MATCH_MSG_TYPE & _CAN_CONFIG_STD_MSG);
+     CAN1SetFilter(_CAN_FILTER_B1_F1, EBB_FILTER_SW, _CAN_CONFIG_STD_MSG);        //steering wheel commands
+     CAN1SetFilter(_CAN_FILTER_B1_F2, EBB_FILTER_DAUFR, _CAN_CONFIG_STD_MSG);              //brake pressure
 
-     CAN1SetMask(_CAN_MASK_B2, -1, _CAN_CONFIG_MATCH_MSG_TYPE & _CAN_CONFIG_STD_MSG);
-     CAN1SetFilter(_CAN_FILTER_B2_F1, SW_RIO_GEAR_BRK_STEER_ID, _CAN_CONFIG_STD_MSG);     //brake
+     CAN1SetMask(_CAN_MASK_B2, ALL_MASK_AUX, _CAN_CONFIG_MATCH_MSG_TYPE & _CAN_CONFIG_STD_MSG);
+     CAN1SetFilter(_CAN_FILTER_B2_F1, ALL_FILTER_AUX, _CAN_CONFIG_STD_MSG);     //auxiliary
 
      CAN1SetOperationMode(_CAN_MODE_NORMAL,0xFF);
 
