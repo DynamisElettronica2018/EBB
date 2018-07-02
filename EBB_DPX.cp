@@ -877,18 +877,22 @@ void EBB_Init()
  timer1_counter ++;
  if (timer1_counter == 100){
  ebb_current_state = EBB_OFF;
+ is_requested_movement =  1 ;
  ebb_target_pos = 7;
  }
  if (timer1_counter == 250){
  ebb_current_state = EBB_OFF;
+ is_requested_movement =  1 ;
  ebb_target_pos = 6;
  }
  if (timer1_counter == 400){
  ebb_current_state = EBB_OFF;
+ is_requested_movement =  1 ;
  ebb_target_pos = 5;
  }
  if (timer1_counter == 550){
  ebb_current_state = EBB_OFF;
+ is_requested_movement =  1 ;
  ebb_target_pos = 8;
  timer1_counter = 0;
  }
