@@ -2425,25 +2425,29 @@ L_EBB_Init131:
 	MOV.B	W0, [W1]
 ;initialization.c,59 :: 		CAN_Init();                                     //initialize CAN module
 	CALL	_Can_init
-;initialization.c,61 :: 		CAN_routine();                                  //Send first CAN Packet
+;initialization.c,61 :: 		CAN_routine();                                   //Send first CAN Packet
 	CALL	_CAN_routine
-;initialization.c,63 :: 		ebb_current_state = EBB_OFF;
+;initialization.c,63 :: 		UART1_Init(9600);
+	MOV	#9600, W10
+	MOV	#0, W11
+	CALL	_UART1_Init
+;initialization.c,65 :: 		ebb_current_state = EBB_OFF;
 	MOV	#lo_addr(_ebb_current_state), W1
 	CLR	W0
 	MOV.B	W0, [W1]
-;initialization.c,66 :: 		setTimer(TIMER4_DEVICE,0.003);                                        //Interrupt every 200uS
+;initialization.c,68 :: 		setTimer(TIMER4_DEVICE,0.003);                                        //Interrupt every 200uS
 	MOV	#39846, W11
 	MOV	#15172, W12
 	MOV.B	#3, W10
 	CALL	_setTimer
-;initialization.c,69 :: 		buzzer_state = ON;
+;initialization.c,71 :: 		buzzer_state = ON;
 	MOV	#1, W0
 	MOV	W0, _buzzer_state
-;initialization.c,70 :: 		LED_B = ON;
+;initialization.c,72 :: 		LED_B = ON;
 	BSET	LATD1_bit, BitPos(LATD1_bit+0)
-;initialization.c,71 :: 		LED_G = ON;
+;initialization.c,73 :: 		LED_G = ON;
 	BSET	LATD3_bit, BitPos(LATD3_bit+0)
-;initialization.c,72 :: 		delay_ms(1000);
+;initialization.c,74 :: 		delay_ms(1000);
 	MOV	#102, W8
 	MOV	#47563, W7
 L_EBB_Init140:
@@ -2452,17 +2456,13 @@ L_EBB_Init140:
 	DEC	W8
 	BRA NZ	L_EBB_Init140
 	NOP
-;initialization.c,73 :: 		buzzer_state = OFF;
+;initialization.c,75 :: 		buzzer_state = OFF;
 	CLR	W0
 	MOV	W0, _buzzer_state
-;initialization.c,74 :: 		LED_B = OFF;
+;initialization.c,76 :: 		LED_B = OFF;
 	BCLR	LATD1_bit, BitPos(LATD1_bit+0)
-;initialization.c,75 :: 		LED_G = OFF;
+;initialization.c,77 :: 		LED_G = OFF;
 	BCLR	LATD3_bit, BitPos(LATD3_bit+0)
-;initialization.c,77 :: 		UART1_Init(9600);
-	MOV	#9600, W10
-	MOV	#0, W11
-	CALL	_UART1_Init
 ;initialization.c,79 :: 		setTimer(TIMER1_DEVICE,0.01);                                         //Interrupt every 1mS
 	MOV	#55050, W11
 	MOV	#15395, W12

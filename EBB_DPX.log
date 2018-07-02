@@ -2,8 +2,8 @@
 diagnostics: 0	121	Loading...	 
 diagnostics: 0	122	Compilation Started	can.h
 diagnostics: 199	123	Compiled Successfully	EBB_DPX.c
-diagnostics: 0	127	All files Compiled in 188 ms	 
+diagnostics: 0	127	All files Compiled in 203 ms	 
 diagnostics: 0	125	Project Linked Successfully	EBB_DPX.mcpds
-diagnostics: 0	128	Linked in 343 ms	 
-diagnostics: 0	129	Project 'EBB_DPX.mcpds' completed: 750 ms	 
-diagnostics: 0	103	Finished successfully: 02 lug 2018, 17:16:38	EBB_DPX.mcpds
+diagnostics: 0	128	Linked in 375 ms	 
+diagnostics: 0	129	Project 'EBB_DPX.mcpds' completed: 766 ms	 
+diagnostics: 0	103	Finished successfully: 02 lug 2018, 17:18:07	EBB_DPX.mcpds

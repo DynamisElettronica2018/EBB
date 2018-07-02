@@ -854,6 +854,8 @@ void EBB_Init()
 
  CAN_routine();
 
+ UART1_Init(9600);
+
  ebb_current_state = EBB_OFF;
 
 
@@ -867,8 +869,6 @@ void EBB_Init()
  buzzer_state =  0 ;
  LED_B =  0 ;
  LED_G =  0 ;
-
- UART1_Init(9600);
 
  setTimer( 1 ,0.01);
  setTimer( 2 ,0.001 *  20 );
