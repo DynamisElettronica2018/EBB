@@ -1,10 +1,17 @@
 
 #include "motor.h"
 
+//Debug Functions
+
+char dstr[100] = "";
+
+void Debug_UART_Write(char* text){
+     UART1_Write_Text(text);
+}
+
 //functions
 
 void counter_quarter_turn_match() iv IVT_ADDR_QEIINTERRUPT ics ICS_AUTO {       //interrupt on match of MAXCNT or on match on 0
-    LED_B = !LED_B;
     switch(DIRECTION_REGISTER){
         case 0:  //negative direction
            motor_current_position--;
@@ -18,6 +25,8 @@ void counter_quarter_turn_match() iv IVT_ADDR_QEIINTERRUPT ics ICS_AUTO {       
     if (motor_current_position == motor_target_position)                        //Check for target reached
     {
         brake_counter = 0;                                                      //Reset the counter for braking period lenght
+        REVERSE = OFF;                          //Shorts the motor terminals
+        FORWARD = OFF;
         ebb_current_state = EBB_BRAKING;                                        //Set the current state
     }       
     IFS2bits.QEIIF = 0;                                                         //Reset Interrupt Flag
@@ -101,6 +110,7 @@ void EBB_control()
               REVERSE = OFF;
             }else if (motor_target_position < motor_current_position)
             {
+                motor_target_position--;
                 REVERSE = ON;                                       //Screw
                 FORWARD = OFF;
             }
@@ -120,13 +130,9 @@ void EBB_control()
         case EBB_BRAKING:                              //EBB has reached the position and is now bhraking the motor shorting it
             LED_G = OFF;
             LED_B = ON;                             //Turn on Blue led to signal motor Braking mode
-            ENABLE = ON;
-            REVERSE = OFF;                          //Shorts the motor terminals
-            FORWARD = OFF;
-            brake_counter++;
+            //ENABLE = ON;
             if(brake_counter >= BRAKE_TIME_LENGHT)          //check if the Braking period has passed
             {
-                brake_counter = 0;                          //reset the brake counter
                 ebb_current_state = EBB_POSITION_REACHED;
             }
             break;
@@ -138,6 +144,8 @@ void EBB_control()
             ebb_current_pos = ebb_target_pos;                                       //Update ebb cuurent position with the reached one (for robustness)
             motor_current_position = motor_target_position;                         //Update motor position with the reached one (for robustness)
             EEPROM_WRITE(ADDR_LAST_POSCNT, POSCNT);
+            sprintf(dstr, "EEPROM: %u\r\n", POSCNT);
+            Debug_UART_Write(dstr);
             while(WR_bit);                                                             //Update EEPROM data 
             EEPROM_WRITE(ADDR_LAST_NUMBER_QUARTER_TURNS, motor_current_position);
             while(WR_bit);

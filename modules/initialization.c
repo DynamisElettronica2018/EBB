@@ -5,15 +5,15 @@
 void EBB_Init()  //Initialize all hardware peripherals and software variables
 {
         //First boot
-        if(EEPROM_Read(ADDR_FIRST_BOOT) == 0)                           //First boot initialization  (Central position)
+        if(EEPROM_Read(ADDR_FIRST_BOOT) == 0xFFFF)                           //First boot initialization  (Central position)
         {
-                EEPROM_WRITE(ADDR_LAST_POSCNT, QUARTER_TURN/2);
+                EEPROM_WRITE(ADDR_LAST_POSCNT, 0);
                 while(WR_bit);
                 EEPROM_WRITE(ADDR_LAST_MAPPED_POSITION, 8);
                 while(WR_bit);
                 EEPROM_WRITE(ADDR_LAST_NUMBER_QUARTER_TURNS, 16);
                 while(WR_bit);
-                EEPROM_WRITE(ADDR_FIRST_BOOT, 1);
+                EEPROM_WRITE(ADDR_FIRST_BOOT, 0);
                 while(WR_bit);
         }
         //Ports initialization
@@ -30,7 +30,8 @@ void EBB_Init()  //Initialize all hardware peripherals and software variables
         LED_B = 0;
         LED_G = 0;
         // Quadrature Encoder initialization
-        QEICON = 0b0000010100000011;                    //Set Quadrature Encoder
+        QEICON = 0b0000010110000010;                    //Set Quadrature Encoder
+        
         POSCNT = EEPROM_Read(ADDR_LAST_POSCNT);              //Position Counter starter value (offset half register)
         MAXCNT = QUARTER_TURN;                          //Set maxcounter to a quarter turn for interrupts
         IPC10bits.QEIIP = 4;                            //Set interrupt priority on 4 for MAXCNT match

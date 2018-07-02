@@ -41,16 +41,17 @@ sbit DIRECTION_REGISTER at UPDN_bit;  //register for direction
 #define MAX_POSITION 16
 #define CALIBRATION_POSITION 100
 //Constants
-#define QUARTER_TURN 5024
-#define TURN 20096
+#define QUARTER_TURN 10048
+#define TURN 40192
 
 #define ADDR_FIRST_BOOT 0x7FFDD0
 #define ADDR_LAST_POSCNT 0x7FFDA0 //Last POSCNT record
 #define ADDR_LAST_NUMBER_QUARTER_TURNS 0x7FFDB0 //Last record of quarter turns (from completely screw-on balance bar)
 #define ADDR_LAST_MAPPED_POSITION 0x7FFDC0 //Last record of mapped position
 
-#define CONTROL_ROUTINE_REFRESH 20 //Refresh in ms
-#define BRAKE_TIME_LENGHT 100
+#define CONTROL_ROUTINE_REFRESH 10 //Refresh in ms
+#define BRAKE_TIME_LENGHT 30
+
 #define PWM_SATURATION 4000
 
 #define BRAKE_PRESSURE_TRIGGER 1000  //Trigger value when driver is braking
@@ -83,11 +84,6 @@ int timer2_counter = 0, timer1_counter = 0;
 
 //Debug Functions
 
-char dstr[100] = "";
-
-void Debug_UART_Write(char* text){
-     UART1_Write_Text(text);
-}
 
 //Timers routines
 
@@ -95,27 +91,38 @@ void Debug_UART_Write(char* text){
 
 onTimer1Interrupt {
     timer1_counter ++;
-    if (timer1_counter == 1000){
+    if (timer1_counter == 300){
+       ebb_current_state = EBB_OFF;
+       is_requested_movement = ON;
+       ebb_target_pos = 8;
+    }
+    if (timer1_counter == 600){
        ebb_current_state = EBB_OFF;
        is_requested_movement = ON;
        ebb_target_pos = 7;
     }
-    if (timer1_counter == 2500){
+    if (timer1_counter == 900){
        ebb_current_state = EBB_OFF;
        is_requested_movement = ON;
        ebb_target_pos = 6;
     }
-    if (timer1_counter == 4000){
+    if (timer1_counter == 1200){
        ebb_current_state = EBB_OFF;
        is_requested_movement = ON;
        ebb_target_pos = 5;
     }
-    if (timer1_counter == 5500){
+     if (timer1_counter == 1500){
        ebb_current_state = EBB_OFF;
        is_requested_movement = ON;
-       ebb_target_pos = 8;
+       ebb_target_pos = 6;
+    }
+     if (timer1_counter == 1800){
+       ebb_current_state = EBB_OFF;
+       is_requested_movement = ON;
+       ebb_target_pos = 7;
        timer1_counter = 0;
     }
+
     
 
     if(ebb_current_state != OFF && brake_pressure_front >= BRAKE_PRESSURE_TRIGGER)
@@ -129,8 +136,9 @@ onTimer1Interrupt {
 
 onTimer2Interrupt {
     timer2_counter++;
+    brake_counter++;
     EBB_control();
-    if (timer2_counter >= 5) 
+    if (timer2_counter >= 10)
     {
         CAN_routine();  //Call the can update routine
         timer2_counter = 0;
