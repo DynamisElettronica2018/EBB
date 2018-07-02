@@ -24,15 +24,14 @@ Count=0
 Count=0
 ActiveImageIndex=-1
 [OPENED_FILES]
-Count=8
+Count=7
 File0=EBB_DPX.c
-File1=modules\EBB_can_functions.h
-File2=modules\EBB_can_functions.c
-File3=modules\initialization.c
-File4=modules\motor.c
-File5=modules\motor.h
-File6=libs\macro.c
-File7=libs\d_can.h
+File1=modules\EBB_can_functions.c
+File2=modules\initialization.c
+File3=modules\motor.c
+File4=libs\macro.c
+File5=libs\d_can.h
+File6=libs\can.c
 [EEPROM]
 Count=0
 [ACTIVE_COMMENTS_FILES]
@@ -40,13 +39,18 @@ Count=0
 [OTHER_FILES]
 Count=0
 [SEARCH_PATH]
-Count=4
+Count=7
 Path0=C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for dsPIC\defs\
 Path1=C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for dsPIC\uses\
-Path2=C:\Users\nicol\Documents\git_codes\EBB\
-Path3=D:\Google Drive\REPARTO ELETTRONICA 2018\EBB\FIRMWARE DPX\
+Path2=C:\Users\sofia\Desktop\GIT REPO\EBB\
+Path3=C:\Users\nicol\Documents\git_codes\EBB\
+Path4=D:\Google Drive\REPARTO ELETTRONICA 2018\EBB\FIRMWARE DPX\
+Path5=C:\Users\sofia\Desktop\GIT REPO\EBB\modules\
+Path6=C:\Users\sofia\Desktop\GIT REPO\EBB\libs\
 [HEADER_PATH]
-Count=0
+Count=2
+Path0=C:\Users\sofia\Desktop\GIT REPO\EBB\modules\
+Path1=C:\Users\sofia\Desktop\GIT REPO\EBB\libs\
 [HEADERS]
 Count=0
 [PLDS]

@@ -1,8 +1,8 @@
-#line 1 "C:/Users/nicol/Documents/git_codes/EBB/EBB_DPX.c"
-#line 1 "c:/users/nicol/documents/git_codes/ebb/libs/d_can.h"
-#line 1 "c:/users/nicol/documents/git_codes/ebb/libs/can.c"
-#line 1 "c:/users/nicol/documents/git_codes/ebb/libs/can.h"
-#line 48 "c:/users/nicol/documents/git_codes/ebb/libs/can.h"
+#line 1 "C:/Users/sofia/Desktop/GIT REPO/EBB/EBB_DPX.c"
+#line 1 "c:/users/sofia/desktop/git repo/ebb/libs/d_can.h"
+#line 1 "c:/users/sofia/desktop/git repo/ebb/libs/can.c"
+#line 1 "c:/users/sofia/desktop/git repo/ebb/libs/can.h"
+#line 48 "c:/users/sofia/desktop/git repo/ebb/libs/can.h"
 void Can_init(void);
 
 void Can_read(unsigned long int *id, char dataBuffer[], unsigned int *dataLength, unsigned int *inFlags);
@@ -34,7 +34,7 @@ void Can_clearB1Flag(void);
 void Can_clearInterrupt(void);
 
 void Can_initInterrupt(void);
-#line 14 "c:/users/nicol/documents/git_codes/ebb/libs/can.c"
+#line 14 "c:/users/sofia/desktop/git repo/ebb/libs/can.c"
 unsigned long int can_readId = 0;
  char can_dataInBuffer[ 8 ];
 unsigned char can_dataOutBuffer[ 8 ];
@@ -156,11 +156,11 @@ void Can_initInterrupt(void) {
   { int save_sr; { save_sr = SRbits.IPL; { int DISI_save; DISI_save = DISICNT; asm DISI #0X3FF ;SRbits.IPL = 7; asm {nop}; asm {nop}; DISICNT = DISI_save; } (void) 0; ; } (void) 0; ;C1INTEBITS.RXB1IE = 1; { int DISI_save; DISI_save = DISICNT; asm DISI #0X3FF ;SRbits.IPL = save_sr; asm {nop}; asm {nop}; DISICNT = DISI_save; } (void) 0; ; } (void) 0; ;
 
  }
-#line 1 "c:/users/nicol/documents/git_codes/ebb/libs/macro.c"
-#line 1 "c:/users/nicol/documents/git_codes/ebb/libs/dspic.c"
-#line 1 "c:/users/nicol/documents/git_codes/ebb/libs/dspic.h"
-#line 1 "c:/users/nicol/documents/git_codes/ebb/libs/basic.h"
-#line 16 "c:/users/nicol/documents/git_codes/ebb/libs/basic.h"
+#line 1 "c:/users/sofia/desktop/git repo/ebb/libs/macro.c"
+#line 1 "c:/users/sofia/desktop/git repo/ebb/libs/dspic.c"
+#line 1 "c:/users/sofia/desktop/git repo/ebb/libs/dspic.h"
+#line 1 "c:/users/sofia/desktop/git repo/ebb/libs/basic.h"
+#line 16 "c:/users/sofia/desktop/git repo/ebb/libs/basic.h"
 void unsignedIntToString(unsigned int number, char *text);
 
 void signedIntToString(int number, char *text);
@@ -168,7 +168,7 @@ void signedIntToString(int number, char *text);
 unsigned char getNumberDigitCount(unsigned char number);
 
 void emptyString(char* myString);
-#line 171 "c:/users/nicol/documents/git_codes/ebb/libs/dspic.h"
+#line 171 "c:/users/sofia/desktop/git repo/ebb/libs/dspic.h"
 void setAllPinAsDigital(void);
 
 void setInterruptPriority(unsigned char device, unsigned char priority);
@@ -226,7 +226,7 @@ void setAnalogVoltageReference(unsigned char mode);
 void setAnalogDataOutputFormat(unsigned char adof);
 
 int getMinimumAnalogClockConversion(void);
-#line 7 "c:/users/nicol/documents/git_codes/ebb/libs/dspic.c"
+#line 7 "c:/users/sofia/desktop/git repo/ebb/libs/dspic.c"
 const double INSTRUCTION_PERIOD = 4.0 /  32 ;
 const unsigned int PRESCALER_VALUES[] = {1, 8, 64, 256};
 
@@ -246,7 +246,7 @@ void setInterruptPriority(unsigned char device, unsigned char priority) {
  case  6 :
   IPC5bits.INT2IP  = priority;
  break;
-#line 29 "c:/users/nicol/documents/git_codes/ebb/libs/dspic.c"
+#line 29 "c:/users/sofia/desktop/git repo/ebb/libs/dspic.c"
  case  1 :
   IPC0bits.T1IP  = priority;
  break;
@@ -279,7 +279,7 @@ void setExternalInterrupt(unsigned char device, char edge) {
   IFS1.INT2IF  =  0 ;
   IEC1.INT2IE  =  1 ;
  break;
-#line 65 "c:/users/nicol/documents/git_codes/ebb/libs/dspic.c"
+#line 65 "c:/users/sofia/desktop/git repo/ebb/libs/dspic.c"
  default:
  break;
  }
@@ -308,7 +308,7 @@ void switchExternalInterruptEdge(unsigned char device) {
   INTCON2.INT2EP  =  1 ;
  }
  break;
-#line 99 "c:/users/nicol/documents/git_codes/ebb/libs/dspic.c"
+#line 99 "c:/users/sofia/desktop/git repo/ebb/libs/dspic.c"
  default:
  break;
  }
@@ -322,7 +322,7 @@ char getExternalInterruptEdge(unsigned char device) {
  return  INTCON2.INT1EP ;
  case  6 :
  return  INTCON2.INT2EP ;
-#line 114 "c:/users/nicol/documents/git_codes/ebb/libs/dspic.c"
+#line 114 "c:/users/sofia/desktop/git repo/ebb/libs/dspic.c"
  default:
  return 0;
  }
@@ -339,7 +339,7 @@ void clearExternalInterrupt(unsigned char device) {
  case  6 :
   IFS1.INT2IF  =  0 ;
  break;
-#line 132 "c:/users/nicol/documents/git_codes/ebb/libs/dspic.c"
+#line 132 "c:/users/sofia/desktop/git repo/ebb/libs/dspic.c"
  default:
  break;
  }
@@ -521,8 +521,8 @@ void setAnalogDataOutputFormat(unsigned char adof) {
 int getMinimumAnalogClockConversion(void) {
  return (int) (( 154  *  32 ) / 500.0);
 }
-#line 1 "c:/users/nicol/documents/git_codes/ebb/libs/eeprom.c"
-#line 1 "c:/users/nicol/documents/git_codes/ebb/libs/eeprom.h"
+#line 1 "c:/users/sofia/desktop/git repo/ebb/libs/eeprom.c"
+#line 1 "c:/users/sofia/desktop/git repo/ebb/libs/eeprom.h"
 
 
 
@@ -539,7 +539,7 @@ unsigned int EEPROM_readInt(unsigned int address);
 void EEPROM_writeArray(unsigned int address, unsigned int *values);
 
 void EEPROM_readArray(unsigned int address, unsigned int *values);
-#line 7 "c:/users/nicol/documents/git_codes/ebb/libs/eeprom.c"
+#line 7 "c:/users/sofia/desktop/git repo/ebb/libs/eeprom.c"
 void EEPROM_writeInt(unsigned int address, unsigned int value) {
  unsigned int currentValue;
 
@@ -566,7 +566,7 @@ void EEPROM_readArray(unsigned int address, unsigned int *values) {
  values[i] = EEPROM_read(address + i);
  }
 }
-#line 9 "C:/Users/nicol/Documents/git_codes/EBB/EBB_DPX.c"
+#line 9 "C:/Users/sofia/Desktop/GIT REPO/EBB/EBB_DPX.c"
 sbit REVERSE at LATE3_bit;
 sbit FORWARD at LATE4_bit;
 sbit ENABLE at LATE2_bit;
@@ -575,7 +575,7 @@ sbit LED_G at LATD1_bit;
 sbit LED_B at LATD3_bit;
 sbit BUZZER at LATD2_bit;
 sbit DIRECTION_REGISTER at UPDN_bit;
-#line 60 "C:/Users/nicol/Documents/git_codes/EBB/EBB_DPX.c"
+#line 62 "C:/Users/sofia/Desktop/GIT REPO/EBB/EBB_DPX.c"
 unsigned int ebb_target_pos;
 unsigned int ebb_current_pos;
 unsigned int ebb_settings;
@@ -591,13 +591,13 @@ char is_requested_movement = 0;
 unsigned int calibration_on_off =  0 ;
 unsigned int error_flag =  0 ;
 
-int timer2_counter = 0;
-#line 1 "c:/users/nicol/documents/git_codes/ebb/modules/ebb_can_functions.h"
+int timer2_counter = 0, timer1_counter = 0;
+#line 1 "c:/users/sofia/desktop/git repo/ebb/modules/ebb_can_functions.h"
 
 
 
 void CAN_routine();
-#line 1 "c:/users/nicol/documents/git_codes/ebb/modules/ebb_can_functions.c"
+#line 1 "c:/users/sofia/desktop/git repo/ebb/modules/ebb_can_functions.c"
 
 
 
@@ -609,8 +609,8 @@ void CAN_routine()
  Can_addIntToWritePacket(error_flag);
  Can_write( 0b11100001101 );
 }
-#line 1 "c:/users/nicol/documents/git_codes/ebb/modules/motor.c"
-#line 1 "c:/users/nicol/documents/git_codes/ebb/modules/motor.h"
+#line 1 "c:/users/sofia/desktop/git repo/ebb/modules/motor.c"
+#line 1 "c:/users/sofia/desktop/git repo/ebb/modules/motor.h"
 
 typedef enum{
  EBB_OFF,
@@ -637,7 +637,7 @@ void normal_motor_control(void);
 void central_calibration_control(void);
 void zero_position_control(void);
 void motor_brake(void);
-#line 6 "c:/users/nicol/documents/git_codes/ebb/modules/motor.c"
+#line 6 "c:/users/sofia/desktop/git repo/ebb/modules/motor.c"
 void counter_quarter_turn_match() iv IVT_ADDR_QEIINTERRUPT ics ICS_AUTO {
  switch(DIRECTION_REGISTER){
  case 0:
@@ -654,13 +654,8 @@ void counter_quarter_turn_match() iv IVT_ADDR_QEIINTERRUPT ics ICS_AUTO {
  brake_counter = 0;
  ebb_current_state = EBB_BRAKING;
  }
-
  IFS2bits.QEIIF = 0;
 }
-
-
-
-
 
 
 
@@ -794,13 +789,13 @@ void EBB_control()
  break;
  }
 }
-#line 1 "c:/users/nicol/documents/git_codes/ebb/modules/initialization.c"
-#line 1 "c:/users/nicol/documents/git_codes/ebb/modules/initialization.h"
+#line 1 "c:/users/sofia/desktop/git repo/ebb/modules/initialization.c"
+#line 1 "c:/users/sofia/desktop/git repo/ebb/modules/initialization.h"
 
 
 
 void EBB_Init();
-#line 5 "c:/users/nicol/documents/git_codes/ebb/modules/initialization.c"
+#line 5 "c:/users/sofia/desktop/git repo/ebb/modules/initialization.c"
 void EBB_Init()
 {
 
@@ -877,8 +872,28 @@ void EBB_Init()
 
 
 }
-#line 88 "C:/Users/nicol/Documents/git_codes/EBB/EBB_DPX.c"
+#line 91 "C:/Users/sofia/Desktop/GIT REPO/EBB/EBB_DPX.c"
  void timer1_interrupt() iv IVT_ADDR_T1INTERRUPT ics ICS_AUTO  {
+ timer1_counter ++;
+ if (timer1_counter == 100){
+ ebb_current_state = EBB_OFF;
+ ebb_target_pos = 7;
+ }
+ if (timer1_counter == 250){
+ ebb_current_state = EBB_OFF;
+ ebb_target_pos = 6;
+ }
+ if (timer1_counter == 400){
+ ebb_current_state = EBB_OFF;
+ ebb_target_pos = 5;
+ }
+ if (timer1_counter == 550){
+ ebb_current_state = EBB_OFF;
+ ebb_target_pos = 8;
+ timer1_counter = 0;
+ }
+
+
  if(ebb_current_state !=  0  && brake_pressure_front >=  1000 )
  {
  ENABLE =  0 ;
@@ -918,22 +933,38 @@ void main() {
  unsigned long int CAN_id;
  char CAN_datain[8];
  unsigned int CAN_dataLen, CAN_flags;
+ unsigned int firstInt, secondInt, thirdInt, fourthInt;
+
  Can_read(&CAN_id, CAN_datain, &CAN_dataLen, &CAN_flags);
+
+ if (CAN_dataLen >= 2) {
+ firstInt = (unsigned int) ((CAN_datain[0] << 8) | (CAN_datain[1] & 0xFF));
+ }
+ if (CAN_dataLen >= 4) {
+ secondInt = (unsigned int) ((CAN_datain[2] << 8) | (CAN_datain[3] & 0xFF));
+ }
+ if (CAN_dataLen >= 6) {
+ thirdInt = (unsigned int) ((CAN_datain[4] << 8) | (CAN_datain[5] & 0xFF));
+ }
+ if (CAN_dataLen >= 8) {
+ fourthInt = (unsigned int) ((CAN_datain[6] << 8) | (CAN_datain[7] & 0xFF));
+ }
  Can_clearInterrupt();
+
  switch(CAN_id){
  case  0b10000000000 :
- ebb_target_pos = (unsigned int) ((CAN_datain[0] << 8) | (CAN_datain[1] & 0xFF));
- ebb_settings = (unsigned int) ((CAN_datain[2] << 8) | (CAN_datain[3] & 0xFF));
- if ((ebb_target_pos != ebb_current_pos) && ebb_target_pos >= 0 && ebb_target_pos <= 16)
+ ebb_target_pos = ((unsigned int)firstInt);
+ ebb_settings = ((unsigned int)secondInt);
+ if ((ebb_target_pos != ebb_current_pos) && ebb_target_pos >=  0  && ebb_target_pos <=  16 )
  {
  is_requested_movement =  1 ;
- }else if (ebb_target_pos =  100 )
+ }else if (ebb_target_pos ==  100 )
  {
  is_requested_calibration =  1 ;
  }
  break;
  case  0b11001010000 :
- brake_pressure_front = (unsigned int) ((CAN_datain[4] << 8) | (CAN_datain[5] & 0xFF));
+ brake_pressure_front = ((unsigned int)thirdInt);
  break;
 
  }

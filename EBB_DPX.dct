@@ -6615,6 +6615,7 @@ time_datediff
 time_datetoepoch
 time_epochtodate
 time_jd1970
+timer1_counter
 timer1_interrupt
 timer2_counter
 timer2_interrupt
