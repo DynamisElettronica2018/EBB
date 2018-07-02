@@ -1690,6 +1690,7 @@ dcount_8
 dcount_8_bit
 dcount_9
 dcount_9_bit
+debug_uart_write
 dec2bcd
 dec2bcd16
 delay_100ms
@@ -1915,6 +1916,7 @@ dostartl_8
 dostartl_8_bit
 dostartl_9
 dostartl_9_bit
+dstr
 dta
 dta_0
 dta_0_bit

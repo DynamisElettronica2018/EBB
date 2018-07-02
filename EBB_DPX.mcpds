@@ -6,7 +6,7 @@ Value=0
 [BUILD_TYPE]
 Value=0
 [ACTIVE_TAB]
-Value=EBB_DPX.c
+Value=modules\initialization.c
 [USE_EEPROM]
 Value=0
 [USE_HEAP]
@@ -40,10 +40,10 @@ Count=0
 Count=0
 [SEARCH_PATH]
 Count=7
-Path0=C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for dsPIC\defs\
+Path0=C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for dsPIC\Defs\
 Path1=C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for dsPIC\uses\
-Path2=C:\Users\nicol\Documents\git_codes\EBB\
-Path3=C:\Users\sofia\Desktop\GIT REPO\EBB\
+Path2=C:\Users\sofia\Desktop\GIT REPO\EBB\
+Path3=C:\Users\nicol\Documents\git_codes\EBB\
 Path4=D:\Google Drive\REPARTO ELETTRONICA 2018\EBB\FIRMWARE DPX\
 Path5=C:\Users\sofia\Desktop\GIT REPO\EBB\modules\
 Path6=C:\Users\sofia\Desktop\GIT REPO\EBB\libs\

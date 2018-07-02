@@ -61,5 +61,28 @@ timer2_interrupt
 	EBB_control
 		EEPROM_Write
 	CAN_routine
-	UART1_Write
+	sprintf
+		_doprntf
+			isdigit
+			scale
+				_Mul_FP
+			fround
+				_Mul_FP
+			_Divide_32x32
+			_Modulus_32x32
+			_Compare_Le_Fp
+				_Compare_Fp
+			_Mul_FP
+			_Compare_Ge_Fp
+				_Compare_Fp
+			_Div_FP
+			_Float2Longword
+			_Long2Float
+			_Sub_FP
+				_AddSub_FP
+			_AddSub_FP
+			_Float2Longint
+	Debug_UART_Write
+		UART1_Write_Text
+			UART1_Write
 timer1_interrupt

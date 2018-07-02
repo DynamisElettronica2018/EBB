@@ -81,7 +81,13 @@ int timer2_counter = 0, timer1_counter = 0;
 #include "modules/motor.c"
 #include "modules/initialization.c"
 
+//Debug Functions
 
+char dstr[100] = "";
+
+void Debug_UART_Write(char* text){
+     UART1_Write_Text(text);
+}
 
 //Timers routines
 
@@ -129,7 +135,9 @@ onTimer2Interrupt {
         CAN_routine();  //Call the can update routine
         timer2_counter = 0;
     }
-    UART1_Write((char) POSCNT);
+    
+    sprintf(dstr, "POSCNT: %u\r\n", POSCNT);
+    Debug_UART_Write(dstr);
     clearTimer2();
 }
 

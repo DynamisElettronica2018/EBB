@@ -58,7 +58,9 @@ void EBB_Init()  //Initialize all hardware peripherals and software variables
 
         CAN_Init();                                     //initialize CAN module
 
-        CAN_routine();                                  //Send first CAN Packet
+        CAN_routine();                                   //Send first CAN Packet
+        
+        UART1_Init(9600);
 
         ebb_current_state = EBB_OFF;
 
@@ -73,8 +75,6 @@ void EBB_Init()  //Initialize all hardware peripherals and software variables
         buzzer_state = OFF;
         LED_B = OFF;
         LED_G = OFF;
-
-        UART1_Init(9600);
 
         setTimer(TIMER1_DEVICE,0.01);                                         //Interrupt every 1mS
         setTimer(TIMER2_DEVICE,0.001 * CONTROL_ROUTINE_REFRESH);              //Interrupt every CONTROL_ROUTINE_REFRESH mS
