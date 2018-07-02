@@ -5933,7 +5933,6 @@ soft_uart_break
 soft_uart_init
 soft_uart_read
 soft_uart_write
-sound
 sound_init
 sound_play
 spi_ethernet_24j600_arpcache

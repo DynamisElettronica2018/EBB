@@ -23,14 +23,14 @@ void EBB_Init()  //Initialize all hardware peripherals and software variables
         TRISDbits.TRISD2 = 0;                           //buzzer;
         TRISEbits.TRISE0 = 0;                           //PWM output
         TRISEbits.TRISE4 = 0;                           //Forward output
-        TRISEbits.TRISE2 = 0;                           //Reverse output
-        TRISEbits.TRISE1 = 0;                           //Enable output
+        TRISEbits.TRISE3 = 0;                           //Reverse output
+        TRISEbits.TRISE2 = 0;                           //Enable output
         TRISBbits.TRISB0 = 1;                           //set ADC pin as input (Current sense: Vcsns = Iout x 3.1)
         BUZZER = 0;                                                                                //Outputs at zero
         LED_B = 0;
         LED_G = 0;
         // Quadrature Encoder initialization
-        QEICON = 0b0000010100000010;                    //Set Quadrature Encoder
+        QEICON = 0b0000010100000011;                    //Set Quadrature Encoder
         POSCNT = EEPROM_Read(ADDR_LAST_POSCNT);              //Position Counter starter value (offset half register)
         MAXCNT = QUARTER_TURN;                          //Set maxcounter to a quarter turn for interrupts
         IPC10bits.QEIIP = 4;                            //Set interrupt priority on 4 for MAXCNT match
@@ -63,18 +63,19 @@ void EBB_Init()  //Initialize all hardware peripherals and software variables
         ebb_current_state = EBB_OFF;
 
         //TImers initialization
-        setTimer(TIMER1_DEVICE,0.01);                                         //Interrupt every 1mS
-        setTimer(TIMER2_DEVICE,0.001 * CONTROL_ROUTINE_REFRESH);              //Interrupt every CONTROL_ROUTINE_REFRESH mS
         setTimer(TIMER4_DEVICE,0.003);                                        //Interrupt every 200uS
 
         //Signal correct initialization
         buzzer_state = ON;
         LED_B = ON;
         LED_G = ON;
-        delay_ms(800);
+        delay_ms(1000);
         buzzer_state = OFF;
         LED_B = OFF;
         LED_G = OFF;
 
+        UART1_Init(9600);
 
+        setTimer(TIMER1_DEVICE,0.01);                                         //Interrupt every 1mS
+        setTimer(TIMER2_DEVICE,0.001 * CONTROL_ROUTINE_REFRESH);              //Interrupt every CONTROL_ROUTINE_REFRESH mS
 }

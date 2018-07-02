@@ -10,8 +10,8 @@ sbit REVERSE at LATE3_bit;  //Reverse input of the h-bridge
 sbit FORWARD at LATE4_bit;  //Forward input of the h-bridge
 sbit ENABLE at LATE2_bit;  //Enable pin of h-bridge ( h-bridge on if HIGH )
 sbit DISABLE at LATE0_bit;  //Disable pin ( capable of PWM )
-sbit LED_G at LATD1_bit;
-sbit LED_B at LATD3_bit;  //LEDs
+sbit LED_B at LATD1_bit;
+sbit LED_G at LATD3_bit;  //LEDs
 sbit BUZZER at LATD2_bit;  //buzzer pin
 sbit DIRECTION_REGISTER at UPDN_bit;  //register for direction
 
@@ -65,7 +65,6 @@ unsigned int ebb_settings;
 unsigned int brake_pressure_front;
 
 int buzzer_state = OFF;
-int sound = OFF;
 int motor_target_position;  //quarter turns
 int motor_current_position;  //quarter turns
 
@@ -90,22 +89,22 @@ int timer2_counter = 0, timer1_counter = 0;
 
 onTimer1Interrupt {
     timer1_counter ++;
-    if (timer1_counter == 100){
+    if (timer1_counter == 1000){
        ebb_current_state = EBB_OFF;
        is_requested_movement = ON;
        ebb_target_pos = 7;
     }
-    if (timer1_counter == 250){
+    if (timer1_counter == 2500){
        ebb_current_state = EBB_OFF;
        is_requested_movement = ON;
        ebb_target_pos = 6;
     }
-    if (timer1_counter == 400){
+    if (timer1_counter == 4000){
        ebb_current_state = EBB_OFF;
        is_requested_movement = ON;
        ebb_target_pos = 5;
     }
-    if (timer1_counter == 550){
+    if (timer1_counter == 5500){
        ebb_current_state = EBB_OFF;
        is_requested_movement = ON;
        ebb_target_pos = 8;
@@ -119,6 +118,7 @@ onTimer1Interrupt {
         ebb_current_state = EBB_DRIVER_BRAKING;  //Enter corresponding mode
     }
     //Check for overcurrent
+    clearTimer1();
 }
 
 onTimer2Interrupt {
@@ -128,7 +128,8 @@ onTimer2Interrupt {
     {
         CAN_routine();  //Call the can update routine
         timer2_counter = 0;
-    }    
+    }
+    UART1_Write((char) POSCNT);
     clearTimer2();
 }
 

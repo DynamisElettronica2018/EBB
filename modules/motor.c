@@ -4,6 +4,7 @@
 //functions
 
 void counter_quarter_turn_match() iv IVT_ADDR_QEIINTERRUPT ics ICS_AUTO {       //interrupt on match of MAXCNT or on match on 0
+    LED_B = !LED_B;
     switch(DIRECTION_REGISTER){
         case 0:  //negative direction
            motor_current_position--;
@@ -145,10 +146,10 @@ void EBB_control()
             ebb_current_state = OFF;                                               //Going back to OFF state
             break;
         case EBB_DRIVER_BRAKING:                            //Driver is braking during a requested movement
-            sound = ON;                                     //Turn on buzzer for debugging 
+            buzzer_state = ON;                                     //Turn on buzzer for debugging
             if(brake_pressure_front < BRAKE_PRESSURE_TRIGGER)           //Checking brake pressures for the end of the braking action
             {
-                sound = OFF;                                    
+                buzzer_state = OFF;
                 ebb_current_state = EBB_START;              //Return to start mode to complete the movement
             }
             break;
