@@ -1,6 +1,11 @@
 main
 	EBB_Init
 		EEPROM_Read
+		EEPROM_Write
+			EEPROM_Erase
+				EraseGlobal
+					KeySequence
+			KeySequence
 		Can_init
 			CAN1Initialize
 				CAN1SetOperationMode
@@ -35,8 +40,18 @@ main
 				_Div_FP
 				_Float2Longint
 counter_quarter_turn_match
+CAN_Interrupt
+	Can_read
+		Can_B0hasBeenReceived
+		Can_clearB0Flag
+		CAN1Read
+			RegsToCAN1ID
+		Can_B1hasBeenReceived
+		Can_clearB1Flag
+	Can_clearInterrupt
 timer4_interrupt
 timer2_interrupt
+	EBB_control
+		EEPROM_Write
 	CAN_routine
 timer1_interrupt
-	EBB_control

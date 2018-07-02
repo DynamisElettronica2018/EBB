@@ -3,7 +3,7 @@
 
 //functions
 
-void counter_quarter_turn_match() iv IVT_ADDR_QEIINTERRUPT ics ICS_AUTO {
+void counter_quarter_turn_match() iv IVT_ADDR_QEIINTERRUPT ics ICS_AUTO {       //interrupt on match of MAXCNT or on match on 0
     switch(DIRECTION_REGISTER){
         case 0:  //negative direction
         motor_current_position--;
@@ -11,14 +11,16 @@ void counter_quarter_turn_match() iv IVT_ADDR_QEIINTERRUPT ics ICS_AUTO {
         case 1:  //positive direction
         motor_current_position++;
         break;
+        default:
+        break;
     }
-    if (motor_current_position == motor_target_position)
+    if (motor_current_position == motor_target_position)                        //Check for target reached
     {
-        brake_counter = 0;
-        ebb_current_state = EBB_BRAKING;
+        brake_counter = 0;                                                      //Reset the counter for braking period lenght
+        ebb_current_state = EBB_BRAKING;                                        //Set the current state
     }       
 
-    IFS2bits.QEIIF = 0;  //Reset Interrupt Flag
+    IFS2bits.QEIIF = 0;                                                         //Reset Interrupt Flag
 }
 
 
@@ -29,12 +31,12 @@ void counter_quarter_turn_match() iv IVT_ADDR_QEIINTERRUPT ics ICS_AUTO {
 
 void EBB_control()
 {
-    switch(ebb_current_state)
+    switch(ebb_current_state)           //State machine
     {
-        case EBB_OFF:
-            if(is_requested_movement)
+        case EBB_OFF:                      //Off state
+            if(is_requested_movement)       //Check if the EBB is requested to move in a different position
             {
-                switch(ebb_target_pos)  //Obtain the requested position in quarter of turns
+                switch(ebb_target_pos)  //Obtain the requested position in quarter of turns (maybe to be improved!!)
                 {
                     case 0:
                     motor_target_position = POSITION_0;
@@ -88,68 +90,72 @@ void EBB_control()
                     motor_target_position = POSITION_16;
                     break;
                 }
-                ebb_current_state = EBB_START;  
-                is_requested_movement = OFF;
-            }else if(is_requested_calibration)
+                ebb_current_state = EBB_START;          //Set the correct new ebb state (start moving)
+                is_requested_movement = OFF;            //Switch off flag
+            }else if(is_requested_calibration)          //Check if ebb is requested to enter calibration mode
             {
-                ebb_current_state = EBB_CENTRAL_CALIBRATION;
-                is_requested_calibration = OFF;
+                ebb_current_state = EBB_CENTRAL_CALIBRATION;        //Set the correct new ebb state (calibration)
+                is_requested_calibration = OFF;                     //Switch off flag
             }
         break;
-        case EBB_START:
-            if(motor_target_position > motor_current_position)
+        case EBB_START:                                             //Start a movement mode
+            if(motor_target_position > motor_current_position)      //Check if is necessary to screw or unscrew the balance bar
             {
-              FORWARD = ON;
+              FORWARD = ON;                                         //Unscrew
               REVERSE = OFF;
             }else if (motor_target_position < motor_current_position)
             {
-                REVERSE = ON;
+                REVERSE = ON;                                       //Screw
                 FORWARD = OFF;
             }
-            ENABLE = ON;
-            PDC1 = PWM_SATURATION;
-            is_requested_movement = OFF;
+            ENABLE = ON;                                            //Turn on H-bridge
+            PDC1 = PWM_SATURATION;                                  //Put the pwm at maximum (disabled pwm control)          
 
-            ebb_current_state = EBB_MOVING;   //Update State
+            ebb_current_state = EBB_MOVING;                         //Update State
         break;
-        case EBB_MOVING:
+        case EBB_MOVING:                               //EBB is trying to reach the requested position
             blink_counter++;
             if(blink_counter >= 20)
             {
-                LED_G = ~LED_G;
+                LED_G = ~LED_G;                        //Signal that the motor is turning with a blincking green led
                 blink_counter = 0;
             }
         break;
-        case EBB_BRAKING:
-            if(brake_counter = 1)
-            {
-                LED_G = OFF;
-                LED_B = ON;
-                ENABLE = ON;
-                REVERSE = OFF;
-                FORWARD = OFF;
-            }
+        case EBB_BRAKING:                              //EBB has reached the position and is now bhraking the motor shorting it
+            LED_G = OFF;
+            LED_B = ON;                             //Turn on Blue led to signal motor Braking mode
+            ENABLE = ON;
+            REVERSE = OFF;                          //Shorts the motor terminals
+            FORWARD = OFF;
             brake_counter++;
-            if(brake_counter >= BRAKE_TIME_LENGHT)
+            if(brake_counter >= BRAKE_TIME_LENGHT)          //check if the Braking period has passed
             {
+                brake_counter = 0;                          //reset the brake counter
                 ebb_current_state = EBB_POSITION_REACHED;
             }
         break;
-        case EBB_POSITION_REACHED:
+        case EBB_POSITION_REACHED:                                                  //The ebb has correctly reached th requested position
             LED_B = OFF;
             ENABLE = OFF;
-            REVERSE = OFF;
+            REVERSE = OFF;                                                          //Turn off the motor
             FORWARD = OFF;
-            brake_counter = 0;
-            ebb_current_pos = ebb_target_pos;
-            motor_current_position = motor_target_position;
+            ebb_current_pos = ebb_target_pos;                                       //Update ebb cuurent position with the reached one (for robustness)
+            motor_current_position = motor_target_position;                         //Update motor position with the reached one (for robustness)
             EEPROM_WRITE(ADDR_LAST_POSCNT, POSCNT);
-            while(WR_bit);
+            while(WR_bit);                                                             //Update EEPROM data 
             EEPROM_WRITE(ADDR_LAST_NUMBER_QUARTER_TURNS, motor_current_position);
             while(WR_bit);
             EEPROM_WRITE(ADDR_LAST_MAPPED_POSITION, ebb_current_pos);
             while(WR_bit);
-            ebb_current_state = OFF;
+            ebb_current_state = OFF;                                               //Going back to OFF state
+        break;
+        case EBB_DRIVER_BRAKING:                            //Driver is braking during a requested movement
+            sound = ON;                                     //Turn on buzzer for debugging 
+            if(brake_pressure_front < BRAKE_PRESSURE_TRIGGER)           //Checking brake pressures for the end of the braking action
+            {
+                sound = OFF;                                    
+                ebb_current_state = EBB_START;              //Return to start mode to complete the movement
+            }
         break;
     }
 }

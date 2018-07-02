@@ -5,7 +5,7 @@
 void EBB_Init()  //Initialize all hardware peripherals and software variables
 {
         //First boot
-        if(EEPROM_Read(ADDR_FIRST_BOOT) == 0)
+        if(EEPROM_Read(ADDR_FIRST_BOOT) == 0)                           //First boot initialization  (Central position)
         {
                 EEPROM_WRITE(ADDR_LAST_POSCNT, QUARTER_TURN/2);
                 while(WR_bit);
@@ -47,21 +47,23 @@ void EBB_Init()  //Initialize all hardware peripherals and software variables
         ENABLE = 0;
         
         //Variables initialization
-        ebb_current_pos = EEPROM_Read(ADDR_LAST_MAPPED_POSITION);
-        ebb_target_pos = ebb_current_pos;
-        motor_current_position = EEPROM_Read(ADDR_LAST_NUMBER_QUARTER_TURNS);
-        motor_target_position = motor_current_position;
+        ebb_current_pos = EEPROM_Read(ADDR_LAST_MAPPED_POSITION);                       //Get the old mapped position
+        ebb_target_pos = ebb_current_pos;                                               //Set target as reached
+        motor_current_position = EEPROM_Read(ADDR_LAST_NUMBER_QUARTER_TURNS);           //Get the old quester turns number
+        motor_target_position = motor_current_position;                                 //Set target as reached
         ebb_settings = 0;
         brake_pressure_front = 0;
+        is_requested_calibration = 0;
+        is_requested_movement = 0;
 
-        CAN_Init();
+        CAN_Init();                                     //initialize CAN module
 
-        CAN_routine();
+        CAN_routine();                                  //Send first CAN Packet
 
         ebb_current_state = EBB_OFF;
 
         //TImers initialization
-        setTimer(TIMER1_DEVICE,0.001);                                        //Interrupt every 1mS
+        setTimer(TIMER1_DEVICE,0.01);                                        //Interrupt every 1mS
         setTimer(TIMER2_DEVICE,0.001 * CONTROL_ROUTINE_REFRESH);              //Interrupt every CONTROL_ROUTINE_REFRESH mS
         setTimer(TIMER4_DEVICE,0.003);                                        //Interrupt every 200uS
 

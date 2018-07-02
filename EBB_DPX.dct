@@ -989,6 +989,7 @@ bor
 bor
 bor_bit
 brake_counter
+brake_pressure_front
 bren
 bren
 bren_bit
@@ -1280,6 +1281,7 @@ can_getwriteflags
 can_inflags
 can_init
 can_initinterrupt
+can_interrupt
 can_read
 can_readid
 can_resetwritepacket
@@ -1953,6 +1955,7 @@ ebb_control
 ebb_current_pos
 ebb_current_state
 ebb_init
+ebb_settings
 ebb_target_pos
 edt
 edt
@@ -6612,8 +6615,8 @@ time_datediff
 time_datetoepoch
 time_epochtodate
 time_jd1970
-timer1_counter
 timer1_interrupt
+timer2_counter
 timer2_interrupt
 timer4_interrupt
 tmode

@@ -1,5 +1,4 @@
 #line 1 "C:/Users/nicol/Documents/git_codes/EBB/EBB_DPX.c"
-#line 1 "c:/users/nicol/documents/git_codes/ebb/libs/macro.c"
 #line 1 "c:/users/nicol/documents/git_codes/ebb/libs/d_can.h"
 #line 1 "c:/users/nicol/documents/git_codes/ebb/libs/can.c"
 #line 1 "c:/users/nicol/documents/git_codes/ebb/libs/can.h"
@@ -58,12 +57,12 @@ void Can_init() {
  CAN1Initialize(2,4,3,4,2,Can_Init_flags);
  CAN1SetOperationMode(_CAN_MODE_CONFIG,0xFF);
 
- CAN1SetMask(_CAN_MASK_B1, 0b01010111111, _CAN_CONFIG_MATCH_MSG_TYPE & _CAN_CONFIG_STD_MSG);
- CAN1SetFilter(_CAN_FILTER_B1_F1,  0b01100001101 , _CAN_CONFIG_STD_MSG);
- CAN1SetFilter(_CAN_FILTER_B1_F2,  0b11001001101 , _CAN_CONFIG_STD_MSG);
+ CAN1SetMask(_CAN_MASK_B1,  0b11111111111 , _CAN_CONFIG_MATCH_MSG_TYPE & _CAN_CONFIG_STD_MSG);
+ CAN1SetFilter(_CAN_FILTER_B1_F1,  0b10000000000 , _CAN_CONFIG_STD_MSG);
+ CAN1SetFilter(_CAN_FILTER_B1_F2,  0b11001010000 , _CAN_CONFIG_STD_MSG);
 
- CAN1SetMask(_CAN_MASK_B2, -1, _CAN_CONFIG_MATCH_MSG_TYPE & _CAN_CONFIG_STD_MSG);
- CAN1SetFilter(_CAN_FILTER_B2_F1,  0b10100000000 , _CAN_CONFIG_STD_MSG);
+ CAN1SetMask(_CAN_MASK_B2,  0b11111110000 , _CAN_CONFIG_MATCH_MSG_TYPE & _CAN_CONFIG_STD_MSG);
+ CAN1SetFilter(_CAN_FILTER_B2_F1,  0b11111110000 , _CAN_CONFIG_STD_MSG);
 
  CAN1SetOperationMode(_CAN_MODE_NORMAL,0xFF);
 
@@ -157,6 +156,7 @@ void Can_initInterrupt(void) {
   { int save_sr; { save_sr = SRbits.IPL; { int DISI_save; DISI_save = DISICNT; asm DISI #0X3FF ;SRbits.IPL = 7; asm {nop}; asm {nop}; DISICNT = DISI_save; } (void) 0; ; } (void) 0; ;C1INTEBITS.RXB1IE = 1; { int DISI_save; DISI_save = DISICNT; asm DISI #0X3FF ;SRbits.IPL = save_sr; asm {nop}; asm {nop}; DISICNT = DISI_save; } (void) 0; ; } (void) 0; ;
 
  }
+#line 1 "c:/users/nicol/documents/git_codes/ebb/libs/macro.c"
 #line 1 "c:/users/nicol/documents/git_codes/ebb/libs/dspic.c"
 #line 1 "c:/users/nicol/documents/git_codes/ebb/libs/dspic.h"
 #line 1 "c:/users/nicol/documents/git_codes/ebb/libs/basic.h"
@@ -566,18 +566,20 @@ void EEPROM_readArray(unsigned int address, unsigned int *values) {
  values[i] = EEPROM_read(address + i);
  }
 }
-#line 11 "C:/Users/nicol/Documents/git_codes/EBB/EBB_DPX.c"
-sbit REVERSE at LATE2_bit;
+#line 9 "C:/Users/nicol/Documents/git_codes/EBB/EBB_DPX.c"
+sbit REVERSE at LATE3_bit;
 sbit FORWARD at LATE4_bit;
-sbit ENABLE at LATE1_bit;
+sbit ENABLE at LATE2_bit;
 sbit DISABLE at LATE0_bit;
 sbit LED_G at LATD1_bit;
 sbit LED_B at LATD3_bit;
 sbit BUZZER at LATD2_bit;
 sbit DIRECTION_REGISTER at UPDN_bit;
-#line 57 "C:/Users/nicol/Documents/git_codes/EBB/EBB_DPX.c"
+#line 60 "C:/Users/nicol/Documents/git_codes/EBB/EBB_DPX.c"
 unsigned int ebb_target_pos;
 unsigned int ebb_current_pos;
+unsigned int ebb_settings;
+unsigned int brake_pressure_front;
 
 int buzzer_state =  0 ;
 int sound =  0 ;
@@ -589,17 +591,13 @@ char is_requested_movement = 0;
 unsigned int calibration_on_off =  0 ;
 unsigned int error_flag =  0 ;
 
-int timer1_counter = 0;
+int timer2_counter = 0;
 #line 1 "c:/users/nicol/documents/git_codes/ebb/modules/ebb_can_functions.h"
-
-
 
 
 
 void CAN_routine();
 #line 1 "c:/users/nicol/documents/git_codes/ebb/modules/ebb_can_functions.c"
-
-
 
 
 
@@ -609,17 +607,17 @@ void CAN_routine()
  Can_addIntToWritePacket(ebb_current_pos);
  Can_addIntToWritePacket(calibration_on_off);
  Can_addIntToWritePacket(error_flag);
- Can_write( 0b11001100110 );
+ Can_write( 0b11100001101 );
 }
 #line 1 "c:/users/nicol/documents/git_codes/ebb/modules/motor.c"
 #line 1 "c:/users/nicol/documents/git_codes/ebb/modules/motor.h"
-
 
 typedef enum{
  EBB_OFF,
  EBB_START,
  EBB_MOVING,
  EBB_BRAKING,
+ EBB_POSITION_REACHED,
  EBB_CENTRAL_CALIBRATION,
  EBB_ERROR,
  EBB_DRIVER_BRAKING
@@ -647,6 +645,8 @@ void counter_quarter_turn_match() iv IVT_ADDR_QEIINTERRUPT ics ICS_AUTO {
  break;
  case 1:
  motor_current_position++;
+ break;
+ default:
  break;
  }
  if (motor_current_position == motor_target_position)
@@ -726,9 +726,11 @@ void EBB_control()
  break;
  }
  ebb_current_state = EBB_START;
+ is_requested_movement =  0 ;
  }else if(is_requested_calibration)
  {
  ebb_current_state = EBB_CENTRAL_CALIBRATION;
+ is_requested_calibration =  0 ;
  }
  break;
  case EBB_START:
@@ -743,7 +745,6 @@ void EBB_control()
  }
  ENABLE =  1 ;
  PDC1 =  4000 ;
- is_requested_movement =  0 ;
 
  ebb_current_state = EBB_MOVING;
  break;
@@ -756,28 +757,41 @@ void EBB_control()
  }
  break;
  case EBB_BRAKING:
- if(brake_counter = 1)
- {
  LED_G =  0 ;
  LED_B =  1 ;
  ENABLE =  1 ;
  REVERSE =  0 ;
  FORWARD =  0 ;
- }
  brake_counter++;
- if(brake_counter >=  50 )
+ if(brake_counter >=  100 )
  {
+ brake_counter = 0;
+ ebb_current_state = EBB_POSITION_REACHED;
+ }
+ break;
+ case EBB_POSITION_REACHED:
  LED_B =  0 ;
  ENABLE =  0 ;
  REVERSE =  0 ;
  FORWARD =  0 ;
- brake_counter = 0;
+ ebb_current_pos = ebb_target_pos;
+ motor_current_position = motor_target_position;
+ EEPROM_WRITE( 0x7FFDA0 , POSCNT);
+ while(WR_bit);
+ EEPROM_WRITE( 0x7FFDB0 , motor_current_position);
+ while(WR_bit);
+ EEPROM_WRITE( 0x7FFDC0 , ebb_current_pos);
+ while(WR_bit);
  ebb_current_state =  0 ;
+ break;
+ case EBB_DRIVER_BRAKING:
+ sound =  1 ;
+ if(brake_pressure_front <  1000 )
+ {
+ sound =  0 ;
+ ebb_current_state = EBB_START;
  }
  break;
-
-
-
  }
 }
 #line 1 "c:/users/nicol/documents/git_codes/ebb/modules/initialization.c"
@@ -785,12 +799,22 @@ void EBB_control()
 
 
 
-
-
 void EBB_Init();
-#line 7 "c:/users/nicol/documents/git_codes/ebb/modules/initialization.c"
+#line 5 "c:/users/nicol/documents/git_codes/ebb/modules/initialization.c"
 void EBB_Init()
 {
+
+ if(EEPROM_Read( 0x7FFDD0 ) == 0)
+ {
+ EEPROM_WRITE( 0x7FFDA0 ,  5024 /2);
+ while(WR_bit);
+ EEPROM_WRITE( 0x7FFDC0 , 8);
+ while(WR_bit);
+ EEPROM_WRITE( 0x7FFDB0 , 16);
+ while(WR_bit);
+ EEPROM_WRITE( 0x7FFDD0 , 1);
+ while(WR_bit);
+ }
 
  ADPCFG = 0b1111111111111110;
  TRISDbits.TRISD1 = 0;
@@ -824,6 +848,12 @@ void EBB_Init()
 
  ebb_current_pos = EEPROM_Read( 0x7FFDC0 );
  ebb_target_pos = ebb_current_pos;
+ motor_current_position = EEPROM_Read( 0x7FFDB0 );
+ motor_target_position = motor_current_position;
+ ebb_settings = 0;
+ brake_pressure_front = 0;
+ is_requested_calibration = 0;
+ is_requested_movement = 0;
 
  CAN_Init();
 
@@ -832,8 +862,8 @@ void EBB_Init()
  ebb_current_state = EBB_OFF;
 
 
- setTimer( 1 ,0.001);
- setTimer( 2 ,0.1);
+ setTimer( 1 ,0.01);
+ setTimer( 2 ,0.001 *  20 );
  setTimer( 3 ,0.003);
 
 
@@ -847,19 +877,24 @@ void EBB_Init()
 
 
 }
-#line 83 "C:/Users/nicol/Documents/git_codes/EBB/EBB_DPX.c"
+#line 88 "C:/Users/nicol/Documents/git_codes/EBB/EBB_DPX.c"
  void timer1_interrupt() iv IVT_ADDR_T1INTERRUPT ics ICS_AUTO  {
- timer1_counter++;
-
- if (timer1_counter >=  10 )
+ if(ebb_current_state !=  0  && brake_pressure_front >=  1000 )
  {
- EBB_control();
- timer1_counter = 0;
+ ENABLE =  0 ;
+ ebb_current_state = EBB_DRIVER_BRAKING;
  }
+
 }
 
  void timer2_interrupt() iv IVT_ADDR_T2INTERRUPT ics ICS_AUTO  {
+ timer2_counter++;
+ EBB_control();
+ if (timer2_counter >= 5)
+ {
  CAN_routine();
+ timer2_counter = 0;
+ }
   IFS0bits.T2IF  = 0 ;
 }
 
@@ -877,4 +912,29 @@ void main() {
  {
  }
 
+}
+
+ void CAN_Interrupt() iv IVT_ADDR_C1INTERRUPT  {
+ unsigned long int CAN_id;
+ char CAN_datain[8];
+ unsigned int CAN_dataLen, CAN_flags;
+ Can_read(&CAN_id, CAN_datain, &CAN_dataLen, &CAN_flags);
+ Can_clearInterrupt();
+ switch(CAN_id){
+ case  0b10000000000 :
+ ebb_target_pos = (unsigned int) ((CAN_datain[0] << 8) | (CAN_datain[1] & 0xFF));
+ ebb_settings = (unsigned int) ((CAN_datain[2] << 8) | (CAN_datain[3] & 0xFF));
+ if ((ebb_target_pos != ebb_current_pos) && ebb_target_pos >= 0 && ebb_target_pos <= 16)
+ {
+ is_requested_movement =  1 ;
+ }else if (ebb_target_pos =  100 )
+ {
+ is_requested_calibration =  1 ;
+ }
+ break;
+ case  0b11001010000 :
+ brake_pressure_front = (unsigned int) ((CAN_datain[4] << 8) | (CAN_datain[5] & 0xFF));
+ break;
+
+ }
 }

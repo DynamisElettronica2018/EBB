@@ -1,13 +1,14 @@
 
 #include "libs/d_can.h"
+#include "libs/can.c"
 #include "libs/macro.c"
 #include "libs/dsPIC.c"
 #include "libs/eeprom.c"
 
 //Digital i/o pins
-sbit REVERSE at LATE2_bit;  //Reverse input of the h-bridge
+sbit REVERSE at LATE3_bit;  //Reverse input of the h-bridge
 sbit FORWARD at LATE4_bit;  //Forward input of the h-bridge
-sbit ENABLE at LATE1_bit;  //Enable pin of h-bridge ( h-bridge on if HIGH )
+sbit ENABLE at LATE2_bit;  //Enable pin of h-bridge ( h-bridge on if HIGH )
 sbit DISABLE at LATE0_bit;  //Disable pin ( capable of PWM )
 sbit LED_G at LATD1_bit;
 sbit LED_B at LATD3_bit;  //LEDs
@@ -36,7 +37,7 @@ sbit DIRECTION_REGISTER at UPDN_bit;  //register for direction
 #define POSITION_14 28
 #define POSITION_15 30
 #define POSITION_16 32
-#define CALIBRATION_POSITION = 100
+#define CALIBRATION_POSITION 100
 //Constants
 #define QUARTER_TURN 5024
 #define TURN 20096
@@ -50,7 +51,8 @@ sbit DIRECTION_REGISTER at UPDN_bit;  //register for direction
 #define BRAKE_TIME_LENGHT 100
 #define PWM_SATURATION 4000
 
-#define BRAKE_PRESSURE_TRIGGER 1000
+#define BRAKE_PRESSURE_TRIGGER 1000  //Trigger value when driver is braking
+#define OVERCURRENT_TRIGGER    //Trigger valure for overcurrent detection
 
 
 
@@ -86,15 +88,20 @@ int timer2_counter = 0;
 onTimer1Interrupt {
     if(ebb_current_state != OFF && brake_pressure_front >= BRAKE_PRESSURE_TRIGGER)
     {
-        ebb_current_state = EBB_DRIVER_BRAKING;
+        ENABLE = OFF;  //Turn off the motor
+        ebb_current_state = EBB_DRIVER_BRAKING;  //Enter corresponding mode
     }
     //Check for overcurrent
-    timer1_counter = 0;
 }
 
 onTimer2Interrupt {
+    timer2_counter++;
     EBB_control();
-    //CAN_routine();  //Call the can update routine
+    if (timer2_counter >= 5) 
+    {
+        CAN_routine();  //Call the can update routine
+        timer2_counter = 0;
+    }    
     clearTimer2();
 }
 
