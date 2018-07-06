@@ -575,11 +575,12 @@ sbit LED_B at LATD1_bit;
 sbit LED_G at LATD3_bit;
 sbit BUZZER at LATD2_bit;
 sbit DIRECTION_REGISTER at UPDN_bit;
-#line 63 "C:/Users/nicol/Documents/git_codes/EBB/EBB_DPX.c"
+#line 68 "C:/Users/nicol/Documents/git_codes/EBB/EBB_DPX.c"
 unsigned int ebb_target_pos;
 unsigned int ebb_current_pos;
 unsigned int ebb_settings;
 unsigned int brake_pressure_front;
+unsigned int current_reading_motor;
 
 int buzzer_state =  0 ;
 int motor_target_position;
@@ -733,6 +734,7 @@ void EBB_control()
  is_requested_movement =  0 ;
  }else if(is_requested_calibration)
  {
+ calibration_on_off =  1 ;
  ebb_current_state = EBB_CENTRAL_CALIBRATION;
  is_requested_calibration =  0 ;
  }
@@ -778,18 +780,32 @@ void EBB_control()
  ebb_current_pos = ebb_target_pos;
  motor_current_position = motor_target_position;
  EEPROM_WRITE( 0x7FFDA0 , POSCNT);
- sprintf(dstr, "EEPROM: %u\r\n", POSCNT);
- Debug_UART_Write(dstr);
  while(WR_bit);
+#line 155 "c:/users/nicol/documents/git_codes/ebb/modules/motor.c"
  EEPROM_WRITE( 0x7FFDB0 , motor_current_position);
  while(WR_bit);
  EEPROM_WRITE( 0x7FFDC0 , ebb_current_pos);
  while(WR_bit);
  ebb_current_state =  0 ;
  break;
+ case EBB_CENTRAL_CALIBRATION:
+ ebb_current_pos = 8;
+ ebb_target_pos = ebb_current_pos;
+ motor_current_position =  16 ;
+ motor_target_position = motor_current_position;
+ EEPROM_WRITE( 0x7FFDA0 , POSCNT);
+ while(WR_bit);
+ EEPROM_WRITE( 0x7FFDB0 , motor_current_position);
+ while(WR_bit);
+ EEPROM_WRITE( 0x7FFDC0 , ebb_current_pos);
+ while(WR_bit);
+ CAN_routine();
+ calibration_on_off =  0 ;
+ ebb_current_state =  0 ;
+ break;
  case EBB_DRIVER_BRAKING:
  buzzer_state =  1 ;
- if(brake_pressure_front <  1000 )
+ if(brake_pressure_front <  3500  && current_reading_motor <  1,831  *  1000 )
  {
  buzzer_state =  0 ;
  ebb_current_state = EBB_START;
@@ -813,7 +829,7 @@ void EBB_Init()
  while(WR_bit);
  EEPROM_WRITE( 0x7FFDC0 , 8);
  while(WR_bit);
- EEPROM_WRITE( 0x7FFDB0 , 16);
+ EEPROM_WRITE( 0x7FFDB0 ,  16 );
  while(WR_bit);
  EEPROM_WRITE( 0x7FFDD0 , 0);
  while(WR_bit);
@@ -856,6 +872,7 @@ void EBB_Init()
  motor_target_position = motor_current_position;
  ebb_settings = 0;
  brake_pressure_front = 0;
+ current_reading_motor = 0;
  is_requested_calibration = 0;
  is_requested_movement = 0;
 
@@ -882,51 +899,22 @@ void EBB_Init()
  setTimer( 1 ,0.01);
  setTimer( 2 ,0.001 *  10 );
 }
-#line 92 "C:/Users/nicol/Documents/git_codes/EBB/EBB_DPX.c"
+#line 98 "C:/Users/nicol/Documents/git_codes/EBB/EBB_DPX.c"
  void timer1_interrupt() iv IVT_ADDR_T1INTERRUPT ics ICS_AUTO  {
- timer1_counter ++;
- if (timer1_counter == 300){
- ebb_current_state = EBB_OFF;
- is_requested_movement =  1 ;
- ebb_target_pos = 8;
- }
- if (timer1_counter == 600){
- ebb_current_state = EBB_OFF;
- is_requested_movement =  1 ;
- ebb_target_pos = 7;
- }
- if (timer1_counter == 900){
- ebb_current_state = EBB_OFF;
- is_requested_movement =  1 ;
- ebb_target_pos = 6;
- }
- if (timer1_counter == 1200){
- ebb_current_state = EBB_OFF;
- is_requested_movement =  1 ;
- ebb_target_pos = 5;
- }
- if (timer1_counter == 1500){
- ebb_current_state = EBB_OFF;
- is_requested_movement =  1 ;
- ebb_target_pos = 6;
- }
- if (timer1_counter == 1800){
- ebb_current_state = EBB_OFF;
- is_requested_movement =  1 ;
- ebb_target_pos = 7;
- timer1_counter = 0;
- }
-
-
-
- if(ebb_current_state !=  0  && brake_pressure_front >=  1000 )
+#line 136 "C:/Users/nicol/Documents/git_codes/EBB/EBB_DPX.c"
+ current_reading_motor = ADC1_Read(0);
+ if(ebb_current_state !=  0  && (current_reading_motor >=  1,831  *  1000  || brake_pressure_front >=  3500 ))
  {
  ENABLE =  0 ;
  ebb_current_state = EBB_DRIVER_BRAKING;
  }
 
+
   IFS0bits.T1IF  = 0 ;
 }
+
+
+
 
  void timer2_interrupt() iv IVT_ADDR_T2INTERRUPT ics ICS_AUTO  {
  timer2_counter++;
@@ -937,11 +925,12 @@ void EBB_Init()
  CAN_routine();
  timer2_counter = 0;
  }
-
- sprintf(dstr, "POSCNT: %u\r\n", POSCNT);
- Debug_UART_Write(dstr);
+#line 164 "C:/Users/nicol/Documents/git_codes/EBB/EBB_DPX.c"
   IFS0bits.T2IF  = 0 ;
 }
+
+
+
 
  void timer4_interrupt() iv IVT_ADDR_T4INTERRUPT ics ICS_AUTO  {
  if(buzzer_state ==  1 ){
@@ -951,6 +940,7 @@ void EBB_Init()
 }
 
 
+
 void main() {
  EBB_Init();
  while(1)
@@ -958,6 +948,9 @@ void main() {
  }
 
 }
+
+
+
 
  void CAN_Interrupt() iv IVT_ADDR_C1INTERRUPT  {
  unsigned long int CAN_id;

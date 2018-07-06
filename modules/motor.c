@@ -99,6 +99,7 @@ void EBB_control()
                 is_requested_movement = OFF;            //Switch off flag
             }else if(is_requested_calibration)          //Check if ebb is requested to enter calibration mode
             {
+                calibration_on_off = ON;
                 ebb_current_state = EBB_CENTRAL_CALIBRATION;        //Set the correct new ebb state (calibration)
                 is_requested_calibration = OFF;                     //Switch off flag
             }
@@ -144,18 +145,37 @@ void EBB_control()
             ebb_current_pos = ebb_target_pos;                                       //Update ebb cuurent position with the reached one (for robustness)
             motor_current_position = motor_target_position;                         //Update motor position with the reached one (for robustness)
             EEPROM_WRITE(ADDR_LAST_POSCNT, POSCNT);
+            while(WR_bit);                                                           //Update EEPROM data 
+
+            #ifdef DEBUG_UART
             sprintf(dstr, "EEPROM: %u\r\n", POSCNT);
             Debug_UART_Write(dstr);
-            while(WR_bit);                                                             //Update EEPROM data 
+            #endif
+                                                                        
             EEPROM_WRITE(ADDR_LAST_NUMBER_QUARTER_TURNS, motor_current_position);
             while(WR_bit);
             EEPROM_WRITE(ADDR_LAST_MAPPED_POSITION, ebb_current_pos);
             while(WR_bit);
             ebb_current_state = OFF;                                               //Going back to OFF state
             break;
+        case EBB_CENTRAL_CALIBRATION:
+            ebb_current_pos = 8;
+            ebb_target_pos = ebb_current_pos;
+            motor_current_position = POSITION_8;
+            motor_target_position = motor_current_position;
+            EEPROM_WRITE(ADDR_LAST_POSCNT, POSCNT);
+            while(WR_bit);                                                           //Update EEPROM data                                       
+            EEPROM_WRITE(ADDR_LAST_NUMBER_QUARTER_TURNS, motor_current_position);
+            while(WR_bit);
+            EEPROM_WRITE(ADDR_LAST_MAPPED_POSITION, ebb_current_pos);
+            while(WR_bit);
+            CAN_routine();
+            calibration_on_off = OFF;
+            ebb_current_state = OFF;                                               //Going back to OFF state
+            break;
         case EBB_DRIVER_BRAKING:                            //Driver is braking during a requested movement
             buzzer_state = ON;                                     //Turn on buzzer for debugging
-            if(brake_pressure_front < BRAKE_PRESSURE_TRIGGER)           //Checking brake pressures for the end of the braking action
+            if(brake_pressure_front < BRAKE_PRESSURE_TRIGGER && current_reading_motor < LSB_CURRENT_READING * MOTOR_CURRENT_TRIGGER)           //Checking brake pressures for the end of the braking action
             {
                 buzzer_state = OFF;
                 ebb_current_state = EBB_START;              //Return to start mode to complete the movement

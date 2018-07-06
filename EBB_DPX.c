@@ -19,6 +19,10 @@ sbit DIRECTION_REGISTER at UPDN_bit;  //register for direction
 #define ON 1
 #define OFF 0
 
+//#define DEBUG_UART 1   //Comment to disable debug uart
+//#define TEST_MODE 1   //Comment to disable test mode
+#define CURRENT_CONTROL_ENABLE 1   //Comment to disable current braking control
+
 //Positions (quarter of turns)
 #define POSITION_0 0
 #define POSITION_1 2
@@ -43,6 +47,7 @@ sbit DIRECTION_REGISTER at UPDN_bit;  //register for direction
 //Constants
 #define QUARTER_TURN 10048
 #define TURN 40192
+#define LSB_CURRENT_READING 1,831 //Current LSB in mA
 
 #define ADDR_FIRST_BOOT 0x7FFDD0
 #define ADDR_LAST_POSCNT 0x7FFDA0 //Last POSCNT record
@@ -54,8 +59,8 @@ sbit DIRECTION_REGISTER at UPDN_bit;  //register for direction
 
 #define PWM_SATURATION 4000
 
-#define BRAKE_PRESSURE_TRIGGER 1000  //Trigger value when driver is braking
-#define OVERCURRENT_TRIGGER    //Trigger valure for overcurrent detection
+#define BRAKE_PRESSURE_TRIGGER 3500  //Trigger value when driver is braking
+#define MOTOR_CURRENT_TRIGGER 1000  //Trigger value when driver is braking
 
 
 
@@ -64,6 +69,7 @@ unsigned int ebb_target_pos;
 unsigned int ebb_current_pos;
 unsigned int ebb_settings;
 unsigned int brake_pressure_front;
+unsigned int current_reading_motor;
 
 int buzzer_state = OFF;
 int motor_target_position;  //quarter turns
@@ -90,6 +96,8 @@ int timer2_counter = 0, timer1_counter = 0;
 
 
 onTimer1Interrupt {
+
+    #ifdef TEST_MODE
     timer1_counter ++;
     if (timer1_counter == 300){
        ebb_current_state = EBB_OFF;
@@ -122,17 +130,22 @@ onTimer1Interrupt {
        ebb_target_pos = 7;
        timer1_counter = 0;
     }
+    #endif
 
-    
-
-    if(ebb_current_state != OFF && brake_pressure_front >= BRAKE_PRESSURE_TRIGGER)
+    #ifdef CURRENT_CONTROL_ENABLE    
+    current_reading_motor = ADC1_Read(0);
+    if(ebb_current_state != OFF && (current_reading_motor >= LSB_CURRENT_READING * MOTOR_CURRENT_TRIGGER ||  brake_pressure_front >= BRAKE_PRESSURE_TRIGGER))
     {
         ENABLE = OFF;  //Turn off the motor
         ebb_current_state = EBB_DRIVER_BRAKING;  //Enter corresponding mode
     }
+    #endif
     //Check for overcurrent
     clearTimer1();
 }
+
+
+
 
 onTimer2Interrupt {
     timer2_counter++;
@@ -143,11 +156,16 @@ onTimer2Interrupt {
         CAN_routine();  //Call the can update routine
         timer2_counter = 0;
     }
-    
+    #ifdef DEBUG_UART
     sprintf(dstr, "POSCNT: %u\r\n", POSCNT);
     Debug_UART_Write(dstr);
+    #endif
+
     clearTimer2();
 }
+
+
+
 
 onTimer4Interrupt {
     if(buzzer_state == ON){  //Sound routine
@@ -157,6 +175,7 @@ onTimer4Interrupt {
 }
 
 
+
 void main() {
         EBB_Init();
     while(1)
@@ -164,6 +183,9 @@ void main() {
     }
 
 }
+
+
+
 
 onCanInterrupt {
     unsigned long int CAN_id;
