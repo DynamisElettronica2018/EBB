@@ -566,7 +566,7 @@ void EEPROM_readArray(unsigned int address, unsigned int *values) {
  values[i] = EEPROM_read(address + i);
  }
 }
-#line 9 "C:/Users/sofia/Desktop/GIT REPO/EBB/EBB_DPX.c"
+#line 13 "C:/Users/sofia/Desktop/GIT REPO/EBB/EBB_DPX.c"
 sbit REVERSE at LATE3_bit;
 sbit FORWARD at LATE4_bit;
 sbit ENABLE at LATE2_bit;
@@ -575,7 +575,7 @@ sbit LED_B at LATD1_bit;
 sbit LED_G at LATD3_bit;
 sbit BUZZER at LATD2_bit;
 sbit DIRECTION_REGISTER at UPDN_bit;
-#line 71 "C:/Users/sofia/Desktop/GIT REPO/EBB/EBB_DPX.c"
+#line 79 "C:/Users/sofia/Desktop/GIT REPO/EBB/EBB_DPX.c"
 unsigned int ebb_target_pos;
 unsigned int ebb_current_pos;
 unsigned int ebb_settings;
@@ -605,8 +605,7 @@ void CAN_routine()
 {
  Can_resetWritePacket();
  Can_addIntToWritePacket(ebb_current_pos);
- Can_addIntToWritePacket(calibration_on_off);
- Can_addIntToWritePacket(error_flag);
+#line 10 "c:/users/sofia/desktop/git repo/ebb/modules/ebb_can_functions.c"
  Can_write( 0b11100001101 );
 }
 #line 1 "c:/users/sofia/desktop/git repo/ebb/modules/motor.c"
@@ -796,7 +795,7 @@ void EBB_control()
  EEPROM_WRITE( 0x7FFDA0 , POSCNT);
  while(WR_bit);
  EEPROM_WRITE( 0x7FFDB0 , motor_current_position);
- while(WR_bit);
+ while(WR-p_bit);
  EEPROM_WRITE( 0x7FFDC0 , ebb_current_pos);
  while(WR_bit);
  CAN_routine();
@@ -820,7 +819,7 @@ void EBB_control()
  break;
  case EBB_DRIVER_BRAKING:
  buzzer_state =  1 ;
- if(brake_pressure_front <  3500  && current_reading_motor <  1,831  *  1000 )
+ if(brake_pressure_front <  3500  && current_reading_motor <  (1.831f)  *  400 )
  {
  buzzer_state =  0 ;
  ebb_current_state = EBB_START;
@@ -914,41 +913,23 @@ void EBB_Init()
  setTimer( 1 ,0.01);
  setTimer( 2 ,0.001 *  10 );
 }
-#line 101 "C:/Users/sofia/Desktop/GIT REPO/EBB/EBB_DPX.c"
+#line 109 "C:/Users/sofia/Desktop/GIT REPO/EBB/EBB_DPX.c"
  void timer1_interrupt() iv IVT_ADDR_T1INTERRUPT ics ICS_AUTO  {
  timer1_counter ++;
- if (timer1_counter == 300){
+ buzzer_state =  1 ;
+ if (timer1_counter == 500){
  ebb_current_state = EBB_OFF;
  is_requested_movement =  1 ;
  ebb_target_pos = 8;
  }
- if (timer1_counter == 600){
- ebb_current_state = EBB_OFF;
- is_requested_movement =  1 ;
- ebb_target_pos = 7;
+#line 154 "C:/Users/sofia/Desktop/GIT REPO/EBB/EBB_DPX.c"
+ current_reading_motor = ADC1_Read( 8 );
+ if(ebb_current_state !=  0  &&
+ (current_reading_motor >= ((unsigned int)( (1.831f)  *  400 )) ))
+ {
+ ENABLE =  0 ;
+ ebb_current_state = EBB_DRIVER_BRAKING;
  }
- if (timer1_counter == 900){
- ebb_current_state = EBB_OFF;
- is_requested_movement =  1 ;
- ebb_target_pos = 6;
- }
- if (timer1_counter == 1200){
- ebb_current_state = EBB_OFF;
- is_requested_movement =  1 ;
- ebb_target_pos = 5;
- }
- if (timer1_counter == 1500){
- ebb_current_state = EBB_OFF;
- is_requested_movement =  1 ;
- ebb_target_pos = 6;
- }
- if (timer1_counter == 1800){
- ebb_current_state = EBB_OFF;
- is_requested_movement =  1 ;
- ebb_target_pos = 7;
- timer1_counter = 0;
- }
-#line 142 "C:/Users/sofia/Desktop/GIT REPO/EBB/EBB_DPX.c"
   IFS0bits.T1IF  = 0 ;
 }
 
@@ -964,7 +945,7 @@ void EBB_Init()
  CAN_routine();
  timer2_counter = 0;
  }
-#line 162 "C:/Users/sofia/Desktop/GIT REPO/EBB/EBB_DPX.c"
+#line 181 "C:/Users/sofia/Desktop/GIT REPO/EBB/EBB_DPX.c"
   IFS0bits.T2IF  = 0 ;
 }
 
@@ -987,8 +968,6 @@ void main() {
  }
 
 }
-
-
 
 
  void CAN_Interrupt() iv IVT_ADDR_C1INTERRUPT  {
@@ -1020,8 +999,10 @@ void main() {
  if ((ebb_target_pos != ebb_current_pos) && ebb_target_pos >=  0  && ebb_target_pos <=  16 )
  {
  is_requested_movement =  1 ;
+
  }else if (ebb_target_pos ==  100 )
  {
+ buzzer_state =  1 ;
  is_requested_calibration =  1 ;
  }
  break;

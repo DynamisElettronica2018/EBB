@@ -5,6 +5,10 @@
 #include "libs/dsPIC.c"
 #include "libs/eeprom.c"
 
+//da aggiungere:
+//- leggendo le pressioni, fine corsa
+//- leggendo le pressioni, che quella da cui parta l'ebb corrisponda al settaggio giusto della balance bar (nel caso gio muova a mano qualcosa)
+
 //Digital i/o pins
 sbit REVERSE at LATE3_bit;  //Reverse input of the h-bridge
 sbit FORWARD at LATE4_bit;  //Forward input of the h-bridge
@@ -31,6 +35,7 @@ sbit DIRECTION_REGISTER at UPDN_bit;  //register for direction
 #define POSITION_4 8
 #define POSITION_5 10
 #define POSITION_6 12
+/**/ //7 è la posizione
 #define POSITION_7 14
 #define POSITION_8 16
 #define POSITION_9 18
@@ -38,6 +43,7 @@ sbit DIRECTION_REGISTER at UPDN_bit;  //register for direction
 #define POSITION_11 22
 #define POSITION_12 24
 #define POSITION_13 26
+/**/
 #define POSITION_14 28
 #define POSITION_15 30
 #define POSITION_16 32
@@ -47,7 +53,7 @@ sbit DIRECTION_REGISTER at UPDN_bit;  //register for direction
 //Constants
 #define QUARTER_TURN 10048
 #define TURN 40192
-#define LSB_CURRENT_READING 1,831 //Current LSB in mA
+#define LSB_CURRENT_READING (1.831f) //Current LSB in mA
 
 #define ADDR_FIRST_BOOT 0x7FFDD0
 #define ADDR_LAST_POSCNT 0x7FFDA0 //Last POSCNT record
@@ -60,7 +66,9 @@ sbit DIRECTION_REGISTER at UPDN_bit;  //register for direction
 #define PWM_SATURATION 4000
 
 #define BRAKE_PRESSURE_TRIGGER 3500  //Trigger value when driver is braking
-#define MOTOR_CURRENT_TRIGGER 1000  //Trigger value when driver is braking
+#define MOTOR_CURRENT_TRIGGER 400  //Trigger value when driver is braking  mA - see datasheeet++++
+
+#define MOTOR_CURRENT_PIN 8
 
 //#define DEBUG_UART    //Comment to disable debug uart
 //#define TEST_MODE    //Comment to disable test mode
@@ -100,45 +108,56 @@ int timer2_counter = 0, timer1_counter = 0;
 
 onTimer1Interrupt {
     timer1_counter ++;
-    if (timer1_counter == 300){
+    buzzer_state = ON;
+    if (timer1_counter == 500){
        ebb_current_state = EBB_OFF;
        is_requested_movement = ON;
        ebb_target_pos = 8;
     }
-    if (timer1_counter == 600){
+   /* if (timer1_counter == 10000 ){
        ebb_current_state = EBB_OFF;
        is_requested_movement = ON;
-       ebb_target_pos = 7;
+       ebb_target_pos = 9;
     }
-    if (timer1_counter == 900){
+    if (timer1_counter == 20000){
        ebb_current_state = EBB_OFF;
        is_requested_movement = ON;
-       ebb_target_pos = 6;
+       ebb_target_pos = 10;
     }
-    if (timer1_counter == 1200){
+    if (timer1_counter == 30000){
        ebb_current_state = EBB_OFF;
        is_requested_movement = ON;
-       ebb_target_pos = 5;
+       ebb_target_pos = 11;
     }
-     if (timer1_counter == 1500){
+     if (timer1_counter == 40000){
        ebb_current_state = EBB_OFF;
        is_requested_movement = ON;
-       ebb_target_pos = 6;
+       ebb_target_pos = 12;
     }
-     if (timer1_counter == 1800){
+     if (timer1_counter == 50000){
        ebb_current_state = EBB_OFF;
        is_requested_movement = ON;
-       ebb_target_pos = 7;
+       ebb_target_pos = 13;
+    }
+    if (timer1_counter == 60000){
+       ebb_current_state = EBB_OFF;
+       is_requested_movement = ON;
+       ebb_target_pos = 14;
+    }
+    if (timer1_counter == 70000){
+       ebb_current_state = EBB_OFF;
+       is_requested_movement = ON;
+       ebb_target_pos = 15;
        timer1_counter = 0;
-    }
+    }   */
 
-    /*
-    current_reading_motor = ADC1_Read(0);
-    if(ebb_current_state != OFF && (current_reading_motor >= LSB_CURRENT_READING * MOTOR_CURRENT_TRIGGER ||  brake_pressure_front >= BRAKE_PRESSURE_TRIGGER))
+    current_reading_motor = ADC1_Read(MOTOR_CURRENT_PIN);
+    if(ebb_current_state != OFF && 
+      (current_reading_motor >= ((unsigned int)(LSB_CURRENT_READING * MOTOR_CURRENT_TRIGGER)) /*||  brake_pressure_front >= BRAKE_PRESSURE_TRIGGER)*/))
     {
         ENABLE = OFF;  //Turn off the motor
         ebb_current_state = EBB_DRIVER_BRAKING;  //Enter corresponding mode
-    }*/
+    }   
     clearTimer1();
 }
 
@@ -183,8 +202,6 @@ void main() {
 }
 
 
-
-
 onCanInterrupt {
     unsigned long int CAN_id;
     char CAN_datain[8];
@@ -214,8 +231,10 @@ onCanInterrupt {
             if ((ebb_target_pos != ebb_current_pos) && ebb_target_pos >= MIN_POSITION && ebb_target_pos <= MAX_POSITION)
             {
                 is_requested_movement = ON;
+
             }else if (ebb_target_pos == CALIBRATION_POSITION)
             {
+                buzzer_state = ON;
                 is_requested_calibration = ON;
             }
         break;

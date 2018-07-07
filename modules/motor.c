@@ -166,7 +166,7 @@ void EBB_control()
             EEPROM_WRITE(ADDR_LAST_POSCNT, POSCNT);
             while(WR_bit);                                                           //Update EEPROM data                                       
             EEPROM_WRITE(ADDR_LAST_NUMBER_QUARTER_TURNS, motor_current_position);
-            while(WR_bit);
+            while(WR-p_bit);
             EEPROM_WRITE(ADDR_LAST_MAPPED_POSITION, ebb_current_pos);
             while(WR_bit);
             CAN_routine();

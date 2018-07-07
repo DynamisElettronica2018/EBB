@@ -61,5 +61,11 @@ timer2_interrupt
 	EBB_control
 		EEPROM_Write
 		CAN_routine
+		_Long2Float
+		_Compare_Le_Fp
+			_Compare_Fp
 	CAN_routine
 timer1_interrupt
+	ADC1_Read
+		ADC1_Init
+		ADC1_Get_Sample
