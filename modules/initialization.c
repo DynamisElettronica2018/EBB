@@ -11,7 +11,7 @@ void EBB_Init()  //Initialize all hardware peripherals and software variables
                 while(WR_bit);
                 EEPROM_WRITE(ADDR_LAST_MAPPED_POSITION, 8);
                 while(WR_bit);
-                EEPROM_WRITE(ADDR_LAST_NUMBER_QUARTER_TURNS, 16);
+                EEPROM_WRITE(ADDR_LAST_NUMBER_QUARTER_TURNS, POSITION_8);
                 while(WR_bit);
                 EEPROM_WRITE(ADDR_FIRST_BOOT, 0);
                 while(WR_bit);
@@ -54,6 +54,7 @@ void EBB_Init()  //Initialize all hardware peripherals and software variables
         motor_target_position = motor_current_position;                                 //Set target as reached
         ebb_settings = 0;
         brake_pressure_front = 0;
+        current_reading_motor = 0;
         is_requested_calibration = 0;
         is_requested_movement = 0;
 

@@ -79,9 +79,9 @@ _Can_read:
 ;can.c,50 :: 		if (Can_B0hasBeenReceived()) {
 	CALL	_Can_B0hasBeenReceived
 	CP0.B	W0
-	BRA NZ	L__Can_read183
+	BRA NZ	L__Can_read190
 	GOTO	L_Can_read0
-L__Can_read183:
+L__Can_read190:
 ;can.c,51 :: 		Can_clearB0Flag();
 	CALL	_Can_clearB0Flag
 ;can.c,52 :: 		Can1Read(id, dataBuffer, dataLength, &inFlags);
@@ -94,9 +94,9 @@ L_Can_read0:
 ;can.c,54 :: 		else if (Can_B1hasBeenReceived()) {
 	CALL	_Can_B1hasBeenReceived
 	CP0.B	W0
-	BRA NZ	L__Can_read184
+	BRA NZ	L__Can_read191
 	GOTO	L_Can_read2
-L__Can_read184:
+L__Can_read191:
 ;can.c,55 :: 		Can_clearB1Flag();
 	CALL	_Can_clearB1Flag
 ;can.c,56 :: 		Can1Read(id, dataBuffer, dataLength, &inFlags);
@@ -208,25 +208,25 @@ L_Can_write3:
 	ADD	W2, [W1], [W1]
 ;can.c,87 :: 		} while ((sent == 0) && (i < CAN_RETRY_LIMIT));
 	CP	W0, #0
-	BRA Z	L__Can_write190
-	GOTO	L__Can_write176
-L__Can_write190:
+	BRA Z	L__Can_write197
+	GOTO	L__Can_write183
+L__Can_write197:
 	MOV	#50, W1
 	ADD	W14, #0, W0
 	CP	W1, [W0]
-	BRA GTU	L__Can_write191
-	GOTO	L__Can_write175
-L__Can_write191:
+	BRA GTU	L__Can_write198
+	GOTO	L__Can_write182
+L__Can_write198:
 	GOTO	L_Can_write3
-L__Can_write176:
-L__Can_write175:
+L__Can_write183:
+L__Can_write182:
 ;can.c,88 :: 		if (i == CAN_RETRY_LIMIT) {
 	MOV	#50, W1
 	ADD	W14, #0, W0
 	CP	W1, [W0]
-	BRA Z	L__Can_write192
+	BRA Z	L__Can_write199
 	GOTO	L_Can_write8
-L__Can_write192:
+L__Can_write199:
 ;can.c,89 :: 		can_err++;
 	MOV	#1, W1
 	MOV	#lo_addr(_can_err), W0
@@ -260,9 +260,9 @@ _Can_resetWritePacket:
 L_Can_resetWritePacket9:
 	MOV	_can_dataOutLength, W0
 	CP	W0, #8
-	BRA LTU	L__Can_resetWritePacket195
+	BRA LTU	L__Can_resetWritePacket202
 	GOTO	L_Can_resetWritePacket10
-L__Can_resetWritePacket195:
+L__Can_resetWritePacket202:
 ;can.c,99 :: 		can_dataOutBuffer[can_dataOutLength] = 0;
 	MOV	#lo_addr(_can_dataOutBuffer), W1
 	MOV	#lo_addr(_can_dataOutLength), W0
@@ -305,9 +305,9 @@ _Can_B0hasBeenReceived:
 	INC.B	W0
 	CP.B	W0, #1
 	CLR.B	W0
-	BRA NZ	L__Can_B0hasBeenReceived198
+	BRA NZ	L__Can_B0hasBeenReceived205
 	INC.B	W0
-L__Can_B0hasBeenReceived198:
+L__Can_B0hasBeenReceived205:
 ;can.c,110 :: 		}
 L_end_Can_B0hasBeenReceived:
 	RETURN
@@ -322,9 +322,9 @@ _Can_B1hasBeenReceived:
 	INC.B	W0
 	CP.B	W0, #1
 	CLR.B	W0
-	BRA NZ	L__Can_B1hasBeenReceived200
+	BRA NZ	L__Can_B1hasBeenReceived207
 	INC.B	W0
-L__Can_B1hasBeenReceived200:
+L__Can_B1hasBeenReceived207:
 ;can.c,114 :: 		}
 L_end_Can_B1hasBeenReceived:
 	RETURN
@@ -621,29 +621,29 @@ L_setInterruptPriority20:
 ;dspic.c,40 :: 		}
 L_setInterruptPriority12:
 	CP.B	W10, #4
-	BRA NZ	L__setInterruptPriority207
+	BRA NZ	L__setInterruptPriority214
 	GOTO	L_setInterruptPriority14
-L__setInterruptPriority207:
+L__setInterruptPriority214:
 	CP.B	W10, #5
-	BRA NZ	L__setInterruptPriority208
+	BRA NZ	L__setInterruptPriority215
 	GOTO	L_setInterruptPriority15
-L__setInterruptPriority208:
+L__setInterruptPriority215:
 	CP.B	W10, #6
-	BRA NZ	L__setInterruptPriority209
+	BRA NZ	L__setInterruptPriority216
 	GOTO	L_setInterruptPriority16
-L__setInterruptPriority209:
+L__setInterruptPriority216:
 	CP.B	W10, #1
-	BRA NZ	L__setInterruptPriority210
+	BRA NZ	L__setInterruptPriority217
 	GOTO	L_setInterruptPriority17
-L__setInterruptPriority210:
+L__setInterruptPriority217:
 	CP.B	W10, #2
-	BRA NZ	L__setInterruptPriority211
+	BRA NZ	L__setInterruptPriority218
 	GOTO	L_setInterruptPriority18
-L__setInterruptPriority211:
+L__setInterruptPriority218:
 	CP.B	W10, #3
-	BRA NZ	L__setInterruptPriority212
+	BRA NZ	L__setInterruptPriority219
 	GOTO	L_setInterruptPriority19
-L__setInterruptPriority212:
+L__setInterruptPriority219:
 	GOTO	L_setInterruptPriority20
 L_setInterruptPriority13:
 ;dspic.c,41 :: 		}
@@ -707,17 +707,17 @@ L_setExternalInterrupt26:
 ;dspic.c,67 :: 		}
 L_setExternalInterrupt21:
 	CP.B	W10, #4
-	BRA NZ	L__setExternalInterrupt214
+	BRA NZ	L__setExternalInterrupt221
 	GOTO	L_setExternalInterrupt23
-L__setExternalInterrupt214:
+L__setExternalInterrupt221:
 	CP.B	W10, #5
-	BRA NZ	L__setExternalInterrupt215
+	BRA NZ	L__setExternalInterrupt222
 	GOTO	L_setExternalInterrupt24
-L__setExternalInterrupt215:
+L__setExternalInterrupt222:
 	CP.B	W10, #6
-	BRA NZ	L__setExternalInterrupt216
+	BRA NZ	L__setExternalInterrupt223
 	GOTO	L_setExternalInterrupt25
-L__setExternalInterrupt216:
+L__setExternalInterrupt223:
 	GOTO	L_setExternalInterrupt26
 L_setExternalInterrupt22:
 ;dspic.c,68 :: 		}
@@ -737,9 +737,9 @@ L_switchExternalInterruptEdge29:
 	BTSC	INTCON2, #0
 	INC.B	W0
 	CP.B	W0, #1
-	BRA Z	L__switchExternalInterruptEdge218
+	BRA Z	L__switchExternalInterruptEdge225
 	GOTO	L_switchExternalInterruptEdge30
-L__switchExternalInterruptEdge218:
+L__switchExternalInterruptEdge225:
 ;dspic.c,74 :: 		INT0_TRIGGER_EDGE = POSITIVE_EDGE;
 	BCLR	INTCON2, #0
 ;dspic.c,75 :: 		} else {
@@ -758,9 +758,9 @@ L_switchExternalInterruptEdge32:
 	BTSC	INTCON2, #1
 	INC.B	W0
 	CP.B	W0, #1
-	BRA Z	L__switchExternalInterruptEdge219
+	BRA Z	L__switchExternalInterruptEdge226
 	GOTO	L_switchExternalInterruptEdge33
-L__switchExternalInterruptEdge219:
+L__switchExternalInterruptEdge226:
 ;dspic.c,81 :: 		INT1_TRIGGER_EDGE = POSITIVE_EDGE;
 	BCLR	INTCON2, #1
 ;dspic.c,82 :: 		} else {
@@ -779,9 +779,9 @@ L_switchExternalInterruptEdge35:
 	BTSC	INTCON2, #2
 	INC.B	W0
 	CP.B	W0, #1
-	BRA Z	L__switchExternalInterruptEdge220
+	BRA Z	L__switchExternalInterruptEdge227
 	GOTO	L_switchExternalInterruptEdge36
-L__switchExternalInterruptEdge220:
+L__switchExternalInterruptEdge227:
 ;dspic.c,88 :: 		INT2_TRIGGER_EDGE = POSITIVE_EDGE;
 	BCLR	INTCON2, #2
 ;dspic.c,89 :: 		} else {
@@ -800,17 +800,17 @@ L_switchExternalInterruptEdge38:
 ;dspic.c,101 :: 		}
 L_switchExternalInterruptEdge27:
 	CP.B	W10, #4
-	BRA NZ	L__switchExternalInterruptEdge221
+	BRA NZ	L__switchExternalInterruptEdge228
 	GOTO	L_switchExternalInterruptEdge29
-L__switchExternalInterruptEdge221:
+L__switchExternalInterruptEdge228:
 	CP.B	W10, #5
-	BRA NZ	L__switchExternalInterruptEdge222
+	BRA NZ	L__switchExternalInterruptEdge229
 	GOTO	L_switchExternalInterruptEdge32
-L__switchExternalInterruptEdge222:
+L__switchExternalInterruptEdge229:
 	CP.B	W10, #6
-	BRA NZ	L__switchExternalInterruptEdge223
+	BRA NZ	L__switchExternalInterruptEdge230
 	GOTO	L_switchExternalInterruptEdge35
-L__switchExternalInterruptEdge223:
+L__switchExternalInterruptEdge230:
 	GOTO	L_switchExternalInterruptEdge38
 L_switchExternalInterruptEdge28:
 ;dspic.c,102 :: 		}
@@ -852,17 +852,17 @@ L_getExternalInterruptEdge44:
 ;dspic.c,116 :: 		}
 L_getExternalInterruptEdge39:
 	CP.B	W10, #4
-	BRA NZ	L__getExternalInterruptEdge225
+	BRA NZ	L__getExternalInterruptEdge232
 	GOTO	L_getExternalInterruptEdge41
-L__getExternalInterruptEdge225:
+L__getExternalInterruptEdge232:
 	CP.B	W10, #5
-	BRA NZ	L__getExternalInterruptEdge226
+	BRA NZ	L__getExternalInterruptEdge233
 	GOTO	L_getExternalInterruptEdge42
-L__getExternalInterruptEdge226:
+L__getExternalInterruptEdge233:
 	CP.B	W10, #6
-	BRA NZ	L__getExternalInterruptEdge227
+	BRA NZ	L__getExternalInterruptEdge234
 	GOTO	L_getExternalInterruptEdge43
-L__getExternalInterruptEdge227:
+L__getExternalInterruptEdge234:
 	GOTO	L_getExternalInterruptEdge44
 ;dspic.c,117 :: 		}
 L_end_getExternalInterruptEdge:
@@ -899,17 +899,17 @@ L_clearExternalInterrupt50:
 ;dspic.c,134 :: 		}
 L_clearExternalInterrupt45:
 	CP.B	W10, #4
-	BRA NZ	L__clearExternalInterrupt229
+	BRA NZ	L__clearExternalInterrupt236
 	GOTO	L_clearExternalInterrupt47
-L__clearExternalInterrupt229:
+L__clearExternalInterrupt236:
 	CP.B	W10, #5
-	BRA NZ	L__clearExternalInterrupt230
+	BRA NZ	L__clearExternalInterrupt237
 	GOTO	L_clearExternalInterrupt48
-L__clearExternalInterrupt230:
+L__clearExternalInterrupt237:
 	CP.B	W10, #6
-	BRA NZ	L__clearExternalInterrupt231
+	BRA NZ	L__clearExternalInterrupt238
 	GOTO	L_clearExternalInterrupt49
-L__clearExternalInterrupt231:
+L__clearExternalInterrupt238:
 	GOTO	L_clearExternalInterrupt50
 L_clearExternalInterrupt46:
 ;dspic.c,135 :: 		}
@@ -1037,17 +1037,17 @@ L_setTimer55:
 L_setTimer51:
 ; prescalerIndex start address is: 8 (W4)
 	CP.B	W10, #1
-	BRA NZ	L__setTimer233
+	BRA NZ	L__setTimer240
 	GOTO	L_setTimer53
-L__setTimer233:
+L__setTimer240:
 	CP.B	W10, #2
-	BRA NZ	L__setTimer234
+	BRA NZ	L__setTimer241
 	GOTO	L_setTimer54
-L__setTimer234:
+L__setTimer241:
 	CP.B	W10, #3
-	BRA NZ	L__setTimer235
+	BRA NZ	L__setTimer242
 	GOTO	L_setTimer55
-L__setTimer235:
+L__setTimer242:
 ; prescalerIndex end address is: 8 (W4)
 L_setTimer52:
 ;dspic.c,162 :: 		}
@@ -1084,17 +1084,17 @@ L_clearTimer60:
 ;dspic.c,175 :: 		}
 L_clearTimer56:
 	CP.B	W10, #1
-	BRA NZ	L__clearTimer237
+	BRA NZ	L__clearTimer244
 	GOTO	L_clearTimer58
-L__clearTimer237:
+L__clearTimer244:
 	CP.B	W10, #2
-	BRA NZ	L__clearTimer238
+	BRA NZ	L__clearTimer245
 	GOTO	L_clearTimer59
-L__clearTimer238:
+L__clearTimer245:
 	CP.B	W10, #3
-	BRA NZ	L__clearTimer239
+	BRA NZ	L__clearTimer246
 	GOTO	L_clearTimer60
-L__clearTimer239:
+L__clearTimer246:
 L_clearTimer57:
 ;dspic.c,176 :: 		}
 L_end_clearTimer:
@@ -1127,17 +1127,17 @@ L_turnOnTimer65:
 ;dspic.c,189 :: 		}
 L_turnOnTimer61:
 	CP.B	W10, #1
-	BRA NZ	L__turnOnTimer241
+	BRA NZ	L__turnOnTimer248
 	GOTO	L_turnOnTimer63
-L__turnOnTimer241:
+L__turnOnTimer248:
 	CP.B	W10, #2
-	BRA NZ	L__turnOnTimer242
+	BRA NZ	L__turnOnTimer249
 	GOTO	L_turnOnTimer64
-L__turnOnTimer242:
+L__turnOnTimer249:
 	CP.B	W10, #3
-	BRA NZ	L__turnOnTimer243
+	BRA NZ	L__turnOnTimer250
 	GOTO	L_turnOnTimer65
-L__turnOnTimer243:
+L__turnOnTimer250:
 L_turnOnTimer62:
 ;dspic.c,190 :: 		}
 L_end_turnOnTimer:
@@ -1170,17 +1170,17 @@ L_turnOffTimer70:
 ;dspic.c,203 :: 		}
 L_turnOffTimer66:
 	CP.B	W10, #1
-	BRA NZ	L__turnOffTimer245
+	BRA NZ	L__turnOffTimer252
 	GOTO	L_turnOffTimer68
-L__turnOffTimer245:
+L__turnOffTimer252:
 	CP.B	W10, #2
-	BRA NZ	L__turnOffTimer246
+	BRA NZ	L__turnOffTimer253
 	GOTO	L_turnOffTimer69
-L__turnOffTimer246:
+L__turnOffTimer253:
 	CP.B	W10, #3
-	BRA NZ	L__turnOffTimer247
+	BRA NZ	L__turnOffTimer254
 	GOTO	L_turnOffTimer70
-L__turnOffTimer247:
+L__turnOffTimer254:
 L_turnOffTimer67:
 ;dspic.c,204 :: 		}
 L_end_turnOffTimer:
@@ -1242,9 +1242,9 @@ L_getTimerPrescaler71:
 ; exactTimerPrescaler start address is: 8 (W4)
 ; exactTimerPrescaler end address is: 8 (W4)
 	CP.B	W3, #8
-	BRA LTU	L__getTimerPrescaler250
+	BRA LTU	L__getTimerPrescaler257
 	GOTO	L_getTimerPrescaler72
-L__getTimerPrescaler250:
+L__getTimerPrescaler257:
 ; exactTimerPrescaler end address is: 8 (W4)
 ;dspic.c,215 :: 		if ((int) exactTimerPrescaler < PRESCALER_VALUES[i]) {
 ; exactTimerPrescaler start address is: 8 (W4)
@@ -1264,9 +1264,9 @@ L__getTimerPrescaler250:
 	MOV	W1, 52
 	MOV	[W2], W1
 	CP	W0, W1
-	BRA LTU	L__getTimerPrescaler251
+	BRA LTU	L__getTimerPrescaler258
 	GOTO	L_getTimerPrescaler74
-L__getTimerPrescaler251:
+L__getTimerPrescaler258:
 ; exactTimerPrescaler end address is: 8 (W4)
 ;dspic.c,216 :: 		return i;
 	MOV.B	W3, W0
@@ -1621,9 +1621,9 @@ _EEPROM_writeArray:
 L_EEPROM_writeArray77:
 ; i start address is: 2 (W1)
 	CP	W1, #2
-	BRA LTU	L__EEPROM_writeArray271
+	BRA LTU	L__EEPROM_writeArray278
 	GOTO	L_EEPROM_writeArray78
-L__EEPROM_writeArray271:
+L__EEPROM_writeArray278:
 ;eeprom.c,23 :: 		EEPROM_writeInt(address, values[i]);
 	SL	W1, #1, W0
 	ADD	W11, W0, W0
@@ -1653,9 +1653,9 @@ _EEPROM_readArray:
 L_EEPROM_readArray80:
 ; i start address is: 4 (W2)
 	CP	W2, #2
-	BRA LTU	L__EEPROM_readArray273
+	BRA LTU	L__EEPROM_readArray280
 	GOTO	L_EEPROM_readArray81
-L__EEPROM_readArray273:
+L__EEPROM_readArray280:
 ;eeprom.c,30 :: 		values[i] = EEPROM_read(address + i);
 	SL	W2, #1, W0
 	ADD	W11, W0, W0
@@ -1754,25 +1754,25 @@ L_counter_quarter_turn_match83:
 	BTSC	UPDN_bit, BitPos(UPDN_bit+0)
 	INC.B	W0
 	CP.B	W0, #0
-	BRA NZ	L__counter_quarter_turn_match277
+	BRA NZ	L__counter_quarter_turn_match284
 	GOTO	L_counter_quarter_turn_match85
-L__counter_quarter_turn_match277:
+L__counter_quarter_turn_match284:
 	CLR.B	W0
 	BTSC	UPDN_bit, BitPos(UPDN_bit+0)
 	INC.B	W0
 	CP.B	W0, #1
-	BRA NZ	L__counter_quarter_turn_match278
+	BRA NZ	L__counter_quarter_turn_match285
 	GOTO	L_counter_quarter_turn_match86
-L__counter_quarter_turn_match278:
+L__counter_quarter_turn_match285:
 	GOTO	L_counter_quarter_turn_match87
 L_counter_quarter_turn_match84:
 ;motor.c,25 :: 		if (motor_current_position == motor_target_position)                        //Check for target reached
 	MOV	_motor_current_position, W1
 	MOV	#lo_addr(_motor_target_position), W0
 	CP	W1, [W0]
-	BRA Z	L__counter_quarter_turn_match279
+	BRA Z	L__counter_quarter_turn_match286
 	GOTO	L_counter_quarter_turn_match88
-L__counter_quarter_turn_match279:
+L__counter_quarter_turn_match286:
 ;motor.c,27 :: 		brake_counter = 0;                                                      //Reset the counter for braking period lenght
 	MOV	#lo_addr(_brake_counter), W1
 	CLR	W0
@@ -1813,9 +1813,9 @@ L_EBB_control91:
 ;motor.c,42 :: 		if(is_requested_movement)       //Check if the EBB is requested to move in a different position
 	MOV	#lo_addr(_is_requested_movement), W0
 	CP0.B	[W0]
-	BRA NZ	L__EBB_control281
+	BRA NZ	L__EBB_control288
 	GOTO	L_EBB_control92
-L__EBB_control281:
+L__EBB_control288:
 ;motor.c,44 :: 		switch(ebb_target_pos)  //Obtain the requested position in quarter of turns (maybe to be improved!!)
 	GOTO	L_EBB_control93
 ;motor.c,46 :: 		case 0:
@@ -1941,89 +1941,89 @@ L_EBB_control111:
 L_EBB_control93:
 	MOV	_ebb_target_pos, W0
 	CP	W0, #0
-	BRA NZ	L__EBB_control282
-	GOTO	L_EBB_control95
-L__EBB_control282:
-	MOV	_ebb_target_pos, W0
-	CP	W0, #1
-	BRA NZ	L__EBB_control283
-	GOTO	L_EBB_control96
-L__EBB_control283:
-	MOV	_ebb_target_pos, W0
-	CP	W0, #2
-	BRA NZ	L__EBB_control284
-	GOTO	L_EBB_control97
-L__EBB_control284:
-	MOV	_ebb_target_pos, W0
-	CP	W0, #3
-	BRA NZ	L__EBB_control285
-	GOTO	L_EBB_control98
-L__EBB_control285:
-	MOV	_ebb_target_pos, W0
-	CP	W0, #4
-	BRA NZ	L__EBB_control286
-	GOTO	L_EBB_control99
-L__EBB_control286:
-	MOV	_ebb_target_pos, W0
-	CP	W0, #5
-	BRA NZ	L__EBB_control287
-	GOTO	L_EBB_control100
-L__EBB_control287:
-	MOV	_ebb_target_pos, W0
-	CP	W0, #6
-	BRA NZ	L__EBB_control288
-	GOTO	L_EBB_control101
-L__EBB_control288:
-	MOV	_ebb_target_pos, W0
-	CP	W0, #7
 	BRA NZ	L__EBB_control289
-	GOTO	L_EBB_control102
+	GOTO	L_EBB_control95
 L__EBB_control289:
 	MOV	_ebb_target_pos, W0
-	CP	W0, #8
+	CP	W0, #1
 	BRA NZ	L__EBB_control290
-	GOTO	L_EBB_control103
+	GOTO	L_EBB_control96
 L__EBB_control290:
 	MOV	_ebb_target_pos, W0
-	CP	W0, #9
+	CP	W0, #2
 	BRA NZ	L__EBB_control291
-	GOTO	L_EBB_control104
+	GOTO	L_EBB_control97
 L__EBB_control291:
 	MOV	_ebb_target_pos, W0
-	CP	W0, #10
+	CP	W0, #3
 	BRA NZ	L__EBB_control292
-	GOTO	L_EBB_control105
+	GOTO	L_EBB_control98
 L__EBB_control292:
 	MOV	_ebb_target_pos, W0
-	CP	W0, #11
+	CP	W0, #4
 	BRA NZ	L__EBB_control293
-	GOTO	L_EBB_control106
+	GOTO	L_EBB_control99
 L__EBB_control293:
 	MOV	_ebb_target_pos, W0
-	CP	W0, #12
+	CP	W0, #5
 	BRA NZ	L__EBB_control294
-	GOTO	L_EBB_control107
+	GOTO	L_EBB_control100
 L__EBB_control294:
 	MOV	_ebb_target_pos, W0
-	CP	W0, #13
+	CP	W0, #6
 	BRA NZ	L__EBB_control295
-	GOTO	L_EBB_control108
+	GOTO	L_EBB_control101
 L__EBB_control295:
 	MOV	_ebb_target_pos, W0
-	CP	W0, #14
+	CP	W0, #7
 	BRA NZ	L__EBB_control296
-	GOTO	L_EBB_control109
+	GOTO	L_EBB_control102
 L__EBB_control296:
 	MOV	_ebb_target_pos, W0
-	CP	W0, #15
+	CP	W0, #8
 	BRA NZ	L__EBB_control297
-	GOTO	L_EBB_control110
+	GOTO	L_EBB_control103
 L__EBB_control297:
 	MOV	_ebb_target_pos, W0
-	CP	W0, #16
+	CP	W0, #9
 	BRA NZ	L__EBB_control298
-	GOTO	L_EBB_control111
+	GOTO	L_EBB_control104
 L__EBB_control298:
+	MOV	_ebb_target_pos, W0
+	CP	W0, #10
+	BRA NZ	L__EBB_control299
+	GOTO	L_EBB_control105
+L__EBB_control299:
+	MOV	_ebb_target_pos, W0
+	CP	W0, #11
+	BRA NZ	L__EBB_control300
+	GOTO	L_EBB_control106
+L__EBB_control300:
+	MOV	_ebb_target_pos, W0
+	CP	W0, #12
+	BRA NZ	L__EBB_control301
+	GOTO	L_EBB_control107
+L__EBB_control301:
+	MOV	_ebb_target_pos, W0
+	CP	W0, #13
+	BRA NZ	L__EBB_control302
+	GOTO	L_EBB_control108
+L__EBB_control302:
+	MOV	_ebb_target_pos, W0
+	CP	W0, #14
+	BRA NZ	L__EBB_control303
+	GOTO	L_EBB_control109
+L__EBB_control303:
+	MOV	_ebb_target_pos, W0
+	CP	W0, #15
+	BRA NZ	L__EBB_control304
+	GOTO	L_EBB_control110
+L__EBB_control304:
+	MOV	_ebb_target_pos, W0
+	CP	W0, #16
+	BRA NZ	L__EBB_control305
+	GOTO	L_EBB_control111
+L__EBB_control305:
 L_EBB_control94:
 ;motor.c,98 :: 		ebb_current_state = EBB_START;          //Set the correct new ebb state (start moving)
 	MOV	#lo_addr(_ebb_current_state), W1
@@ -2038,309 +2038,365 @@ L_EBB_control94:
 L_EBB_control92:
 	MOV	#lo_addr(_is_requested_calibration), W0
 	CP0.B	[W0]
-	BRA NZ	L__EBB_control299
+	BRA NZ	L__EBB_control306
 	GOTO	L_EBB_control113
-L__EBB_control299:
-;motor.c,102 :: 		ebb_current_state = EBB_CENTRAL_CALIBRATION;        //Set the correct new ebb state (calibration)
+L__EBB_control306:
+;motor.c,102 :: 		calibration_on_off = ON;
+	MOV	#1, W0
+	MOV	W0, _calibration_on_off
+;motor.c,103 :: 		ebb_current_state = EBB_CENTRAL_CALIBRATION;        //Set the correct new ebb state (calibration)
 	MOV	#lo_addr(_ebb_current_state), W1
 	MOV.B	#5, W0
 	MOV.B	W0, [W1]
-;motor.c,103 :: 		is_requested_calibration = OFF;                     //Switch off flag
+;motor.c,104 :: 		is_requested_calibration = OFF;                     //Switch off flag
 	MOV	#lo_addr(_is_requested_calibration), W1
 	CLR	W0
 	MOV.B	W0, [W1]
-;motor.c,104 :: 		}
+;motor.c,105 :: 		}
 L_EBB_control113:
 L_EBB_control112:
-;motor.c,105 :: 		break;
+;motor.c,106 :: 		break;
 	GOTO	L_EBB_control90
-;motor.c,106 :: 		case EBB_START:                                             //Start a movement mode
+;motor.c,107 :: 		case EBB_START:                                             //Start a movement mode
 L_EBB_control114:
-;motor.c,107 :: 		if(motor_target_position > motor_current_position)      //Check if is necessary to screw or unscrew the balance bar
+;motor.c,108 :: 		if(motor_target_position > motor_current_position)      //Check if is necessary to screw or unscrew the balance bar
 	MOV	_motor_target_position, W1
 	MOV	#lo_addr(_motor_current_position), W0
 	CP	W1, [W0]
-	BRA GT	L__EBB_control300
+	BRA GT	L__EBB_control307
 	GOTO	L_EBB_control115
-L__EBB_control300:
-;motor.c,109 :: 		FORWARD = ON;                                         //Unscrew
+L__EBB_control307:
+;motor.c,110 :: 		FORWARD = ON;                                         //Unscrew
 	BSET	LATE4_bit, BitPos(LATE4_bit+0)
-;motor.c,110 :: 		REVERSE = OFF;
+;motor.c,111 :: 		REVERSE = OFF;
 	BCLR	LATE3_bit, BitPos(LATE3_bit+0)
-;motor.c,111 :: 		}else if (motor_target_position < motor_current_position)
+;motor.c,112 :: 		}else if (motor_target_position < motor_current_position)
 	GOTO	L_EBB_control116
 L_EBB_control115:
 	MOV	_motor_target_position, W1
 	MOV	#lo_addr(_motor_current_position), W0
 	CP	W1, [W0]
-	BRA LT	L__EBB_control301
+	BRA LT	L__EBB_control308
 	GOTO	L_EBB_control117
-L__EBB_control301:
-;motor.c,113 :: 		motor_target_position--;
+L__EBB_control308:
+;motor.c,114 :: 		motor_target_position--;
 	MOV	#1, W1
 	MOV	#lo_addr(_motor_target_position), W0
 	SUBR	W1, [W0], [W0]
-;motor.c,114 :: 		REVERSE = ON;                                       //Screw
+;motor.c,115 :: 		REVERSE = ON;                                       //Screw
 	BSET	LATE3_bit, BitPos(LATE3_bit+0)
-;motor.c,115 :: 		FORWARD = OFF;
+;motor.c,116 :: 		FORWARD = OFF;
 	BCLR	LATE4_bit, BitPos(LATE4_bit+0)
-;motor.c,116 :: 		}
+;motor.c,117 :: 		}
 L_EBB_control117:
 L_EBB_control116:
-;motor.c,117 :: 		ENABLE = ON;                                            //Turn on H-bridge
+;motor.c,118 :: 		ENABLE = ON;                                            //Turn on H-bridge
 	BSET	LATE2_bit, BitPos(LATE2_bit+0)
-;motor.c,118 :: 		PDC1 = PWM_SATURATION;                                  //Put the pwm at maximum (disabled pwm control)
+;motor.c,119 :: 		PDC1 = PWM_SATURATION;                                  //Put the pwm at maximum (disabled pwm control)
 	MOV	#4000, W0
 	MOV	WREG, PDC1
-;motor.c,120 :: 		ebb_current_state = EBB_MOVING;                         //Update State
+;motor.c,121 :: 		ebb_current_state = EBB_MOVING;                         //Update State
 	MOV	#lo_addr(_ebb_current_state), W1
 	MOV.B	#2, W0
 	MOV.B	W0, [W1]
-;motor.c,121 :: 		break;
+;motor.c,122 :: 		break;
 	GOTO	L_EBB_control90
-;motor.c,122 :: 		case EBB_MOVING:                               //EBB is trying to reach the requested position
+;motor.c,123 :: 		case EBB_MOVING:                               //EBB is trying to reach the requested position
 L_EBB_control118:
-;motor.c,123 :: 		blink_counter++;
+;motor.c,124 :: 		blink_counter++;
 	MOV.B	#1, W1
 	MOV	#lo_addr(_blink_counter), W0
 	ADD.B	W1, [W0], [W0]
-;motor.c,124 :: 		if(blink_counter >= 20)
+;motor.c,125 :: 		if(blink_counter >= 20)
 	MOV	#lo_addr(_blink_counter), W0
 	MOV.B	[W0], W0
 	CP.B	W0, #20
-	BRA GEU	L__EBB_control302
+	BRA GEU	L__EBB_control309
 	GOTO	L_EBB_control119
-L__EBB_control302:
-;motor.c,126 :: 		LED_G = ~LED_G;                        //Signal that the motor is turning with a blincking green led
+L__EBB_control309:
+;motor.c,127 :: 		LED_G = ~LED_G;                        //Signal that the motor is turning with a blincking green led
 	BTG	LATD3_bit, BitPos(LATD3_bit+0)
-;motor.c,127 :: 		blink_counter = 0;
+;motor.c,128 :: 		blink_counter = 0;
 	MOV	#lo_addr(_blink_counter), W1
 	CLR	W0
 	MOV.B	W0, [W1]
-;motor.c,128 :: 		}
+;motor.c,129 :: 		}
 L_EBB_control119:
-;motor.c,129 :: 		break;
+;motor.c,130 :: 		break;
 	GOTO	L_EBB_control90
-;motor.c,130 :: 		case EBB_BRAKING:                              //EBB has reached the position and is now bhraking the motor shorting it
+;motor.c,131 :: 		case EBB_BRAKING:                              //EBB has reached the position and is now bhraking the motor shorting it
 L_EBB_control120:
-;motor.c,131 :: 		LED_G = OFF;
+;motor.c,132 :: 		LED_G = OFF;
 	BCLR	LATD3_bit, BitPos(LATD3_bit+0)
-;motor.c,132 :: 		LED_B = ON;                             //Turn on Blue led to signal motor Braking mode
+;motor.c,133 :: 		LED_B = ON;                             //Turn on Blue led to signal motor Braking mode
 	BSET	LATD1_bit, BitPos(LATD1_bit+0)
-;motor.c,134 :: 		if(brake_counter >= BRAKE_TIME_LENGHT)          //check if the Braking period has passed
+;motor.c,135 :: 		if(brake_counter >= BRAKE_TIME_LENGHT)          //check if the Braking period has passed
 	MOV	#lo_addr(_brake_counter), W0
 	MOV.B	[W0], W0
 	CP.B	W0, #30
-	BRA GEU	L__EBB_control303
+	BRA GEU	L__EBB_control310
 	GOTO	L_EBB_control121
-L__EBB_control303:
-;motor.c,136 :: 		ebb_current_state = EBB_POSITION_REACHED;
+L__EBB_control310:
+;motor.c,137 :: 		ebb_current_state = EBB_POSITION_REACHED;
 	MOV	#lo_addr(_ebb_current_state), W1
 	MOV.B	#4, W0
 	MOV.B	W0, [W1]
-;motor.c,137 :: 		}
+;motor.c,138 :: 		}
 L_EBB_control121:
-;motor.c,138 :: 		break;
+;motor.c,139 :: 		break;
 	GOTO	L_EBB_control90
-;motor.c,139 :: 		case EBB_POSITION_REACHED:                                                  //The ebb has correctly reached th requested position
+;motor.c,140 :: 		case EBB_POSITION_REACHED:                                                  //The ebb has correctly reached th requested position
 L_EBB_control122:
-;motor.c,140 :: 		LED_B = OFF;
+;motor.c,141 :: 		LED_B = OFF;
 	BCLR	LATD1_bit, BitPos(LATD1_bit+0)
-;motor.c,141 :: 		ENABLE = OFF;
+;motor.c,142 :: 		ENABLE = OFF;
 	BCLR	LATE2_bit, BitPos(LATE2_bit+0)
-;motor.c,142 :: 		REVERSE = OFF;                                                          //Turn off the motor
+;motor.c,143 :: 		REVERSE = OFF;                                                          //Turn off the motor
 	BCLR	LATE3_bit, BitPos(LATE3_bit+0)
-;motor.c,143 :: 		FORWARD = OFF;
+;motor.c,144 :: 		FORWARD = OFF;
 	BCLR	LATE4_bit, BitPos(LATE4_bit+0)
-;motor.c,144 :: 		ebb_current_pos = ebb_target_pos;                                       //Update ebb cuurent position with the reached one (for robustness)
+;motor.c,145 :: 		ebb_current_pos = ebb_target_pos;                                       //Update ebb cuurent position with the reached one (for robustness)
 	MOV	_ebb_target_pos, W0
 	MOV	W0, _ebb_current_pos
-;motor.c,145 :: 		motor_current_position = motor_target_position;                         //Update motor position with the reached one (for robustness)
+;motor.c,146 :: 		motor_current_position = motor_target_position;                         //Update motor position with the reached one (for robustness)
 	MOV	_motor_target_position, W0
 	MOV	W0, _motor_current_position
-;motor.c,146 :: 		EEPROM_WRITE(ADDR_LAST_POSCNT, POSCNT);
+;motor.c,147 :: 		EEPROM_WRITE(ADDR_LAST_POSCNT, POSCNT);
 	MOV	POSCNT, W12
 	MOV	#64928, W10
 	MOV	#127, W11
 	CALL	_EEPROM_Write
-;motor.c,147 :: 		sprintf(dstr, "EEPROM: %u\r\n", POSCNT);
-	PUSH	POSCNT
-	MOV	#lo_addr(?lstr_1_EBB_DPX), W0
-	PUSH	W0
-	MOV	#lo_addr(_dstr), W0
-	PUSH	W0
-	CALL	_sprintf
-	SUB	#6, W15
-;motor.c,148 :: 		Debug_UART_Write(dstr);
-	MOV	#lo_addr(_dstr), W10
-	CALL	_Debug_UART_Write
-;motor.c,149 :: 		while(WR_bit);                                                             //Update EEPROM data
+;motor.c,148 :: 		while(WR_bit);                                                           //Update EEPROM data
 L_EBB_control123:
 	BTSS	WR_bit, BitPos(WR_bit+0)
 	GOTO	L_EBB_control124
 	GOTO	L_EBB_control123
 L_EBB_control124:
-;motor.c,150 :: 		EEPROM_WRITE(ADDR_LAST_NUMBER_QUARTER_TURNS, motor_current_position);
+;motor.c,155 :: 		EEPROM_WRITE(ADDR_LAST_NUMBER_QUARTER_TURNS, motor_current_position);
 	MOV	_motor_current_position, W12
 	MOV	#64944, W10
 	MOV	#127, W11
 	CALL	_EEPROM_Write
-;motor.c,151 :: 		while(WR_bit);
+;motor.c,156 :: 		while(WR_bit);
 L_EBB_control125:
 	BTSS	WR_bit, BitPos(WR_bit+0)
 	GOTO	L_EBB_control126
 	GOTO	L_EBB_control125
 L_EBB_control126:
-;motor.c,152 :: 		EEPROM_WRITE(ADDR_LAST_MAPPED_POSITION, ebb_current_pos);
+;motor.c,157 :: 		EEPROM_WRITE(ADDR_LAST_MAPPED_POSITION, ebb_current_pos);
 	MOV	_ebb_current_pos, W12
 	MOV	#64960, W10
 	MOV	#127, W11
 	CALL	_EEPROM_Write
-;motor.c,153 :: 		while(WR_bit);
+;motor.c,158 :: 		while(WR_bit);
 L_EBB_control127:
 	BTSS	WR_bit, BitPos(WR_bit+0)
 	GOTO	L_EBB_control128
 	GOTO	L_EBB_control127
 L_EBB_control128:
-;motor.c,154 :: 		ebb_current_state = OFF;                                               //Going back to OFF state
+;motor.c,159 :: 		ebb_current_state = OFF;                                               //Going back to OFF state
 	MOV	#lo_addr(_ebb_current_state), W1
 	CLR	W0
 	MOV.B	W0, [W1]
-;motor.c,155 :: 		break;
+;motor.c,160 :: 		break;
 	GOTO	L_EBB_control90
-;motor.c,156 :: 		case EBB_CENTRAL_CALIBRATION:
+;motor.c,161 :: 		case EBB_CENTRAL_CALIBRATION:
 L_EBB_control129:
-;motor.c,157 :: 		ebb_current_pos = 8;
+;motor.c,162 :: 		ebb_current_pos = 8;
 	MOV	#8, W0
 	MOV	W0, _ebb_current_pos
-;motor.c,158 :: 		ebb_target_pos = ebb_current_pos;
+;motor.c,163 :: 		ebb_target_pos = ebb_current_pos;
 	MOV	#8, W0
 	MOV	W0, _ebb_target_pos
-;motor.c,159 :: 		motor_current_position = POSITION_8;
+;motor.c,164 :: 		motor_current_position = POSITION_8;
 	MOV	#16, W0
 	MOV	W0, _motor_current_position
-;motor.c,160 :: 		motor_target_position = motor_current_position;
+;motor.c,165 :: 		motor_target_position = motor_current_position;
 	MOV	#16, W0
 	MOV	W0, _motor_target_position
-;motor.c,161 :: 		EEPROM_WRITE(ADDR_LAST_POSCNT, POSCNT);
+;motor.c,166 :: 		EEPROM_WRITE(ADDR_LAST_POSCNT, POSCNT);
 	MOV	POSCNT, W12
 	MOV	#64928, W10
 	MOV	#127, W11
 	CALL	_EEPROM_Write
-;motor.c,162 :: 		while(WR_bit);                                                           //Update EEPROM data
+;motor.c,167 :: 		while(WR_bit);                                                           //Update EEPROM data
 L_EBB_control130:
 	BTSS	WR_bit, BitPos(WR_bit+0)
 	GOTO	L_EBB_control131
 	GOTO	L_EBB_control130
 L_EBB_control131:
-;motor.c,163 :: 		EEPROM_WRITE(ADDR_LAST_NUMBER_QUARTER_TURNS, motor_current_position);
+;motor.c,168 :: 		EEPROM_WRITE(ADDR_LAST_NUMBER_QUARTER_TURNS, motor_current_position);
 	MOV	_motor_current_position, W12
 	MOV	#64944, W10
 	MOV	#127, W11
 	CALL	_EEPROM_Write
-;motor.c,164 :: 		while(WR_bit);
+;motor.c,169 :: 		while(WR_bit);
 L_EBB_control132:
 	BTSS	WR_bit, BitPos(WR_bit+0)
 	GOTO	L_EBB_control133
 	GOTO	L_EBB_control132
 L_EBB_control133:
-;motor.c,165 :: 		EEPROM_WRITE(ADDR_LAST_MAPPED_POSITION, ebb_current_pos);
+;motor.c,170 :: 		EEPROM_WRITE(ADDR_LAST_MAPPED_POSITION, ebb_current_pos);
 	MOV	_ebb_current_pos, W12
 	MOV	#64960, W10
 	MOV	#127, W11
 	CALL	_EEPROM_Write
-;motor.c,166 :: 		while(WR_bit);
+;motor.c,171 :: 		while(WR_bit);
 L_EBB_control134:
 	BTSS	WR_bit, BitPos(WR_bit+0)
 	GOTO	L_EBB_control135
 	GOTO	L_EBB_control134
 L_EBB_control135:
-;motor.c,167 :: 		CAN_routine();
+;motor.c,172 :: 		CAN_routine();
 	CALL	_CAN_routine
-;motor.c,168 :: 		calibration_on_off = OFF;
+;motor.c,173 :: 		calibration_on_off = OFF;
 	CLR	W0
 	MOV	W0, _calibration_on_off
-;motor.c,169 :: 		ebb_current_state = OFF;                                               //Going back to OFF state
+;motor.c,174 :: 		ebb_current_state = OFF;                                               //Going back to OFF state
 	MOV	#lo_addr(_ebb_current_state), W1
 	CLR	W0
 	MOV.B	W0, [W1]
-;motor.c,170 :: 		break;
+;motor.c,175 :: 		break;
 	GOTO	L_EBB_control90
-;motor.c,171 :: 		case EBB_DRIVER_BRAKING:                            //Driver is braking during a requested movement
+;motor.c,176 :: 		case EBB_CENTRAL_CALIBRATION:
 L_EBB_control136:
-;motor.c,172 :: 		buzzer_state = ON;                                     //Turn on buzzer for debugging
+;motor.c,177 :: 		ebb_current_pos = 8;
+	MOV	#8, W0
+	MOV	W0, _ebb_current_pos
+;motor.c,178 :: 		ebb_target_pos = ebb_current_pos;
+	MOV	#8, W0
+	MOV	W0, _ebb_target_pos
+;motor.c,179 :: 		motor_current_position = POSITION_8;
+	MOV	#16, W0
+	MOV	W0, _motor_current_position
+;motor.c,180 :: 		motor_target_position = motor_current_position;
+	MOV	#16, W0
+	MOV	W0, _motor_target_position
+;motor.c,181 :: 		EEPROM_WRITE(ADDR_LAST_POSCNT, POSCNT);
+	MOV	POSCNT, W12
+	MOV	#64928, W10
+	MOV	#127, W11
+	CALL	_EEPROM_Write
+;motor.c,182 :: 		while(WR_bit);                                                           //Update EEPROM data
+L_EBB_control137:
+	BTSS	WR_bit, BitPos(WR_bit+0)
+	GOTO	L_EBB_control138
+	GOTO	L_EBB_control137
+L_EBB_control138:
+;motor.c,183 :: 		EEPROM_WRITE(ADDR_LAST_NUMBER_QUARTER_TURNS, motor_current_position);
+	MOV	_motor_current_position, W12
+	MOV	#64944, W10
+	MOV	#127, W11
+	CALL	_EEPROM_Write
+;motor.c,184 :: 		while(WR_bit);
+L_EBB_control139:
+	BTSS	WR_bit, BitPos(WR_bit+0)
+	GOTO	L_EBB_control140
+	GOTO	L_EBB_control139
+L_EBB_control140:
+;motor.c,185 :: 		EEPROM_WRITE(ADDR_LAST_MAPPED_POSITION, ebb_current_pos);
+	MOV	_ebb_current_pos, W12
+	MOV	#64960, W10
+	MOV	#127, W11
+	CALL	_EEPROM_Write
+;motor.c,186 :: 		while(WR_bit);
+L_EBB_control141:
+	BTSS	WR_bit, BitPos(WR_bit+0)
+	GOTO	L_EBB_control142
+	GOTO	L_EBB_control141
+L_EBB_control142:
+;motor.c,187 :: 		CAN_routine();
+	CALL	_CAN_routine
+;motor.c,188 :: 		calibration_on_off = OFF;
+	CLR	W0
+	MOV	W0, _calibration_on_off
+;motor.c,189 :: 		ebb_current_state = OFF;                                               //Going back to OFF state
+	MOV	#lo_addr(_ebb_current_state), W1
+	CLR	W0
+	MOV.B	W0, [W1]
+;motor.c,190 :: 		break;
+	GOTO	L_EBB_control90
+;motor.c,191 :: 		case EBB_DRIVER_BRAKING:                            //Driver is braking during a requested movement
+L_EBB_control143:
+;motor.c,192 :: 		buzzer_state = ON;                                     //Turn on buzzer for debugging
 	MOV	#1, W0
 	MOV	W0, _buzzer_state
-;motor.c,173 :: 		if(brake_pressure_front < BRAKE_PRESSURE_TRIGGER && current_reading_motor < LSB_CURRENT_READING * MOTOR_CURRENT_TRIGGER)           //Checking brake pressures for the end of the braking action
+;motor.c,193 :: 		if(brake_pressure_front < BRAKE_PRESSURE_TRIGGER && current_reading_motor < LSB_CURRENT_READING * MOTOR_CURRENT_TRIGGER)           //Checking brake pressures for the end of the braking action
 	MOV	_brake_pressure_front, W1
 	MOV	#3500, W0
 	CP	W1, W0
-	BRA LTU	L__EBB_control304
-	GOTO	L_EBB_control138
-L__EBB_control304:
+	BRA LTU	L__EBB_control311
+	GOTO	L_EBB_control145
+L__EBB_control311:
 	MOV	_current_reading_motor, W0
 	CP	W0, #1
-	BRA LTU	L__EBB_control305
-	GOTO	L_EBB_control138
-L__EBB_control305:
-	GOTO	L_EBB_control137
-L_EBB_control138:
-L_EBB_control137:
-;motor.c,175 :: 		buzzer_state = OFF;
+	BRA LTU	L__EBB_control312
+	GOTO	L_EBB_control145
+L__EBB_control312:
+	GOTO	L_EBB_control144
+L_EBB_control145:
+L_EBB_control144:
+;motor.c,195 :: 		buzzer_state = OFF;
 	CLR	W0
 	MOV	W0, _buzzer_state
-;motor.c,176 :: 		ebb_current_state = EBB_START;              //Return to start mode to complete the movement
+;motor.c,196 :: 		ebb_current_state = EBB_START;              //Return to start mode to complete the movement
 	MOV	#lo_addr(_ebb_current_state), W1
 	MOV.B	#1, W0
 	MOV.B	W0, [W1]
-;motor.c,178 :: 		break;
+;motor.c,198 :: 		break;
 	GOTO	L_EBB_control90
-;motor.c,179 :: 		}
+;motor.c,199 :: 		}
 L_EBB_control89:
 	MOV	#lo_addr(_ebb_current_state), W0
 	MOV.B	[W0], W0
 	CP.B	W0, #0
-	BRA NZ	L__EBB_control306
+	BRA NZ	L__EBB_control313
 	GOTO	L_EBB_control91
-L__EBB_control306:
+L__EBB_control313:
 	MOV	#lo_addr(_ebb_current_state), W0
 	MOV.B	[W0], W0
 	CP.B	W0, #1
-	BRA NZ	L__EBB_control307
+	BRA NZ	L__EBB_control314
 	GOTO	L_EBB_control114
-L__EBB_control307:
+L__EBB_control314:
 	MOV	#lo_addr(_ebb_current_state), W0
 	MOV.B	[W0], W0
 	CP.B	W0, #2
-	BRA NZ	L__EBB_control308
+	BRA NZ	L__EBB_control315
 	GOTO	L_EBB_control118
-L__EBB_control308:
+L__EBB_control315:
 	MOV	#lo_addr(_ebb_current_state), W0
 	MOV.B	[W0], W0
 	CP.B	W0, #3
-	BRA NZ	L__EBB_control309
+	BRA NZ	L__EBB_control316
 	GOTO	L_EBB_control120
-L__EBB_control309:
+L__EBB_control316:
 	MOV	#lo_addr(_ebb_current_state), W0
 	MOV.B	[W0], W0
 	CP.B	W0, #4
-	BRA NZ	L__EBB_control310
+	BRA NZ	L__EBB_control317
 	GOTO	L_EBB_control122
-L__EBB_control310:
+L__EBB_control317:
 	MOV	#lo_addr(_ebb_current_state), W0
 	MOV.B	[W0], W0
 	CP.B	W0, #5
-	BRA NZ	L__EBB_control311
+	BRA NZ	L__EBB_control318
 	GOTO	L_EBB_control129
-L__EBB_control311:
+L__EBB_control318:
+	MOV	#lo_addr(_ebb_current_state), W0
+	MOV.B	[W0], W0
+	CP.B	W0, #5
+	BRA NZ	L__EBB_control319
+	GOTO	L_EBB_control136
+L__EBB_control319:
 	MOV	#lo_addr(_ebb_current_state), W0
 	MOV.B	[W0], W0
 	CP.B	W0, #7
-	BRA NZ	L__EBB_control312
-	GOTO	L_EBB_control136
-L__EBB_control312:
+	BRA NZ	L__EBB_control320
+	GOTO	L_EBB_control143
+L__EBB_control320:
 L_EBB_control90:
-;motor.c,180 :: 		}
+;motor.c,200 :: 		}
 L_end_EBB_control:
 	POP	W12
 	POP	W11
@@ -2360,55 +2416,55 @@ _EBB_Init:
 	CALL	_EEPROM_Read
 	MOV	#65535, W1
 	CP	W0, W1
-	BRA Z	L__EBB_Init314
-	GOTO	L_EBB_Init140
-L__EBB_Init314:
+	BRA Z	L__EBB_Init322
+	GOTO	L_EBB_Init147
+L__EBB_Init322:
 ;initialization.c,10 :: 		EEPROM_WRITE(ADDR_LAST_POSCNT, 0);
 	CLR	W12
 	MOV	#64928, W10
 	MOV	#127, W11
 	CALL	_EEPROM_Write
 ;initialization.c,11 :: 		while(WR_bit);
-L_EBB_Init141:
+L_EBB_Init148:
 	BTSS	WR_bit, BitPos(WR_bit+0)
-	GOTO	L_EBB_Init142
-	GOTO	L_EBB_Init141
-L_EBB_Init142:
+	GOTO	L_EBB_Init149
+	GOTO	L_EBB_Init148
+L_EBB_Init149:
 ;initialization.c,12 :: 		EEPROM_WRITE(ADDR_LAST_MAPPED_POSITION, 8);
 	MOV	#8, W12
 	MOV	#64960, W10
 	MOV	#127, W11
 	CALL	_EEPROM_Write
 ;initialization.c,13 :: 		while(WR_bit);
-L_EBB_Init143:
+L_EBB_Init150:
 	BTSS	WR_bit, BitPos(WR_bit+0)
-	GOTO	L_EBB_Init144
-	GOTO	L_EBB_Init143
-L_EBB_Init144:
-;initialization.c,14 :: 		EEPROM_WRITE(ADDR_LAST_NUMBER_QUARTER_TURNS, 16);
+	GOTO	L_EBB_Init151
+	GOTO	L_EBB_Init150
+L_EBB_Init151:
+;initialization.c,14 :: 		EEPROM_WRITE(ADDR_LAST_NUMBER_QUARTER_TURNS, POSITION_8);
 	MOV	#16, W12
 	MOV	#64944, W10
 	MOV	#127, W11
 	CALL	_EEPROM_Write
 ;initialization.c,15 :: 		while(WR_bit);
-L_EBB_Init145:
+L_EBB_Init152:
 	BTSS	WR_bit, BitPos(WR_bit+0)
-	GOTO	L_EBB_Init146
-	GOTO	L_EBB_Init145
-L_EBB_Init146:
+	GOTO	L_EBB_Init153
+	GOTO	L_EBB_Init152
+L_EBB_Init153:
 ;initialization.c,16 :: 		EEPROM_WRITE(ADDR_FIRST_BOOT, 0);
 	CLR	W12
 	MOV	#64976, W10
 	MOV	#127, W11
 	CALL	_EEPROM_Write
 ;initialization.c,17 :: 		while(WR_bit);
-L_EBB_Init147:
+L_EBB_Init154:
 	BTSS	WR_bit, BitPos(WR_bit+0)
-	GOTO	L_EBB_Init148
-	GOTO	L_EBB_Init147
-L_EBB_Init148:
+	GOTO	L_EBB_Init155
+	GOTO	L_EBB_Init154
+L_EBB_Init155:
 ;initialization.c,18 :: 		}
-L_EBB_Init140:
+L_EBB_Init147:
 ;initialization.c,20 :: 		ADPCFG = 0b1111111111111110;                    //analog input on AN0 (Current Sense)
 	MOV	#65534, W0
 	MOV	WREG, ADPCFG
@@ -2498,65 +2554,68 @@ L_EBB_Init140:
 ;initialization.c,56 :: 		brake_pressure_front = 0;
 	CLR	W0
 	MOV	W0, _brake_pressure_front
-;initialization.c,57 :: 		is_requested_calibration = 0;
+;initialization.c,57 :: 		current_reading_motor = 0;
+	CLR	W0
+	MOV	W0, _current_reading_motor
+;initialization.c,58 :: 		is_requested_calibration = 0;
 	MOV	#lo_addr(_is_requested_calibration), W1
 	CLR	W0
 	MOV.B	W0, [W1]
-;initialization.c,58 :: 		is_requested_movement = 0;
+;initialization.c,59 :: 		is_requested_movement = 0;
 	MOV	#lo_addr(_is_requested_movement), W1
 	CLR	W0
 	MOV.B	W0, [W1]
-;initialization.c,60 :: 		CAN_Init();                                     //initialize CAN module
+;initialization.c,61 :: 		CAN_Init();                                     //initialize CAN module
 	CALL	_Can_init
-;initialization.c,62 :: 		CAN_routine();                                   //Send first CAN Packet
+;initialization.c,63 :: 		CAN_routine();                                   //Send first CAN Packet
 	CALL	_CAN_routine
-;initialization.c,64 :: 		UART1_Init(9600);
+;initialization.c,65 :: 		UART1_Init(9600);
 	MOV	#9600, W10
 	MOV	#0, W11
 	CALL	_UART1_Init
-;initialization.c,66 :: 		ebb_current_state = EBB_OFF;
+;initialization.c,67 :: 		ebb_current_state = EBB_OFF;
 	MOV	#lo_addr(_ebb_current_state), W1
 	CLR	W0
 	MOV.B	W0, [W1]
-;initialization.c,69 :: 		setTimer(TIMER4_DEVICE,0.003);                                        //Interrupt every 200uS
+;initialization.c,70 :: 		setTimer(TIMER4_DEVICE,0.003);                                        //Interrupt every 200uS
 	MOV	#39846, W11
 	MOV	#15172, W12
 	MOV.B	#3, W10
 	CALL	_setTimer
-;initialization.c,72 :: 		buzzer_state = ON;
+;initialization.c,73 :: 		buzzer_state = ON;
 	MOV	#1, W0
 	MOV	W0, _buzzer_state
-;initialization.c,73 :: 		LED_B = ON;
+;initialization.c,74 :: 		LED_B = ON;
 	BSET	LATD1_bit, BitPos(LATD1_bit+0)
-;initialization.c,74 :: 		LED_G = ON;
+;initialization.c,75 :: 		LED_G = ON;
 	BSET	LATD3_bit, BitPos(LATD3_bit+0)
-;initialization.c,75 :: 		delay_ms(1000);
+;initialization.c,76 :: 		delay_ms(1000);
 	MOV	#102, W8
 	MOV	#47563, W7
-L_EBB_Init149:
+L_EBB_Init156:
 	DEC	W7
-	BRA NZ	L_EBB_Init149
+	BRA NZ	L_EBB_Init156
 	DEC	W8
-	BRA NZ	L_EBB_Init149
+	BRA NZ	L_EBB_Init156
 	NOP
-;initialization.c,76 :: 		buzzer_state = OFF;
+;initialization.c,77 :: 		buzzer_state = OFF;
 	CLR	W0
 	MOV	W0, _buzzer_state
-;initialization.c,77 :: 		LED_B = OFF;
+;initialization.c,78 :: 		LED_B = OFF;
 	BCLR	LATD1_bit, BitPos(LATD1_bit+0)
-;initialization.c,78 :: 		LED_G = OFF;
+;initialization.c,79 :: 		LED_G = OFF;
 	BCLR	LATD3_bit, BitPos(LATD3_bit+0)
-;initialization.c,80 :: 		setTimer(TIMER1_DEVICE,0.01);                                         //Interrupt every 1mS
+;initialization.c,81 :: 		setTimer(TIMER1_DEVICE,0.01);                                         //Interrupt every 1mS
 	MOV	#55050, W11
 	MOV	#15395, W12
 	MOV.B	#1, W10
 	CALL	_setTimer
-;initialization.c,81 :: 		setTimer(TIMER2_DEVICE,0.001 * CONTROL_ROUTINE_REFRESH);              //Interrupt every CONTROL_ROUTINE_REFRESH mS
+;initialization.c,82 :: 		setTimer(TIMER2_DEVICE,0.001 * CONTROL_ROUTINE_REFRESH);              //Interrupt every CONTROL_ROUTINE_REFRESH mS
 	MOV	#55051, W11
 	MOV	#15395, W12
 	MOV.B	#2, W10
 	CALL	_setTimer
-;initialization.c,82 :: 		}
+;initialization.c,83 :: 		}
 L_end_EBB_Init:
 	POP	W12
 	POP	W11
@@ -2572,134 +2631,134 @@ _timer1_interrupt:
 	REPEAT	#12
 	PUSH	[W0++]
 
-;EBB_DPX.c,97 :: 		onTimer1Interrupt {
-;EBB_DPX.c,99 :: 		timer1_counter ++;
+;EBB_DPX.c,101 :: 		onTimer1Interrupt {
+;EBB_DPX.c,102 :: 		timer1_counter ++;
 	MOV	#1, W1
 	MOV	#lo_addr(_timer1_counter), W0
 	ADD	W1, [W0], [W0]
-;EBB_DPX.c,100 :: 		if (timer1_counter == 300){
+;EBB_DPX.c,103 :: 		if (timer1_counter == 300){
 	MOV	_timer1_counter, W1
 	MOV	#300, W0
 	CP	W1, W0
-	BRA Z	L__timer1_interrupt316
-	GOTO	L_timer1_interrupt151
-L__timer1_interrupt316:
-;EBB_DPX.c,101 :: 		ebb_current_state = EBB_OFF;
+	BRA Z	L__timer1_interrupt324
+	GOTO	L_timer1_interrupt158
+L__timer1_interrupt324:
+;EBB_DPX.c,104 :: 		ebb_current_state = EBB_OFF;
 	MOV	#lo_addr(_ebb_current_state), W1
 	CLR	W0
 	MOV.B	W0, [W1]
-;EBB_DPX.c,102 :: 		is_requested_movement = ON;
+;EBB_DPX.c,105 :: 		is_requested_movement = ON;
 	MOV	#lo_addr(_is_requested_movement), W1
 	MOV.B	#1, W0
 	MOV.B	W0, [W1]
-;EBB_DPX.c,103 :: 		ebb_target_pos = 8;
+;EBB_DPX.c,106 :: 		ebb_target_pos = 8;
 	MOV	#8, W0
 	MOV	W0, _ebb_target_pos
-;EBB_DPX.c,104 :: 		}
-L_timer1_interrupt151:
-;EBB_DPX.c,105 :: 		if (timer1_counter == 600){
+;EBB_DPX.c,107 :: 		}
+L_timer1_interrupt158:
+;EBB_DPX.c,108 :: 		if (timer1_counter == 600){
 	MOV	_timer1_counter, W1
 	MOV	#600, W0
 	CP	W1, W0
-	BRA Z	L__timer1_interrupt317
-	GOTO	L_timer1_interrupt152
-L__timer1_interrupt317:
-;EBB_DPX.c,106 :: 		ebb_current_state = EBB_OFF;
+	BRA Z	L__timer1_interrupt325
+	GOTO	L_timer1_interrupt159
+L__timer1_interrupt325:
+;EBB_DPX.c,109 :: 		ebb_current_state = EBB_OFF;
 	MOV	#lo_addr(_ebb_current_state), W1
 	CLR	W0
 	MOV.B	W0, [W1]
-;EBB_DPX.c,107 :: 		is_requested_movement = ON;
+;EBB_DPX.c,110 :: 		is_requested_movement = ON;
 	MOV	#lo_addr(_is_requested_movement), W1
 	MOV.B	#1, W0
 	MOV.B	W0, [W1]
-;EBB_DPX.c,108 :: 		ebb_target_pos = 7;
+;EBB_DPX.c,111 :: 		ebb_target_pos = 7;
 	MOV	#7, W0
 	MOV	W0, _ebb_target_pos
-;EBB_DPX.c,109 :: 		}
-L_timer1_interrupt152:
-;EBB_DPX.c,110 :: 		if (timer1_counter == 900){
+;EBB_DPX.c,112 :: 		}
+L_timer1_interrupt159:
+;EBB_DPX.c,113 :: 		if (timer1_counter == 900){
 	MOV	_timer1_counter, W1
 	MOV	#900, W0
 	CP	W1, W0
-	BRA Z	L__timer1_interrupt318
-	GOTO	L_timer1_interrupt153
-L__timer1_interrupt318:
-;EBB_DPX.c,111 :: 		ebb_current_state = EBB_OFF;
+	BRA Z	L__timer1_interrupt326
+	GOTO	L_timer1_interrupt160
+L__timer1_interrupt326:
+;EBB_DPX.c,114 :: 		ebb_current_state = EBB_OFF;
 	MOV	#lo_addr(_ebb_current_state), W1
 	CLR	W0
 	MOV.B	W0, [W1]
-;EBB_DPX.c,112 :: 		is_requested_movement = ON;
+;EBB_DPX.c,115 :: 		is_requested_movement = ON;
 	MOV	#lo_addr(_is_requested_movement), W1
 	MOV.B	#1, W0
 	MOV.B	W0, [W1]
-;EBB_DPX.c,113 :: 		ebb_target_pos = 6;
+;EBB_DPX.c,116 :: 		ebb_target_pos = 6;
 	MOV	#6, W0
 	MOV	W0, _ebb_target_pos
-;EBB_DPX.c,114 :: 		}
-L_timer1_interrupt153:
-;EBB_DPX.c,115 :: 		if (timer1_counter == 1200){
+;EBB_DPX.c,117 :: 		}
+L_timer1_interrupt160:
+;EBB_DPX.c,118 :: 		if (timer1_counter == 1200){
 	MOV	_timer1_counter, W1
 	MOV	#1200, W0
 	CP	W1, W0
-	BRA Z	L__timer1_interrupt319
-	GOTO	L_timer1_interrupt154
-L__timer1_interrupt319:
-;EBB_DPX.c,116 :: 		ebb_current_state = EBB_OFF;
+	BRA Z	L__timer1_interrupt327
+	GOTO	L_timer1_interrupt161
+L__timer1_interrupt327:
+;EBB_DPX.c,119 :: 		ebb_current_state = EBB_OFF;
 	MOV	#lo_addr(_ebb_current_state), W1
 	CLR	W0
 	MOV.B	W0, [W1]
-;EBB_DPX.c,117 :: 		is_requested_movement = ON;
+;EBB_DPX.c,120 :: 		is_requested_movement = ON;
 	MOV	#lo_addr(_is_requested_movement), W1
 	MOV.B	#1, W0
 	MOV.B	W0, [W1]
-;EBB_DPX.c,118 :: 		ebb_target_pos = 5;
+;EBB_DPX.c,121 :: 		ebb_target_pos = 5;
 	MOV	#5, W0
 	MOV	W0, _ebb_target_pos
-;EBB_DPX.c,119 :: 		}
-L_timer1_interrupt154:
-;EBB_DPX.c,120 :: 		if (timer1_counter == 1500){
+;EBB_DPX.c,122 :: 		}
+L_timer1_interrupt161:
+;EBB_DPX.c,123 :: 		if (timer1_counter == 1500){
 	MOV	_timer1_counter, W1
 	MOV	#1500, W0
 	CP	W1, W0
-	BRA Z	L__timer1_interrupt320
-	GOTO	L_timer1_interrupt155
-L__timer1_interrupt320:
-;EBB_DPX.c,121 :: 		ebb_current_state = EBB_OFF;
+	BRA Z	L__timer1_interrupt328
+	GOTO	L_timer1_interrupt162
+L__timer1_interrupt328:
+;EBB_DPX.c,124 :: 		ebb_current_state = EBB_OFF;
 	MOV	#lo_addr(_ebb_current_state), W1
 	CLR	W0
 	MOV.B	W0, [W1]
-;EBB_DPX.c,122 :: 		is_requested_movement = ON;
+;EBB_DPX.c,125 :: 		is_requested_movement = ON;
 	MOV	#lo_addr(_is_requested_movement), W1
 	MOV.B	#1, W0
 	MOV.B	W0, [W1]
-;EBB_DPX.c,123 :: 		ebb_target_pos = 6;
+;EBB_DPX.c,126 :: 		ebb_target_pos = 6;
 	MOV	#6, W0
 	MOV	W0, _ebb_target_pos
-;EBB_DPX.c,124 :: 		}
-L_timer1_interrupt155:
-;EBB_DPX.c,125 :: 		if (timer1_counter == 1800){
+;EBB_DPX.c,127 :: 		}
+L_timer1_interrupt162:
+;EBB_DPX.c,128 :: 		if (timer1_counter == 1800){
 	MOV	_timer1_counter, W1
 	MOV	#1800, W0
 	CP	W1, W0
-	BRA Z	L__timer1_interrupt321
-	GOTO	L_timer1_interrupt156
-L__timer1_interrupt321:
-;EBB_DPX.c,126 :: 		ebb_current_state = EBB_OFF;
+	BRA Z	L__timer1_interrupt329
+	GOTO	L_timer1_interrupt163
+L__timer1_interrupt329:
+;EBB_DPX.c,129 :: 		ebb_current_state = EBB_OFF;
 	MOV	#lo_addr(_ebb_current_state), W1
 	CLR	W0
 	MOV.B	W0, [W1]
-;EBB_DPX.c,127 :: 		is_requested_movement = ON;
+;EBB_DPX.c,130 :: 		is_requested_movement = ON;
 	MOV	#lo_addr(_is_requested_movement), W1
 	MOV.B	#1, W0
 	MOV.B	W0, [W1]
-;EBB_DPX.c,128 :: 		ebb_target_pos = 7;
+;EBB_DPX.c,131 :: 		ebb_target_pos = 7;
 	MOV	#7, W0
 	MOV	W0, _ebb_target_pos
-;EBB_DPX.c,129 :: 		timer1_counter = 0;
+;EBB_DPX.c,132 :: 		timer1_counter = 0;
 	CLR	W0
 	MOV	W0, _timer1_counter
-;EBB_DPX.c,130 :: 		}
-L_timer1_interrupt156:
+;EBB_DPX.c,133 :: 		}
+L_timer1_interrupt163:
 ;EBB_DPX.c,142 :: 		clearTimer1();
 	BCLR	IFS0bits, #3
 ;EBB_DPX.c,143 :: 		}
@@ -2721,47 +2780,34 @@ _timer2_interrupt:
 	REPEAT	#12
 	PUSH	[W0++]
 
-;EBB_DPX.c,145 :: 		onTimer2Interrupt {
-;EBB_DPX.c,146 :: 		timer2_counter++;
-	PUSH	W10
+;EBB_DPX.c,148 :: 		onTimer2Interrupt {
+;EBB_DPX.c,149 :: 		timer2_counter++;
 	MOV	#1, W1
 	MOV	#lo_addr(_timer2_counter), W0
 	ADD	W1, [W0], [W0]
-;EBB_DPX.c,147 :: 		brake_counter++;
+;EBB_DPX.c,150 :: 		brake_counter++;
 	MOV.B	#1, W1
 	MOV	#lo_addr(_brake_counter), W0
 	ADD.B	W1, [W0], [W0]
-;EBB_DPX.c,148 :: 		EBB_control();
+;EBB_DPX.c,151 :: 		EBB_control();
 	CALL	_EBB_control
-;EBB_DPX.c,149 :: 		if (timer2_counter >= 10)
+;EBB_DPX.c,152 :: 		if (timer2_counter >= 10)
 	MOV	_timer2_counter, W0
 	CP	W0, #10
-	BRA GE	L__timer2_interrupt323
-	GOTO	L_timer2_interrupt157
-L__timer2_interrupt323:
-;EBB_DPX.c,151 :: 		CAN_routine();  //Call the can update routine
+	BRA GE	L__timer2_interrupt331
+	GOTO	L_timer2_interrupt164
+L__timer2_interrupt331:
+;EBB_DPX.c,154 :: 		CAN_routine();  //Call the can update routine
 	CALL	_CAN_routine
-;EBB_DPX.c,152 :: 		timer2_counter = 0;
+;EBB_DPX.c,155 :: 		timer2_counter = 0;
 	CLR	W0
 	MOV	W0, _timer2_counter
-;EBB_DPX.c,153 :: 		}
-L_timer2_interrupt157:
-;EBB_DPX.c,155 :: 		sprintf(dstr, "POSCNT: %u\r\n", POSCNT);
-	PUSH	POSCNT
-	MOV	#lo_addr(?lstr_2_EBB_DPX), W0
-	PUSH	W0
-	MOV	#lo_addr(_dstr), W0
-	PUSH	W0
-	CALL	_sprintf
-	SUB	#6, W15
-;EBB_DPX.c,156 :: 		Debug_UART_Write(dstr);
-	MOV	#lo_addr(_dstr), W10
-	CALL	_Debug_UART_Write
-;EBB_DPX.c,157 :: 		clearTimer2();
+;EBB_DPX.c,156 :: 		}
+L_timer2_interrupt164:
+;EBB_DPX.c,162 :: 		clearTimer2();
 	BCLR	IFS0bits, #6
-;EBB_DPX.c,158 :: 		}
+;EBB_DPX.c,163 :: 		}
 L_end_timer2_interrupt:
-	POP	W10
 	MOV	#26, W0
 	REPEAT	#12
 	POP	[W0--]
@@ -2779,20 +2825,20 @@ _timer4_interrupt:
 	REPEAT	#12
 	PUSH	[W0++]
 
-;EBB_DPX.c,160 :: 		onTimer4Interrupt {
-;EBB_DPX.c,161 :: 		if(buzzer_state == ON){  //Sound routine
+;EBB_DPX.c,168 :: 		onTimer4Interrupt {
+;EBB_DPX.c,169 :: 		if(buzzer_state == ON){  //Sound routine
 	MOV	_buzzer_state, W0
 	CP	W0, #1
-	BRA Z	L__timer4_interrupt325
-	GOTO	L_timer4_interrupt158
-L__timer4_interrupt325:
-;EBB_DPX.c,162 :: 		BUZZER = !BUZZER;
+	BRA Z	L__timer4_interrupt333
+	GOTO	L_timer4_interrupt165
+L__timer4_interrupt333:
+;EBB_DPX.c,170 :: 		BUZZER = !BUZZER;
 	BTG	LATD2_bit, BitPos(LATD2_bit+0)
-;EBB_DPX.c,163 :: 		}
-L_timer4_interrupt158:
-;EBB_DPX.c,164 :: 		clearTimer4();
+;EBB_DPX.c,171 :: 		}
+L_timer4_interrupt165:
+;EBB_DPX.c,172 :: 		clearTimer4();
 	BCLR	IFS1bits, #5
-;EBB_DPX.c,165 :: 		}
+;EBB_DPX.c,173 :: 		}
 L_end_timer4_interrupt:
 	MOV	#26, W0
 	REPEAT	#12
@@ -2812,14 +2858,14 @@ _main:
 	MOV	#4, W0
 	IOR	68
 
-;EBB_DPX.c,168 :: 		void main() {
-;EBB_DPX.c,169 :: 		EBB_Init();
+;EBB_DPX.c,177 :: 		void main() {
+;EBB_DPX.c,178 :: 		EBB_Init();
 	CALL	_EBB_Init
-;EBB_DPX.c,170 :: 		while(1)
-L_main159:
-;EBB_DPX.c,172 :: 		}
-	GOTO	L_main159
-;EBB_DPX.c,174 :: 		}
+;EBB_DPX.c,179 :: 		while(1)
+L_main166:
+;EBB_DPX.c,181 :: 		}
+	GOTO	L_main166
+;EBB_DPX.c,183 :: 		}
 L_end_main:
 L__main_end_loop:
 	BRA	L__main_end_loop
@@ -2834,8 +2880,8 @@ _CAN_Interrupt:
 	REPEAT	#12
 	PUSH	[W0++]
 
-;EBB_DPX.c,176 :: 		onCanInterrupt {
-;EBB_DPX.c,182 :: 		Can_read(&CAN_id, CAN_datain, &CAN_dataLen, &CAN_flags);
+;EBB_DPX.c,188 :: 		onCanInterrupt {
+;EBB_DPX.c,194 :: 		Can_read(&CAN_id, CAN_datain, &CAN_dataLen, &CAN_flags);
 	PUSH	W10
 	PUSH	W11
 	PUSH	W12
@@ -2849,13 +2895,13 @@ _CAN_Interrupt:
 	MOV	W1, W11
 	MOV	W0, W10
 	CALL	_Can_read
-;EBB_DPX.c,184 :: 		if (CAN_dataLen >= 2) {
+;EBB_DPX.c,196 :: 		if (CAN_dataLen >= 2) {
 	MOV	[W14+12], W0
 	CP	W0, #2
-	BRA GEU	L__CAN_Interrupt329
-	GOTO	L_CAN_Interrupt161
-L__CAN_Interrupt329:
-;EBB_DPX.c,185 :: 		firstInt = (unsigned int) ((CAN_datain[0] << 8) | (CAN_datain[1] & 0xFF));
+	BRA GEU	L__CAN_Interrupt337
+	GOTO	L_CAN_Interrupt168
+L__CAN_Interrupt337:
+;EBB_DPX.c,197 :: 		firstInt = (unsigned int) ((CAN_datain[0] << 8) | (CAN_datain[1] & 0xFF));
 	ADD	W14, #4, W1
 	MOV.B	[W1], W0
 	ZE	W0, W0
@@ -2866,15 +2912,15 @@ L__CAN_Interrupt329:
 	AND	W1, W0, W1
 	ADD	W14, #16, W0
 	IOR	W2, W1, [W0]
-;EBB_DPX.c,186 :: 		}
-L_CAN_Interrupt161:
-;EBB_DPX.c,187 :: 		if (CAN_dataLen >= 4) {
+;EBB_DPX.c,198 :: 		}
+L_CAN_Interrupt168:
+;EBB_DPX.c,199 :: 		if (CAN_dataLen >= 4) {
 	MOV	[W14+12], W0
 	CP	W0, #4
-	BRA GEU	L__CAN_Interrupt330
-	GOTO	L_CAN_Interrupt162
-L__CAN_Interrupt330:
-;EBB_DPX.c,188 :: 		secondInt = (unsigned int) ((CAN_datain[2] << 8) | (CAN_datain[3] & 0xFF));
+	BRA GEU	L__CAN_Interrupt338
+	GOTO	L_CAN_Interrupt169
+L__CAN_Interrupt338:
+;EBB_DPX.c,200 :: 		secondInt = (unsigned int) ((CAN_datain[2] << 8) | (CAN_datain[3] & 0xFF));
 	ADD	W14, #4, W1
 	ADD	W1, #2, W0
 	MOV.B	[W0], W0
@@ -2886,15 +2932,15 @@ L__CAN_Interrupt330:
 	AND	W1, W0, W1
 	ADD	W14, #18, W0
 	IOR	W2, W1, [W0]
-;EBB_DPX.c,189 :: 		}
-L_CAN_Interrupt162:
-;EBB_DPX.c,190 :: 		if (CAN_dataLen >= 6) {
+;EBB_DPX.c,201 :: 		}
+L_CAN_Interrupt169:
+;EBB_DPX.c,202 :: 		if (CAN_dataLen >= 6) {
 	MOV	[W14+12], W0
 	CP	W0, #6
-	BRA GEU	L__CAN_Interrupt331
-	GOTO	L_CAN_Interrupt163
-L__CAN_Interrupt331:
-;EBB_DPX.c,191 :: 		thirdInt = (unsigned int) ((CAN_datain[4] << 8) | (CAN_datain[5] & 0xFF));
+	BRA GEU	L__CAN_Interrupt339
+	GOTO	L_CAN_Interrupt170
+L__CAN_Interrupt339:
+;EBB_DPX.c,203 :: 		thirdInt = (unsigned int) ((CAN_datain[4] << 8) | (CAN_datain[5] & 0xFF));
 	ADD	W14, #4, W1
 	ADD	W1, #4, W0
 	MOV.B	[W0], W0
@@ -2906,99 +2952,99 @@ L__CAN_Interrupt331:
 	AND	W1, W0, W1
 	ADD	W14, #20, W0
 	IOR	W2, W1, [W0]
-;EBB_DPX.c,192 :: 		}
-L_CAN_Interrupt163:
-;EBB_DPX.c,193 :: 		if (CAN_dataLen >= 8) {
+;EBB_DPX.c,204 :: 		}
+L_CAN_Interrupt170:
+;EBB_DPX.c,205 :: 		if (CAN_dataLen >= 8) {
 	MOV	[W14+12], W0
 	CP	W0, #8
-	BRA GEU	L__CAN_Interrupt332
-	GOTO	L_CAN_Interrupt164
-L__CAN_Interrupt332:
-;EBB_DPX.c,195 :: 		}
-L_CAN_Interrupt164:
-;EBB_DPX.c,196 :: 		Can_clearInterrupt();
+	BRA GEU	L__CAN_Interrupt340
+	GOTO	L_CAN_Interrupt171
+L__CAN_Interrupt340:
+;EBB_DPX.c,207 :: 		}
+L_CAN_Interrupt171:
+;EBB_DPX.c,208 :: 		Can_clearInterrupt();
 	CALL	_Can_clearInterrupt
-;EBB_DPX.c,198 :: 		switch(CAN_id){
-	GOTO	L_CAN_Interrupt165
-;EBB_DPX.c,199 :: 		case SW_BRAKE_BIAS_EBB_ID:
-L_CAN_Interrupt167:
-;EBB_DPX.c,200 :: 		ebb_target_pos = ((unsigned int)firstInt);
+;EBB_DPX.c,210 :: 		switch(CAN_id){
+	GOTO	L_CAN_Interrupt172
+;EBB_DPX.c,211 :: 		case SW_BRAKE_BIAS_EBB_ID:
+L_CAN_Interrupt174:
+;EBB_DPX.c,212 :: 		ebb_target_pos = ((unsigned int)firstInt);
 	MOV	[W14+16], W0
 	MOV	W0, _ebb_target_pos
-;EBB_DPX.c,201 :: 		ebb_settings = ((unsigned int)secondInt);
+;EBB_DPX.c,213 :: 		ebb_settings = ((unsigned int)secondInt);
 	MOV	[W14+18], W0
 	MOV	W0, _ebb_settings
-;EBB_DPX.c,202 :: 		if ((ebb_target_pos != ebb_current_pos) && ebb_target_pos >= MIN_POSITION && ebb_target_pos <= MAX_POSITION)
+;EBB_DPX.c,214 :: 		if ((ebb_target_pos != ebb_current_pos) && ebb_target_pos >= MIN_POSITION && ebb_target_pos <= MAX_POSITION)
 	MOV	[W14+16], W1
 	MOV	#lo_addr(_ebb_current_pos), W0
 	CP	W1, [W0]
-	BRA NZ	L__CAN_Interrupt333
-	GOTO	L__CAN_Interrupt180
-L__CAN_Interrupt333:
+	BRA NZ	L__CAN_Interrupt341
+	GOTO	L__CAN_Interrupt187
+L__CAN_Interrupt341:
 	MOV	_ebb_target_pos, W0
 	CP	W0, #0
-	BRA GEU	L__CAN_Interrupt334
-	GOTO	L__CAN_Interrupt179
-L__CAN_Interrupt334:
+	BRA GEU	L__CAN_Interrupt342
+	GOTO	L__CAN_Interrupt186
+L__CAN_Interrupt342:
 	MOV	_ebb_target_pos, W0
 	CP	W0, #16
-	BRA LEU	L__CAN_Interrupt335
-	GOTO	L__CAN_Interrupt178
-L__CAN_Interrupt335:
-L__CAN_Interrupt177:
-;EBB_DPX.c,204 :: 		is_requested_movement = ON;
+	BRA LEU	L__CAN_Interrupt343
+	GOTO	L__CAN_Interrupt185
+L__CAN_Interrupt343:
+L__CAN_Interrupt184:
+;EBB_DPX.c,216 :: 		is_requested_movement = ON;
 	MOV	#lo_addr(_is_requested_movement), W1
 	MOV.B	#1, W0
 	MOV.B	W0, [W1]
-;EBB_DPX.c,205 :: 		}else if (ebb_target_pos == CALIBRATION_POSITION)
-	GOTO	L_CAN_Interrupt171
-;EBB_DPX.c,202 :: 		if ((ebb_target_pos != ebb_current_pos) && ebb_target_pos >= MIN_POSITION && ebb_target_pos <= MAX_POSITION)
-L__CAN_Interrupt180:
-L__CAN_Interrupt179:
-L__CAN_Interrupt178:
-;EBB_DPX.c,205 :: 		}else if (ebb_target_pos == CALIBRATION_POSITION)
+;EBB_DPX.c,217 :: 		}else if (ebb_target_pos == CALIBRATION_POSITION)
+	GOTO	L_CAN_Interrupt178
+;EBB_DPX.c,214 :: 		if ((ebb_target_pos != ebb_current_pos) && ebb_target_pos >= MIN_POSITION && ebb_target_pos <= MAX_POSITION)
+L__CAN_Interrupt187:
+L__CAN_Interrupt186:
+L__CAN_Interrupt185:
+;EBB_DPX.c,217 :: 		}else if (ebb_target_pos == CALIBRATION_POSITION)
 	MOV	#100, W1
 	MOV	#lo_addr(_ebb_target_pos), W0
 	CP	W1, [W0]
-	BRA Z	L__CAN_Interrupt336
-	GOTO	L_CAN_Interrupt172
-L__CAN_Interrupt336:
-;EBB_DPX.c,207 :: 		is_requested_calibration = ON;
+	BRA Z	L__CAN_Interrupt344
+	GOTO	L_CAN_Interrupt179
+L__CAN_Interrupt344:
+;EBB_DPX.c,219 :: 		is_requested_calibration = ON;
 	MOV	#lo_addr(_is_requested_calibration), W1
 	MOV.B	#1, W0
 	MOV.B	W0, [W1]
-;EBB_DPX.c,208 :: 		}
-L_CAN_Interrupt172:
-L_CAN_Interrupt171:
-;EBB_DPX.c,209 :: 		break;
-	GOTO	L_CAN_Interrupt166
-;EBB_DPX.c,210 :: 		case DAU_FR_ID:
-L_CAN_Interrupt173:
-;EBB_DPX.c,211 :: 		brake_pressure_front = ((unsigned int)thirdInt);
+;EBB_DPX.c,220 :: 		}
+L_CAN_Interrupt179:
+L_CAN_Interrupt178:
+;EBB_DPX.c,221 :: 		break;
+	GOTO	L_CAN_Interrupt173
+;EBB_DPX.c,222 :: 		case DAU_FR_ID:
+L_CAN_Interrupt180:
+;EBB_DPX.c,223 :: 		brake_pressure_front = ((unsigned int)thirdInt);
 	MOV	[W14+20], W0
 	MOV	W0, _brake_pressure_front
-;EBB_DPX.c,212 :: 		break;
-	GOTO	L_CAN_Interrupt166
-;EBB_DPX.c,214 :: 		}
-L_CAN_Interrupt165:
+;EBB_DPX.c,224 :: 		break;
+	GOTO	L_CAN_Interrupt173
+;EBB_DPX.c,226 :: 		}
+L_CAN_Interrupt172:
 	MOV	#1024, W1
 	MOV	#0, W2
 	ADD	W14, #0, W0
 	CP	W1, [W0++]
 	CPB	W2, [W0--]
-	BRA NZ	L__CAN_Interrupt337
-	GOTO	L_CAN_Interrupt167
-L__CAN_Interrupt337:
+	BRA NZ	L__CAN_Interrupt345
+	GOTO	L_CAN_Interrupt174
+L__CAN_Interrupt345:
 	MOV	#1616, W1
 	MOV	#0, W2
 	ADD	W14, #0, W0
 	CP	W1, [W0++]
 	CPB	W2, [W0--]
-	BRA NZ	L__CAN_Interrupt338
-	GOTO	L_CAN_Interrupt173
-L__CAN_Interrupt338:
-L_CAN_Interrupt166:
-;EBB_DPX.c,215 :: 		}
+	BRA NZ	L__CAN_Interrupt346
+	GOTO	L_CAN_Interrupt180
+L__CAN_Interrupt346:
+L_CAN_Interrupt173:
+;EBB_DPX.c,227 :: 		}
 L_end_CAN_Interrupt:
 	POP	W13
 	POP	W12
