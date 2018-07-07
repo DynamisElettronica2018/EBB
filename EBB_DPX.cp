@@ -1,8 +1,8 @@
-#line 1 "C:/Users/nicol/Documents/git_codes/EBB/EBB_DPX.c"
-#line 1 "c:/users/nicol/documents/git_codes/ebb/libs/d_can.h"
-#line 1 "c:/users/nicol/documents/git_codes/ebb/libs/can.c"
-#line 1 "c:/users/nicol/documents/git_codes/ebb/libs/can.h"
-#line 48 "c:/users/nicol/documents/git_codes/ebb/libs/can.h"
+#line 1 "C:/Users/sofia/Desktop/GIT REPO/EBB/EBB_DPX.c"
+#line 1 "c:/users/sofia/desktop/git repo/ebb/libs/d_can.h"
+#line 1 "c:/users/sofia/desktop/git repo/ebb/libs/can.c"
+#line 1 "c:/users/sofia/desktop/git repo/ebb/libs/can.h"
+#line 48 "c:/users/sofia/desktop/git repo/ebb/libs/can.h"
 void Can_init(void);
 
 void Can_read(unsigned long int *id, char dataBuffer[], unsigned int *dataLength, unsigned int *inFlags);
@@ -34,7 +34,7 @@ void Can_clearB1Flag(void);
 void Can_clearInterrupt(void);
 
 void Can_initInterrupt(void);
-#line 14 "c:/users/nicol/documents/git_codes/ebb/libs/can.c"
+#line 14 "c:/users/sofia/desktop/git repo/ebb/libs/can.c"
 unsigned long int can_readId = 0;
  char can_dataInBuffer[ 8 ];
 unsigned char can_dataOutBuffer[ 8 ];
@@ -156,11 +156,11 @@ void Can_initInterrupt(void) {
   { int save_sr; { save_sr = SRbits.IPL; { int DISI_save; DISI_save = DISICNT; asm DISI #0X3FF ;SRbits.IPL = 7; asm {nop}; asm {nop}; DISICNT = DISI_save; } (void) 0; ; } (void) 0; ;C1INTEBITS.RXB1IE = 1; { int DISI_save; DISI_save = DISICNT; asm DISI #0X3FF ;SRbits.IPL = save_sr; asm {nop}; asm {nop}; DISICNT = DISI_save; } (void) 0; ; } (void) 0; ;
 
  }
-#line 1 "c:/users/nicol/documents/git_codes/ebb/libs/macro.c"
-#line 1 "c:/users/nicol/documents/git_codes/ebb/libs/dspic.c"
-#line 1 "c:/users/nicol/documents/git_codes/ebb/libs/dspic.h"
-#line 1 "c:/users/nicol/documents/git_codes/ebb/libs/basic.h"
-#line 16 "c:/users/nicol/documents/git_codes/ebb/libs/basic.h"
+#line 1 "c:/users/sofia/desktop/git repo/ebb/libs/macro.c"
+#line 1 "c:/users/sofia/desktop/git repo/ebb/libs/dspic.c"
+#line 1 "c:/users/sofia/desktop/git repo/ebb/libs/dspic.h"
+#line 1 "c:/users/sofia/desktop/git repo/ebb/libs/basic.h"
+#line 16 "c:/users/sofia/desktop/git repo/ebb/libs/basic.h"
 void unsignedIntToString(unsigned int number, char *text);
 
 void signedIntToString(int number, char *text);
@@ -168,7 +168,7 @@ void signedIntToString(int number, char *text);
 unsigned char getNumberDigitCount(unsigned char number);
 
 void emptyString(char* myString);
-#line 171 "c:/users/nicol/documents/git_codes/ebb/libs/dspic.h"
+#line 171 "c:/users/sofia/desktop/git repo/ebb/libs/dspic.h"
 void setAllPinAsDigital(void);
 
 void setInterruptPriority(unsigned char device, unsigned char priority);
@@ -226,7 +226,7 @@ void setAnalogVoltageReference(unsigned char mode);
 void setAnalogDataOutputFormat(unsigned char adof);
 
 int getMinimumAnalogClockConversion(void);
-#line 7 "c:/users/nicol/documents/git_codes/ebb/libs/dspic.c"
+#line 7 "c:/users/sofia/desktop/git repo/ebb/libs/dspic.c"
 const double INSTRUCTION_PERIOD = 4.0 /  32 ;
 const unsigned int PRESCALER_VALUES[] = {1, 8, 64, 256};
 
@@ -246,7 +246,7 @@ void setInterruptPriority(unsigned char device, unsigned char priority) {
  case  6 :
   IPC5bits.INT2IP  = priority;
  break;
-#line 29 "c:/users/nicol/documents/git_codes/ebb/libs/dspic.c"
+#line 29 "c:/users/sofia/desktop/git repo/ebb/libs/dspic.c"
  case  1 :
   IPC0bits.T1IP  = priority;
  break;
@@ -279,7 +279,7 @@ void setExternalInterrupt(unsigned char device, char edge) {
   IFS1.INT2IF  =  0 ;
   IEC1.INT2IE  =  1 ;
  break;
-#line 65 "c:/users/nicol/documents/git_codes/ebb/libs/dspic.c"
+#line 65 "c:/users/sofia/desktop/git repo/ebb/libs/dspic.c"
  default:
  break;
  }
@@ -308,7 +308,7 @@ void switchExternalInterruptEdge(unsigned char device) {
   INTCON2.INT2EP  =  1 ;
  }
  break;
-#line 99 "c:/users/nicol/documents/git_codes/ebb/libs/dspic.c"
+#line 99 "c:/users/sofia/desktop/git repo/ebb/libs/dspic.c"
  default:
  break;
  }
@@ -322,7 +322,7 @@ char getExternalInterruptEdge(unsigned char device) {
  return  INTCON2.INT1EP ;
  case  6 :
  return  INTCON2.INT2EP ;
-#line 114 "c:/users/nicol/documents/git_codes/ebb/libs/dspic.c"
+#line 114 "c:/users/sofia/desktop/git repo/ebb/libs/dspic.c"
  default:
  return 0;
  }
@@ -339,7 +339,7 @@ void clearExternalInterrupt(unsigned char device) {
  case  6 :
   IFS1.INT2IF  =  0 ;
  break;
-#line 132 "c:/users/nicol/documents/git_codes/ebb/libs/dspic.c"
+#line 132 "c:/users/sofia/desktop/git repo/ebb/libs/dspic.c"
  default:
  break;
  }
@@ -521,8 +521,8 @@ void setAnalogDataOutputFormat(unsigned char adof) {
 int getMinimumAnalogClockConversion(void) {
  return (int) (( 154  *  32 ) / 500.0);
 }
-#line 1 "c:/users/nicol/documents/git_codes/ebb/libs/eeprom.c"
-#line 1 "c:/users/nicol/documents/git_codes/ebb/libs/eeprom.h"
+#line 1 "c:/users/sofia/desktop/git repo/ebb/libs/eeprom.c"
+#line 1 "c:/users/sofia/desktop/git repo/ebb/libs/eeprom.h"
 
 
 
@@ -539,7 +539,7 @@ unsigned int EEPROM_readInt(unsigned int address);
 void EEPROM_writeArray(unsigned int address, unsigned int *values);
 
 void EEPROM_readArray(unsigned int address, unsigned int *values);
-#line 7 "c:/users/nicol/documents/git_codes/ebb/libs/eeprom.c"
+#line 7 "c:/users/sofia/desktop/git repo/ebb/libs/eeprom.c"
 void EEPROM_writeInt(unsigned int address, unsigned int value) {
  unsigned int currentValue;
 
@@ -566,7 +566,7 @@ void EEPROM_readArray(unsigned int address, unsigned int *values) {
  values[i] = EEPROM_read(address + i);
  }
 }
-#line 9 "C:/Users/nicol/Documents/git_codes/EBB/EBB_DPX.c"
+#line 9 "C:/Users/sofia/Desktop/GIT REPO/EBB/EBB_DPX.c"
 sbit REVERSE at LATE3_bit;
 sbit FORWARD at LATE4_bit;
 sbit ENABLE at LATE2_bit;
@@ -575,11 +575,12 @@ sbit LED_B at LATD1_bit;
 sbit LED_G at LATD3_bit;
 sbit BUZZER at LATD2_bit;
 sbit DIRECTION_REGISTER at UPDN_bit;
-#line 63 "C:/Users/nicol/Documents/git_codes/EBB/EBB_DPX.c"
+#line 67 "C:/Users/sofia/Desktop/GIT REPO/EBB/EBB_DPX.c"
 unsigned int ebb_target_pos;
 unsigned int ebb_current_pos;
 unsigned int ebb_settings;
 unsigned int brake_pressure_front;
+unsigned int current_reading_motor;
 
 int buzzer_state =  0 ;
 int motor_target_position;
@@ -591,12 +592,12 @@ unsigned int calibration_on_off =  0 ;
 unsigned int error_flag =  0 ;
 
 int timer2_counter = 0, timer1_counter = 0;
-#line 1 "c:/users/nicol/documents/git_codes/ebb/modules/ebb_can_functions.h"
+#line 1 "c:/users/sofia/desktop/git repo/ebb/modules/ebb_can_functions.h"
 
 
 
 void CAN_routine();
-#line 1 "c:/users/nicol/documents/git_codes/ebb/modules/ebb_can_functions.c"
+#line 1 "c:/users/sofia/desktop/git repo/ebb/modules/ebb_can_functions.c"
 
 
 
@@ -608,8 +609,8 @@ void CAN_routine()
  Can_addIntToWritePacket(error_flag);
  Can_write( 0b11100001101 );
 }
-#line 1 "c:/users/nicol/documents/git_codes/ebb/modules/motor.c"
-#line 1 "c:/users/nicol/documents/git_codes/ebb/modules/motor.h"
+#line 1 "c:/users/sofia/desktop/git repo/ebb/modules/motor.c"
+#line 1 "c:/users/sofia/desktop/git repo/ebb/modules/motor.h"
 
 typedef enum{
  EBB_OFF,
@@ -636,7 +637,7 @@ void normal_motor_control(void);
 void central_calibration_control(void);
 void zero_position_control(void);
 void motor_brake(void);
-#line 6 "c:/users/nicol/documents/git_codes/ebb/modules/motor.c"
+#line 6 "c:/users/sofia/desktop/git repo/ebb/modules/motor.c"
 char dstr[100] = "";
 
 void Debug_UART_Write(char* text){
@@ -787,9 +788,24 @@ void EBB_control()
  while(WR_bit);
  ebb_current_state =  0 ;
  break;
+ case EBB_CENTRAL_CALIBRATION:
+ ebb_current_pos = 8;
+ ebb_target_pos = ebb_current_pos;
+ motor_current_position =  16 ;
+ motor_target_position = motor_current_position;
+ EEPROM_WRITE( 0x7FFDA0 , POSCNT);
+ while(WR_bit);
+ EEPROM_WRITE( 0x7FFDB0 , motor_current_position);
+ while(WR_bit);
+ EEPROM_WRITE( 0x7FFDC0 , ebb_current_pos);
+ while(WR_bit);
+ CAN_routine();
+ calibration_on_off =  0 ;
+ ebb_current_state =  0 ;
+ break;
  case EBB_DRIVER_BRAKING:
  buzzer_state =  1 ;
- if(brake_pressure_front <  1000 )
+ if(brake_pressure_front <  3500  && current_reading_motor <  1,831  *  1000 )
  {
  buzzer_state =  0 ;
  ebb_current_state = EBB_START;
@@ -797,13 +813,13 @@ void EBB_control()
  break;
  }
 }
-#line 1 "c:/users/nicol/documents/git_codes/ebb/modules/initialization.c"
-#line 1 "c:/users/nicol/documents/git_codes/ebb/modules/initialization.h"
+#line 1 "c:/users/sofia/desktop/git repo/ebb/modules/initialization.c"
+#line 1 "c:/users/sofia/desktop/git repo/ebb/modules/initialization.h"
 
 
 
 void EBB_Init();
-#line 5 "c:/users/nicol/documents/git_codes/ebb/modules/initialization.c"
+#line 5 "c:/users/sofia/desktop/git repo/ebb/modules/initialization.c"
 void EBB_Init()
 {
 
@@ -882,8 +898,9 @@ void EBB_Init()
  setTimer( 1 ,0.01);
  setTimer( 2 ,0.001 *  10 );
 }
-#line 92 "C:/Users/nicol/Documents/git_codes/EBB/EBB_DPX.c"
+#line 97 "C:/Users/sofia/Desktop/GIT REPO/EBB/EBB_DPX.c"
  void timer1_interrupt() iv IVT_ADDR_T1INTERRUPT ics ICS_AUTO  {
+
  timer1_counter ++;
  if (timer1_counter == 300){
  ebb_current_state = EBB_OFF;
@@ -916,15 +933,7 @@ void EBB_Init()
  ebb_target_pos = 7;
  timer1_counter = 0;
  }
-
-
-
- if(ebb_current_state !=  0  && brake_pressure_front >=  1000 )
- {
- ENABLE =  0 ;
- ebb_current_state = EBB_DRIVER_BRAKING;
- }
-
+#line 142 "C:/Users/sofia/Desktop/GIT REPO/EBB/EBB_DPX.c"
   IFS0bits.T1IF  = 0 ;
 }
 

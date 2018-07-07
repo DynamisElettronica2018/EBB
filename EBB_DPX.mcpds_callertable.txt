@@ -84,6 +84,7 @@ timer2_interrupt
 		Debug_UART_Write
 			UART1_Write_Text
 				UART1_Write
+		CAN_routine
 	CAN_routine
 	sprintf
 	Debug_UART_Write

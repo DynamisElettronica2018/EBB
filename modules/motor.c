@@ -153,9 +153,24 @@ void EBB_control()
             while(WR_bit);
             ebb_current_state = OFF;                                               //Going back to OFF state
             break;
+        case EBB_CENTRAL_CALIBRATION:
+            ebb_current_pos = 8;
+            ebb_target_pos = ebb_current_pos;
+            motor_current_position = POSITION_8;
+            motor_target_position = motor_current_position;
+            EEPROM_WRITE(ADDR_LAST_POSCNT, POSCNT);
+            while(WR_bit);                                                           //Update EEPROM data
+            EEPROM_WRITE(ADDR_LAST_NUMBER_QUARTER_TURNS, motor_current_position);
+            while(WR_bit);
+            EEPROM_WRITE(ADDR_LAST_MAPPED_POSITION, ebb_current_pos);
+            while(WR_bit);
+            CAN_routine();
+            calibration_on_off = OFF;
+            ebb_current_state = OFF;                                               //Going back to OFF state
+            break;
         case EBB_DRIVER_BRAKING:                            //Driver is braking during a requested movement
             buzzer_state = ON;                                     //Turn on buzzer for debugging
-            if(brake_pressure_front < BRAKE_PRESSURE_TRIGGER)           //Checking brake pressures for the end of the braking action
+            if(brake_pressure_front < BRAKE_PRESSURE_TRIGGER && current_reading_motor < LSB_CURRENT_READING * MOTOR_CURRENT_TRIGGER)           //Checking brake pressures for the end of the braking action
             {
                 buzzer_state = OFF;
                 ebb_current_state = EBB_START;              //Return to start mode to complete the movement
