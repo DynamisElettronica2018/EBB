@@ -35,7 +35,7 @@ sbit DIRECTION_REGISTER at UPDN_bit;  //register for direction
 #define POSITION_4 8
 #define POSITION_5 10
 #define POSITION_6 12
-/**/ //7 è la posizione
+/**/ //7 ?la posizione
 #define POSITION_7 14
 #define POSITION_8 16
 #define POSITION_9 18
@@ -47,8 +47,8 @@ sbit DIRECTION_REGISTER at UPDN_bit;  //register for direction
 #define POSITION_14 28
 #define POSITION_15 30
 #define POSITION_16 32
-#define MIN_POSITION 0
-#define MAX_POSITION 16
+#define MIN_POSITION 5
+#define MAX_POSITION 11
 #define CALIBRATION_POSITION 100
 //Constants
 #define QUARTER_TURN 10048
@@ -65,8 +65,9 @@ sbit DIRECTION_REGISTER at UPDN_bit;  //register for direction
 
 #define PWM_SATURATION 4000
 
-#define BRAKE_PRESSURE_TRIGGER 3500  //Trigger value when driver is braking
-#define MOTOR_CURRENT_TRIGGER 400  //Trigger value when driver is braking  mA - see datasheeet++++
+#define BRAKE_PRESSURE_TRIGGER 430
+  //Trigger value when driver is braking
+#define MOTOR_CURRENT_TRIGGER 300  //Trigger value when driver is braking  mA - see datasheeet++++
 
 #define MOTOR_CURRENT_PIN 8
 
@@ -108,43 +109,43 @@ int timer2_counter = 0, timer1_counter = 0;
 
 onTimer1Interrupt {
     timer1_counter ++;
-    buzzer_state = ON;
-    if (timer1_counter == 500){
+   /*if (timer1_counter == 500){
        ebb_current_state = EBB_OFF;
        is_requested_movement = ON;
-       ebb_target_pos = 8;
+       ebb_target_pos = 5;
     }
-   /* if (timer1_counter == 10000 ){
+   if (timer1_counter == 10000 ){
        ebb_current_state = EBB_OFF;
        is_requested_movement = ON;
-       ebb_target_pos = 9;
+       ebb_target_pos = 6;
     }
     if (timer1_counter == 20000){
        ebb_current_state = EBB_OFF;
        is_requested_movement = ON;
-       ebb_target_pos = 10;
+       ebb_target_pos = 7;
     }
     if (timer1_counter == 30000){
        ebb_current_state = EBB_OFF;
        is_requested_movement = ON;
-       ebb_target_pos = 11;
+       ebb_target_pos = 8;
     }
      if (timer1_counter == 40000){
        ebb_current_state = EBB_OFF;
        is_requested_movement = ON;
-       ebb_target_pos = 12;
+       ebb_target_pos = 9;
     }
      if (timer1_counter == 50000){
        ebb_current_state = EBB_OFF;
        is_requested_movement = ON;
-       ebb_target_pos = 13;
+       ebb_target_pos = 10;
     }
     if (timer1_counter == 60000){
        ebb_current_state = EBB_OFF;
        is_requested_movement = ON;
-       ebb_target_pos = 14;
+       ebb_target_pos = 11;
+       timer1_counter = 0;
     }
-    if (timer1_counter == 70000){
+    /*if (timer1_counter == 70000){
        ebb_current_state = EBB_OFF;
        is_requested_movement = ON;
        ebb_target_pos = 15;
@@ -153,7 +154,7 @@ onTimer1Interrupt {
 
     current_reading_motor = ADC1_Read(MOTOR_CURRENT_PIN);
     if(ebb_current_state != OFF && 
-      (current_reading_motor >= ((unsigned int)(LSB_CURRENT_READING * MOTOR_CURRENT_TRIGGER)) /*||  brake_pressure_front >= BRAKE_PRESSURE_TRIGGER)*/))
+      (current_reading_motor >= ((unsigned int)(LSB_CURRENT_READING * MOTOR_CURRENT_TRIGGER)) ||  brake_pressure_front >= BRAKE_PRESSURE_TRIGGER))
     {
         ENABLE = OFF;  //Turn off the motor
         ebb_current_state = EBB_DRIVER_BRAKING;  //Enter corresponding mode
