@@ -195,6 +195,21 @@ void EBB_control()
                 buzzer_state = OFF;
                 ebb_current_state = EBB_START;              //Return to start mode to complete the movement
             }
+            /*if(error_counter >= ERROR_TRIGGER_TIME)
+            {
+                ENABLE = OFF;
+                ebb_current_state = EBB_ERROR;
+            }*/
             break;
+        case EBB_ERROR:
+            LED_B = ON;
+            LED_G = ON;
+            error_flag = ON;
+            if (EEPROM_Read(ADDR_ERROR_FLAG) == 0)
+            {
+                EEPROM_WRITE(ADDR_ERROR_FLAG,ON);
+            }
+            break;
+
     }
 }

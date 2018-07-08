@@ -1276,6 +1276,7 @@ can_datainlength
 can_datainpointer
 can_dataoutbuffer
 can_dataoutlength
+can_debug_routine
 can_err
 can_getwriteflags
 can_inflags
@@ -1691,6 +1692,7 @@ dcount_8
 dcount_8_bit
 dcount_9
 dcount_9_bit
+debug_counter
 debug_uart_write
 dec2bcd
 dec2bcd16
@@ -1955,11 +1957,14 @@ dtbps1
 dtcon1
 dtcon1bits
 ebb_control
+ebb_current
 ebb_current_pos
 ebb_current_state
 ebb_init
+ebb_motor_current
 ebb_settings
 ebb_target_pos
+ebb_temp
 edt
 edt
 edt_bit
@@ -2502,6 +2507,8 @@ errie_bit
 errif
 errif
 errif_bit
+error_bip_counter
+error_counter
 error_flag
 ewarn
 ewarn

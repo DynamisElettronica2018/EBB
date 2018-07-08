@@ -54,11 +54,13 @@ sbit DIRECTION_REGISTER at UPDN_bit;  //register for direction
 #define QUARTER_TURN 10048
 #define TURN 40192
 #define LSB_CURRENT_READING (1.831f) //Current LSB in mA
+#define LSB_VOLTAGE_READING 4.89  //Voltage lsb in mv
 
 #define ADDR_FIRST_BOOT 0x7FFDD0
 #define ADDR_LAST_POSCNT 0x7FFDA0 //Last POSCNT record
 #define ADDR_LAST_NUMBER_QUARTER_TURNS 0x7FFDB0 //Last record of quarter turns (from completely screw-on balance bar)
 #define ADDR_LAST_MAPPED_POSITION 0x7FFDC0 //Last record of mapped position
+#define ADDR_ERROR_FLAG 0x7FFDE0  //Error Flag 
 
 #define CONTROL_ROUTINE_REFRESH 10 //Refresh in ms
 #define BRAKE_TIME_LENGHT 30
@@ -68,8 +70,12 @@ sbit DIRECTION_REGISTER at UPDN_bit;  //register for direction
 #define BRAKE_PRESSURE_TRIGGER 430
   //Trigger value when driver is braking
 #define MOTOR_CURRENT_TRIGGER 300  //Trigger value when driver is braking  mA - see datasheeet++++
+#define ERROR_TRIGGER_TIME 5000  //Time before entering error mode
 
-#define MOTOR_CURRENT_PIN 8
+#define MOTOR_CURRENT_PIN 0
+#define TEMPERATURE_SENSOR_PIN 8
+#define EBB_CURRENT_PIN 7
+
 
 //#define DEBUG_UART    //Comment to disable debug uart
 //#define TEST_MODE    //Comment to disable test mode
@@ -83,6 +89,10 @@ unsigned int ebb_settings;
 unsigned int brake_pressure_front;
 unsigned int current_reading_motor;
 
+unsigned int ebb_current = 0;
+unsigned int ebb_temp = 0;
+unsigned int ebb_motor_current = 0;
+
 int buzzer_state = OFF;
 int motor_target_position;  //quarter turns
 int motor_current_position;  //quarter turns
@@ -92,7 +102,7 @@ char is_requested_movement = 0;
 unsigned int calibration_on_off = OFF;
 unsigned int error_flag = OFF;
 
-int timer2_counter = 0, timer1_counter = 0;
+int timer2_counter = 0, timer1_counter = 0, error_counter = 0, debug_counter = 0, error_bip_counter = 0;
 
 
 //External program blocks
@@ -109,6 +119,9 @@ int timer2_counter = 0, timer1_counter = 0;
 
 onTimer1Interrupt {
     timer1_counter ++;
+    error_counter++;
+    error_bip_counter++;
+    debug_counter++;
    /*if (timer1_counter == 500){
        ebb_current_state = EBB_OFF;
        is_requested_movement = ON;
@@ -157,8 +170,19 @@ onTimer1Interrupt {
       (current_reading_motor >= ((unsigned int)(LSB_CURRENT_READING * MOTOR_CURRENT_TRIGGER)) ||  brake_pressure_front >= BRAKE_PRESSURE_TRIGGER))
     {
         ENABLE = OFF;  //Turn off the motor
+        error_counter = 0;
         ebb_current_state = EBB_DRIVER_BRAKING;  //Enter corresponding mode
-    }   
+    }
+    if(error_bip_counter >= 1000)
+    {
+        error_bip_counter = 0;
+    } 
+
+    if(debug_counter >= 1000)
+    {
+        ebb_temp = (ADC1_Read(TEMPERATURE_SENSOR_PIN) * LSB_VOLTAGE_READING * 100000 - 50);
+        CAN_debug_routine();
+    }
     clearTimer1();
 }
 

@@ -575,12 +575,16 @@ sbit LED_B at LATD1_bit;
 sbit LED_G at LATD3_bit;
 sbit BUZZER at LATD2_bit;
 sbit DIRECTION_REGISTER at UPDN_bit;
-#line 80 "C:/Users/nicol/Documents/git_codes/EBB/EBB_DPX.c"
+#line 86 "C:/Users/nicol/Documents/git_codes/EBB/EBB_DPX.c"
 unsigned int ebb_target_pos;
 unsigned int ebb_current_pos;
 unsigned int ebb_settings;
 unsigned int brake_pressure_front;
 unsigned int current_reading_motor;
+
+unsigned int ebb_current = 0;
+unsigned int ebb_temp = 0;
+unsigned int ebb_motor_current = 0;
 
 int buzzer_state =  0 ;
 int motor_target_position;
@@ -591,12 +595,13 @@ char is_requested_movement = 0;
 unsigned int calibration_on_off =  0 ;
 unsigned int error_flag =  0 ;
 
-int timer2_counter = 0, timer1_counter = 0;
+int timer2_counter = 0, timer1_counter = 0, error_counter = 0, debug_counter = 0, error_bip_counter = 0;
 #line 1 "c:/users/nicol/documents/git_codes/ebb/modules/ebb_can_functions.h"
 
 
 
 void CAN_routine();
+void CAN_debug_routine();
 #line 1 "c:/users/nicol/documents/git_codes/ebb/modules/ebb_can_functions.c"
 
 
@@ -605,8 +610,17 @@ void CAN_routine()
 {
  Can_resetWritePacket();
  Can_addIntToWritePacket(ebb_current_pos);
-#line 10 "c:/users/nicol/documents/git_codes/ebb/modules/ebb_can_functions.c"
+ Can_addIntToWritePacket(calibration_on_off);
+ Can_addIntToWritePacket(error_flag);
  Can_write( 0b11100001101 );
+}
+
+void CAN_debug_routine()
+{
+ Can_resetWritePacket();
+ Can_addIntToWritePacket(ebb_temp);
+ Can_addIntToWritePacket(ebb_current);
+ Can_addIntToWritePacket(ebb_motor_current);
 }
 #line 1 "c:/users/nicol/documents/git_codes/ebb/modules/motor.c"
 #line 1 "c:/users/nicol/documents/git_codes/ebb/modules/motor.h"
@@ -824,7 +838,18 @@ void EBB_control()
  buzzer_state =  0 ;
  ebb_current_state = EBB_START;
  }
+#line 203 "c:/users/nicol/documents/git_codes/ebb/modules/motor.c"
  break;
+ case EBB_ERROR:
+ LED_B =  1 ;
+ LED_G =  1 ;
+ error_flag =  1 ;
+ if (EEPROM_Read( 0x7FFDE0 ) == 0)
+ {
+ EEPROM_WRITE( 0x7FFDE0 , 1 );
+ }
+ break;
+
  }
 }
 #line 1 "c:/users/nicol/documents/git_codes/ebb/modules/initialization.c"
@@ -847,9 +872,11 @@ void EBB_Init()
  while(WR_bit);
  EEPROM_WRITE( 0x7FFDD0 , 0);
  while(WR_bit);
+ EEPROM_WRITE( 0x7FFDE0 , 0);
+ while(WR_bit);
  }
 
- ADPCFG = 0b1111111111111110;
+ ADPCFG = 0b1111111001111110;
  TRISDbits.TRISD1 = 0;
  TRISDbits.TRISD3 = 0;
  TRISDbits.TRISD2 = 0;
@@ -897,6 +924,10 @@ void EBB_Init()
  UART1_Init(9600);
 
  ebb_current_state = EBB_OFF;
+ if (EEPROM_Read( 0x7FFDE0 ) != 0)
+ {
+ ebb_current_state = EBB_ERROR;
+ }
 
 
  setTimer( 3 ,0.003);
@@ -913,16 +944,30 @@ void EBB_Init()
  setTimer( 1 ,0.01);
  setTimer( 2 ,0.001 *  10 );
 }
-#line 110 "C:/Users/nicol/Documents/git_codes/EBB/EBB_DPX.c"
+#line 120 "C:/Users/nicol/Documents/git_codes/EBB/EBB_DPX.c"
  void timer1_interrupt() iv IVT_ADDR_T1INTERRUPT ics ICS_AUTO  {
  timer1_counter ++;
-#line 155 "C:/Users/nicol/Documents/git_codes/EBB/EBB_DPX.c"
- current_reading_motor = ADC1_Read( 8 );
+ error_counter++;
+ error_bip_counter++;
+ debug_counter++;
+#line 168 "C:/Users/nicol/Documents/git_codes/EBB/EBB_DPX.c"
+ current_reading_motor = ADC1_Read( 0 );
  if(ebb_current_state !=  0  &&
  (current_reading_motor >= ((unsigned int)( (1.831f)  *  300 )) || brake_pressure_front >=  430 ))
  {
  ENABLE =  0 ;
+ error_counter = 0;
  ebb_current_state = EBB_DRIVER_BRAKING;
+ }
+ if(error_bip_counter >= 1000)
+ {
+ error_bip_counter = 0;
+ }
+
+ if(debug_counter >= 1000)
+ {
+ ebb_temp = (ADC1_Read( 8 ) *  4.89  * 100000 - 50);
+ CAN_debug_routine();
  }
   IFS0bits.T1IF  = 0 ;
 }
@@ -939,7 +984,7 @@ void EBB_Init()
  CAN_routine();
  timer2_counter = 0;
  }
-#line 182 "C:/Users/nicol/Documents/git_codes/EBB/EBB_DPX.c"
+#line 206 "C:/Users/nicol/Documents/git_codes/EBB/EBB_DPX.c"
   IFS0bits.T2IF  = 0 ;
 }
 

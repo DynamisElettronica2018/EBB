@@ -15,9 +15,11 @@ void EBB_Init()  //Initialize all hardware peripherals and software variables
                 while(WR_bit);
                 EEPROM_WRITE(ADDR_FIRST_BOOT, 0);
                 while(WR_bit);
+                EEPROM_WRITE(ADDR_ERROR_FLAG, 0);
+                while(WR_bit);
         }
         //Ports initialization
-        ADPCFG = 0b1111111111111110;                    //analog input on AN0 (Current Sense)
+        ADPCFG = 0b1111111001111110;                    //analog input on AN0 (Current Sense)
         TRISDbits.TRISD1 = 0;                           //green led;
         TRISDbits.TRISD3 = 0;                           //blue led;
         TRISDbits.TRISD2 = 0;                           //buzzer;
@@ -65,6 +67,10 @@ void EBB_Init()  //Initialize all hardware peripherals and software variables
         UART1_Init(9600);
 
         ebb_current_state = EBB_OFF;
+        if (EEPROM_Read(ADDR_ERROR_FLAG) != 0)
+        {
+                ebb_current_state = EBB_ERROR;
+        }
 
         //TImers initialization
         setTimer(TIMER4_DEVICE,0.003);                                        //Interrupt every 200uS
